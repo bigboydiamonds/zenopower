@@ -25,7 +25,7 @@ export class Pages extends Core {
   async transitionIn(page) {
     await Promise.allSettled([
       App.dom.transitionIn(page),
-      Gl.gl.transitionIn(page),
+      Gl.transitionIn(page),
     ]);
   }
 }

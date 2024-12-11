@@ -278,11 +278,11 @@
     return base;
   };
   var _copyExcluding = function _copyExcluding2(obj, excluding) {
-    var copy7 = {}, p;
+    var copy6 = {}, p;
     for (p in obj) {
-      p in excluding || (copy7[p] = obj[p]);
+      p in excluding || (copy6[p] = obj[p]);
     }
-    return copy7;
+    return copy6;
   };
   var _inheritDefaults = function _inheritDefaults2(vars) {
     var parent = vars.parent || _globalTimeline, func = vars.keyframes ? _setKeyframeDefaults(_isArray(vars.keyframes)) : _setDefaults;
@@ -805,12 +805,12 @@
     return _conditionalReturn(progress, func);
   };
   var _getLabelInDirection = function _getLabelInDirection2(timeline2, fromTime, backward) {
-    var labels = timeline2.labels, min = _bigNum, p, distance3, label;
+    var labels = timeline2.labels, min = _bigNum, p, distance2, label;
     for (p in labels) {
-      distance3 = labels[p] - fromTime;
-      if (distance3 < 0 === !!backward && distance3 && min > (distance3 = Math.abs(distance3))) {
+      distance2 = labels[p] - fromTime;
+      if (distance2 < 0 === !!backward && distance2 && min > (distance2 = Math.abs(distance2))) {
         label = p;
-        min = distance3;
+        min = distance2;
       }
     }
     return label;
@@ -1086,7 +1086,7 @@
         _gap = 1e3 / (_fps || 240);
         _nextTime = _self.time * 1e3 + _gap;
       },
-      add: function add5(callback, once, prioritize) {
+      add: function add4(callback, once, prioritize) {
         var func = once ? function(t, d, f, v) {
           callback(t, d, f, v);
           _self.remove(func);
@@ -1555,7 +1555,7 @@
       _createTweenType(2, arguments, this);
       return this;
     };
-    _proto2.set = function set7(targets, vars, position) {
+    _proto2.set = function set6(targets, vars, position) {
       vars.duration = 0;
       vars.parent = this;
       _inheritDefaults(vars).repeatDelay || (vars.repeat = 0);
@@ -1733,7 +1733,7 @@
       }
       return this;
     };
-    _proto2.add = function add5(child, position) {
+    _proto2.add = function add4(child, position) {
       var _this2 = this;
       _isNumber(position) || (position = _parsePosition(this, position, child));
       if (!(child instanceof Animation)) {
@@ -2084,11 +2084,11 @@
     if (!_isObject(vars) || vars.style && vars.nodeType || _isArray(vars) || _isTypedArray(vars)) {
       return _isString(vars) ? _parseFuncOrString(vars, tween, index, target, targets) : vars;
     }
-    var copy7 = {}, p;
+    var copy6 = {}, p;
     for (p in vars) {
-      copy7[p] = _parseFuncOrString(vars[p], tween, index, target, targets);
+      copy6[p] = _parseFuncOrString(vars[p], tween, index, target, targets);
     }
-    return copy7;
+    return copy6;
   };
   var _checkPlugin = function _checkPlugin2(property, vars, tween, index, target, targets) {
     var plugin, pt, ptLookup, i;
@@ -2251,21 +2251,21 @@
     }
   };
   var _addAliasesToVars = function _addAliasesToVars2(targets, vars) {
-    var harness = targets[0] ? _getCache(targets[0]).harness : 0, propertyAliases = harness && harness.aliases, copy7, p, i, aliases;
+    var harness = targets[0] ? _getCache(targets[0]).harness : 0, propertyAliases = harness && harness.aliases, copy6, p, i, aliases;
     if (!propertyAliases) {
       return vars;
     }
-    copy7 = _merge({}, vars);
+    copy6 = _merge({}, vars);
     for (p in propertyAliases) {
-      if (p in copy7) {
+      if (p in copy6) {
         aliases = propertyAliases[p].split(",");
         i = aliases.length;
         while (i--) {
-          copy7[aliases[i]] = copy7[p];
+          copy6[aliases[i]] = copy6[p];
         }
       }
     }
-    return copy7;
+    return copy6;
   };
   var _parseKeyframe = function _parseKeyframe2(prop, obj, allProps, easeEach) {
     var ease = obj.ease || easeEach || "power1.inOut", p, a;
@@ -2307,7 +2307,7 @@
         position = null;
       }
       _this3 = _Animation2.call(this, skipInherit ? vars : _inheritDefaults(vars)) || this;
-      var _this3$vars = _this3.vars, duration = _this3$vars.duration, delay = _this3$vars.delay, immediateRender = _this3$vars.immediateRender, stagger = _this3$vars.stagger, overwrite = _this3$vars.overwrite, keyframes = _this3$vars.keyframes, defaults2 = _this3$vars.defaults, scrollTrigger = _this3$vars.scrollTrigger, yoyoEase = _this3$vars.yoyoEase, parent = vars.parent || _globalTimeline, parsedTargets = (_isArray(targets) || _isTypedArray(targets) ? _isNumber(targets[0]) : "length" in vars) ? [targets] : toArray(targets), tl, i, copy7, l, p, curTarget, staggerFunc, staggerVarsToMerge;
+      var _this3$vars = _this3.vars, duration = _this3$vars.duration, delay = _this3$vars.delay, immediateRender = _this3$vars.immediateRender, stagger = _this3$vars.stagger, overwrite = _this3$vars.overwrite, keyframes = _this3$vars.keyframes, defaults2 = _this3$vars.defaults, scrollTrigger = _this3$vars.scrollTrigger, yoyoEase = _this3$vars.yoyoEase, parent = vars.parent || _globalTimeline, parsedTargets = (_isArray(targets) || _isTypedArray(targets) ? _isNumber(targets[0]) : "length" in vars) ? [targets] : toArray(targets), tl, i, copy6, l, p, curTarget, staggerFunc, staggerVarsToMerge;
       _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://gsap.com", !_config.nullTargetWarn) || [];
       _this3._ptLookup = [];
       _this3._overwrite = overwrite;
@@ -2333,19 +2333,19 @@
             }
           }
           for (i = 0; i < l; i++) {
-            copy7 = _copyExcluding(vars, _staggerPropsToSkip);
-            copy7.stagger = 0;
-            yoyoEase && (copy7.yoyoEase = yoyoEase);
-            staggerVarsToMerge && _merge(copy7, staggerVarsToMerge);
+            copy6 = _copyExcluding(vars, _staggerPropsToSkip);
+            copy6.stagger = 0;
+            yoyoEase && (copy6.yoyoEase = yoyoEase);
+            staggerVarsToMerge && _merge(copy6, staggerVarsToMerge);
             curTarget = parsedTargets[i];
-            copy7.duration = +_parseFuncOrString(duration, _assertThisInitialized(_this3), i, curTarget, parsedTargets);
-            copy7.delay = (+_parseFuncOrString(delay, _assertThisInitialized(_this3), i, curTarget, parsedTargets) || 0) - _this3._delay;
-            if (!stagger && l === 1 && copy7.delay) {
-              _this3._delay = delay = copy7.delay;
+            copy6.duration = +_parseFuncOrString(duration, _assertThisInitialized(_this3), i, curTarget, parsedTargets);
+            copy6.delay = (+_parseFuncOrString(delay, _assertThisInitialized(_this3), i, curTarget, parsedTargets) || 0) - _this3._delay;
+            if (!stagger && l === 1 && copy6.delay) {
+              _this3._delay = delay = copy6.delay;
               _this3._start += delay;
-              copy7.delay = 0;
+              copy6.delay = 0;
             }
-            tl.to(curTarget, copy7, staggerFunc ? staggerFunc(i, curTarget, parsedTargets) : 0);
+            tl.to(curTarget, copy6, staggerFunc ? staggerFunc(i, curTarget, parsedTargets) : 0);
             tl._ease = _easeMap.none;
           }
           tl.duration() ? duration = delay = 0 : _this3.timeline = 0;
@@ -2361,12 +2361,12 @@
             });
             tl.duration();
           } else {
-            copy7 = {};
+            copy6 = {};
             for (p in keyframes) {
-              p === "ease" || p === "easeEach" || _parseKeyframe(p, keyframes[p], copy7, keyframes.easeEach);
+              p === "ease" || p === "easeEach" || _parseKeyframe(p, keyframes[p], copy6, keyframes.easeEach);
             }
-            for (p in copy7) {
-              a = copy7[p].sort(function(a2, b) {
+            for (p in copy6) {
+              a = copy6[p].sort(function(a2, b) {
                 return a2.t - b.t;
               });
               time = 0;
@@ -2602,7 +2602,7 @@
     Tween2.fromTo = function fromTo(targets, fromVars, toVars) {
       return _createTweenType(2, arguments);
     };
-    Tween2.set = function set7(targets, vars) {
+    Tween2.set = function set6(targets, vars) {
       vars.duration = 0;
       vars.repeatDelay || (vars.repeat = 0);
       return new Tween2(targets, vars);
@@ -2802,7 +2802,7 @@
       func && this.add(func);
     }
     var _proto5 = Context2.prototype;
-    _proto5.add = function add5(name, func, scope) {
+    _proto5.add = function add4(name, func, scope) {
       if (_isFunction(name)) {
         scope = func;
         func = name;
@@ -2907,7 +2907,7 @@
       _context && _context.data.push(this);
     }
     var _proto6 = MatchMedia2.prototype;
-    _proto6.add = function add5(conditions, func, scope) {
+    _proto6.add = function add4(conditions, func, scope) {
       _isObject(conditions) || (conditions = {
         matches: conditions
       });
@@ -6502,7 +6502,7 @@
     vars.type || (vars.type = "wheel,touch");
     vars.debounce = !!vars.debounce;
     vars.id = vars.id || "normalizer";
-    var _vars2 = vars, normalizeScrollX = _vars2.normalizeScrollX, momentum = _vars2.momentum, allowNestedScroll = _vars2.allowNestedScroll, onRelease = _vars2.onRelease, self, maxY, target = _getTarget(vars.target) || _docEl2, smoother = gsap3.core.globals().ScrollSmoother, smootherInstance = smoother && smoother.get(), content = _fixIOSBug && (vars.content && _getTarget(vars.content) || smootherInstance && vars.content !== false && !smootherInstance.smooth() && smootherInstance.content()), scrollFuncY = _getScrollFunc(target, _vertical), scrollFuncX = _getScrollFunc(target, _horizontal), scale6 = 1, initialScale = (Observer.isTouch && _win4.visualViewport ? _win4.visualViewport.scale * _win4.visualViewport.width : _win4.outerWidth) / _win4.innerWidth, wheelRefresh = 0, resolveMomentumDuration = _isFunction3(momentum) ? function() {
+    var _vars2 = vars, normalizeScrollX = _vars2.normalizeScrollX, momentum = _vars2.momentum, allowNestedScroll = _vars2.allowNestedScroll, onRelease = _vars2.onRelease, self, maxY, target = _getTarget(vars.target) || _docEl2, smoother = gsap3.core.globals().ScrollSmoother, smootherInstance = smoother && smoother.get(), content = _fixIOSBug && (vars.content && _getTarget(vars.content) || smootherInstance && vars.content !== false && !smootherInstance.smooth() && smootherInstance.content()), scrollFuncY = _getScrollFunc(target, _vertical), scrollFuncX = _getScrollFunc(target, _horizontal), scale5 = 1, initialScale = (Observer.isTouch && _win4.visualViewport ? _win4.visualViewport.scale * _win4.visualViewport.width : _win4.outerWidth) / _win4.innerWidth, wheelRefresh = 0, resolveMomentumDuration = _isFunction3(momentum) ? function() {
       return momentum(self);
     } : function() {
       return momentum || 2.8;
@@ -6543,14 +6543,14 @@
       y: "+=0"
     });
     vars.ignoreCheck = function(e) {
-      return _fixIOSBug && e.type === "touchmove" && ignoreDrag(e) || scale6 > 1.05 && e.type !== "touchstart" || self.isGesturing || e.touches && e.touches.length > 1;
+      return _fixIOSBug && e.type === "touchmove" && ignoreDrag(e) || scale5 > 1.05 && e.type !== "touchstart" || self.isGesturing || e.touches && e.touches.length > 1;
     };
     vars.onPress = function() {
       skipTouchMove = false;
-      var prevScale = scale6;
-      scale6 = _round3((_win4.visualViewport && _win4.visualViewport.scale || 1) / initialScale);
+      var prevScale = scale5;
+      scale5 = _round3((_win4.visualViewport && _win4.visualViewport.scale || 1) / initialScale);
       tween.pause();
-      prevScale !== scale6 && _allowNativePanning(target, scale6 > 1.01 ? true : normalizeScrollX ? false : "x");
+      prevScale !== scale5 && _allowNativePanning(target, scale5 > 1.01 ? true : normalizeScrollX ? false : "x");
       startScrollX = scrollFuncX();
       startScrollY = scrollFuncY();
       updateClamps();
@@ -7468,7 +7468,7 @@
      */
     emit(event, ...args) {
       let callbacks = this.events[event] || [];
-      for (let i = 0, length4 = callbacks.length; i < length4; i++) {
+      for (let i = 0, length3 = callbacks.length; i < length3; i++) {
         callbacks[i]?.(...args);
       }
     }
@@ -8556,11 +8556,11 @@
     });
   }
   function clone(object) {
-    const copy7 = {};
+    const copy6 = {};
     for (const key in object) {
-      copy7[key] = [...object[key]];
+      copy6[key] = [...object[key]];
     }
-    return copy7;
+    return copy6;
   }
 
   // node_modules/.pnpm/@unseenco+e@2.4.0/node_modules/@unseenco/e/src/e.js
@@ -9860,7 +9860,7 @@
       const min = this.bounds.min;
       const max = this.bounds.max;
       const center = this.bounds.center;
-      const scale6 = this.bounds.scale;
+      const scale5 = this.bounds.scale;
       min.set(Infinity);
       max.set(-Infinity);
       for (let i = 0, l = array.length; i < l; i += stride) {
@@ -9874,7 +9874,7 @@
         max.y = Math.max(y, max.y);
         max.z = Math.max(z, max.z);
       }
-      scale6.sub(max, min);
+      scale5.sub(max, min);
       center.add(min, max).divide(2);
     }
     computeBoundingSphere(attr) {
@@ -10136,9 +10136,9 @@ ${addLineNumbers(fragment)}`);
     const arrayLen = a.length;
     const valueLen = a[0].length;
     if (valueLen === void 0) return a;
-    const length4 = arrayLen * valueLen;
-    let value = arrayCacheF32[length4];
-    if (!value) arrayCacheF32[length4] = value = new Float32Array(length4);
+    const length3 = arrayLen * valueLen;
+    let value = arrayCacheF32[length3];
+    if (!value) arrayCacheF32[length3] = value = new Float32Array(length3);
     for (let i = 0; i < arrayLen; i++) value.set(a[i], i * valueLen);
     return value;
   }
@@ -10545,8 +10545,8 @@ ${addLineNumbers(fragment)}`);
   }
   function invert(out, a) {
     let a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3];
-    let dot5 = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
-    let invDot = dot5 ? 1 / dot5 : 0;
+    let dot4 = a0 * a0 + a1 * a1 + a2 * a2 + a3 * a3;
+    let invDot = dot4 ? 1 / dot4 : 0;
     out[0] = -a0 * invDot;
     out[1] = -a1 * invDot;
     out[2] = -a2 * invDot;
@@ -11459,12 +11459,12 @@ ${addLineNumbers(fragment)}`);
       invert2(this, m);
       return this;
     }
-    compose(q, pos, scale6) {
-      compose(this, q, pos, scale6);
+    compose(q, pos, scale5) {
+      compose(this, q, pos, scale5);
       return this;
     }
-    decompose(q, pos, scale6) {
-      decompose(this, q, pos, scale6);
+    decompose(q, pos, scale5) {
+      decompose(this, q, pos, scale5);
       return this;
     }
     getRotation(q) {
@@ -11475,8 +11475,8 @@ ${addLineNumbers(fragment)}`);
       getTranslation(pos, this);
       return this;
     }
-    getScaling(scale6) {
-      getScaling(scale6, this);
+    getScaling(scale5) {
+      getScaling(scale5, this);
       return this;
     }
     getMaxScaleOnAxis() {
@@ -11839,8 +11839,8 @@ ${addLineNumbers(fragment)}`);
       const normal = tempVec3b;
       for (let i = 0; i < 6; i++) {
         const plane = this.frustum[i];
-        const distance3 = normal.copy(plane).dot(center) + plane.constant;
-        if (distance3 < -radius) return false;
+        const distance2 = normal.copy(plane).dot(center) + plane.constant;
+        if (distance2 < -radius) return false;
       }
       return true;
     }
@@ -12150,234 +12150,6 @@ ${addLineNumbers(fragment)}`);
     }
   };
 
-  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/math/functions/Vec2Func.js
-  function copy6(out, a) {
-    out[0] = a[0];
-    out[1] = a[1];
-    return out;
-  }
-  function set6(out, x, y) {
-    out[0] = x;
-    out[1] = y;
-    return out;
-  }
-  function add4(out, a, b) {
-    out[0] = a[0] + b[0];
-    out[1] = a[1] + b[1];
-    return out;
-  }
-  function subtract3(out, a, b) {
-    out[0] = a[0] - b[0];
-    out[1] = a[1] - b[1];
-    return out;
-  }
-  function multiply5(out, a, b) {
-    out[0] = a[0] * b[0];
-    out[1] = a[1] * b[1];
-    return out;
-  }
-  function divide2(out, a, b) {
-    out[0] = a[0] / b[0];
-    out[1] = a[1] / b[1];
-    return out;
-  }
-  function scale5(out, a, b) {
-    out[0] = a[0] * b;
-    out[1] = a[1] * b;
-    return out;
-  }
-  function distance2(a, b) {
-    var x = b[0] - a[0], y = b[1] - a[1];
-    return Math.sqrt(x * x + y * y);
-  }
-  function squaredDistance2(a, b) {
-    var x = b[0] - a[0], y = b[1] - a[1];
-    return x * x + y * y;
-  }
-  function length3(a) {
-    var x = a[0], y = a[1];
-    return Math.sqrt(x * x + y * y);
-  }
-  function squaredLength2(a) {
-    var x = a[0], y = a[1];
-    return x * x + y * y;
-  }
-  function negate2(out, a) {
-    out[0] = -a[0];
-    out[1] = -a[1];
-    return out;
-  }
-  function inverse2(out, a) {
-    out[0] = 1 / a[0];
-    out[1] = 1 / a[1];
-    return out;
-  }
-  function normalize6(out, a) {
-    var x = a[0], y = a[1];
-    var len = x * x + y * y;
-    if (len > 0) {
-      len = 1 / Math.sqrt(len);
-    }
-    out[0] = a[0] * len;
-    out[1] = a[1] * len;
-    return out;
-  }
-  function dot4(a, b) {
-    return a[0] * b[0] + a[1] * b[1];
-  }
-  function cross2(a, b) {
-    return a[0] * b[1] - a[1] * b[0];
-  }
-  function lerp4(out, a, b, t) {
-    var ax = a[0], ay = a[1];
-    out[0] = ax + t * (b[0] - ax);
-    out[1] = ay + t * (b[1] - ay);
-    return out;
-  }
-  function smoothLerp2(out, a, b, decay, dt) {
-    const exp = Math.exp(-decay * dt);
-    let ax = a[0];
-    let ay = a[1];
-    out[0] = b[0] + (ax - b[0]) * exp;
-    out[1] = b[1] + (ay - b[1]) * exp;
-    return out;
-  }
-  function transformMat32(out, a, m) {
-    var x = a[0], y = a[1];
-    out[0] = m[0] * x + m[3] * y + m[6];
-    out[1] = m[1] * x + m[4] * y + m[7];
-    return out;
-  }
-  function transformMat42(out, a, m) {
-    let x = a[0];
-    let y = a[1];
-    out[0] = m[0] * x + m[4] * y + m[12];
-    out[1] = m[1] * x + m[5] * y + m[13];
-    return out;
-  }
-  function exactEquals2(a, b) {
-    return a[0] === b[0] && a[1] === b[1];
-  }
-
-  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/math/Vec2.js
-  var Vec2 = class _Vec2 extends Array {
-    constructor(x = 0, y = x) {
-      super(x, y);
-      return this;
-    }
-    get x() {
-      return this[0];
-    }
-    get y() {
-      return this[1];
-    }
-    set x(v) {
-      this[0] = v;
-    }
-    set y(v) {
-      this[1] = v;
-    }
-    set(x, y = x) {
-      if (x.length) return this.copy(x);
-      set6(this, x, y);
-      return this;
-    }
-    copy(v) {
-      copy6(this, v);
-      return this;
-    }
-    add(va, vb) {
-      if (vb) add4(this, va, vb);
-      else add4(this, this, va);
-      return this;
-    }
-    sub(va, vb) {
-      if (vb) subtract3(this, va, vb);
-      else subtract3(this, this, va);
-      return this;
-    }
-    multiply(v) {
-      if (v.length) multiply5(this, this, v);
-      else scale5(this, this, v);
-      return this;
-    }
-    divide(v) {
-      if (v.length) divide2(this, this, v);
-      else scale5(this, this, 1 / v);
-      return this;
-    }
-    inverse(v = this) {
-      inverse2(this, v);
-      return this;
-    }
-    // Can't use 'length' as Array.prototype uses it
-    len() {
-      return length3(this);
-    }
-    distance(v) {
-      if (v) return distance2(this, v);
-      else return length3(this);
-    }
-    squaredLen() {
-      return this.squaredDistance();
-    }
-    squaredDistance(v) {
-      if (v) return squaredDistance2(this, v);
-      else return squaredLength2(this);
-    }
-    negate(v = this) {
-      negate2(this, v);
-      return this;
-    }
-    cross(va, vb) {
-      if (vb) return cross2(va, vb);
-      return cross2(this, va);
-    }
-    scale(v) {
-      scale5(this, this, v);
-      return this;
-    }
-    normalize() {
-      normalize6(this, this);
-      return this;
-    }
-    dot(v) {
-      return dot4(this, v);
-    }
-    equals(v) {
-      return exactEquals2(this, v);
-    }
-    applyMatrix3(mat3) {
-      transformMat32(this, this, mat3);
-      return this;
-    }
-    applyMatrix4(mat4) {
-      transformMat42(this, this, mat4);
-      return this;
-    }
-    lerp(v, a) {
-      lerp4(this, this, v, a);
-      return this;
-    }
-    smoothLerp(v, decay, dt) {
-      smoothLerp2(this, this, v, decay, dt);
-      return this;
-    }
-    clone() {
-      return new _Vec2(this[0], this[1]);
-    }
-    fromArray(a, o = 0) {
-      this[0] = a[o];
-      this[1] = a[o + 1];
-      return this;
-    }
-    toArray(a = [], o = 0) {
-      a[o] = this[0];
-      a[o + 1] = this[1];
-      return a;
-    }
-  };
-
   // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Plane.js
   var Plane = class _Plane extends Geometry {
     constructor(gl, { width = 1, height = 1, widthSegments = 1, heightSegments = 1, attributes = {} } = {}) {
@@ -12430,293 +12202,6 @@ ${addLineNumbers(fragment)}`);
       }
     }
   };
-
-  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Orbit.js
-  var STATE = { NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, DOLLY_PAN: 3 };
-  var tempVec33 = /* @__PURE__ */ new Vec3();
-  var tempVec2a = /* @__PURE__ */ new Vec2();
-  var tempVec2b = /* @__PURE__ */ new Vec2();
-  function Orbit(object, {
-    element = document,
-    enabled = true,
-    target = new Vec3(),
-    ease = 0.25,
-    inertia = 0.85,
-    enableRotate = true,
-    rotateSpeed = 0.1,
-    autoRotate = false,
-    autoRotateSpeed = 1,
-    enableZoom = true,
-    zoomSpeed = 1,
-    zoomStyle = "dolly",
-    enablePan = true,
-    panSpeed = 0.1,
-    minPolarAngle = 0,
-    maxPolarAngle = Math.PI,
-    minAzimuthAngle = -Infinity,
-    maxAzimuthAngle = Infinity,
-    minDistance = 0,
-    maxDistance = Infinity
-  } = {}) {
-    this.enabled = enabled;
-    this.target = target;
-    this.zoomStyle = zoomStyle;
-    ease = ease || 1;
-    inertia = inertia || 0;
-    this.minDistance = minDistance;
-    this.maxDistance = maxDistance;
-    const sphericalDelta = { radius: 1, phi: 0, theta: 0 };
-    const sphericalTarget = { radius: 1, phi: 0, theta: 0 };
-    const spherical = { radius: 1, phi: 0, theta: 0 };
-    const panDelta = new Vec3();
-    const offset = new Vec3();
-    offset.copy(object.position).sub(this.target);
-    spherical.radius = sphericalTarget.radius = offset.distance();
-    spherical.theta = sphericalTarget.theta = Math.atan2(offset.x, offset.z);
-    spherical.phi = sphericalTarget.phi = Math.acos(Math.min(Math.max(offset.y / sphericalTarget.radius, -1), 1));
-    this.offset = offset;
-    this.update = () => {
-      if (autoRotate) {
-        handleAutoRotate();
-      }
-      sphericalTarget.radius *= sphericalDelta.radius;
-      sphericalTarget.theta += sphericalDelta.theta;
-      sphericalTarget.phi += sphericalDelta.phi;
-      sphericalTarget.theta = Math.max(minAzimuthAngle, Math.min(maxAzimuthAngle, sphericalTarget.theta));
-      sphericalTarget.phi = Math.max(minPolarAngle, Math.min(maxPolarAngle, sphericalTarget.phi));
-      sphericalTarget.radius = Math.max(this.minDistance, Math.min(this.maxDistance, sphericalTarget.radius));
-      spherical.phi += (sphericalTarget.phi - spherical.phi) * ease;
-      spherical.theta += (sphericalTarget.theta - spherical.theta) * ease;
-      spherical.radius += (sphericalTarget.radius - spherical.radius) * ease;
-      this.target.add(panDelta);
-      let sinPhiRadius = spherical.radius * Math.sin(Math.max(1e-6, spherical.phi));
-      offset.x = sinPhiRadius * Math.sin(spherical.theta);
-      offset.y = spherical.radius * Math.cos(spherical.phi);
-      offset.z = sinPhiRadius * Math.cos(spherical.theta);
-      object.position.copy(this.target).add(offset);
-      object.lookAt(this.target);
-      sphericalDelta.theta *= inertia;
-      sphericalDelta.phi *= inertia;
-      panDelta.multiply(inertia);
-      sphericalDelta.radius = 1;
-    };
-    this.forcePosition = () => {
-      offset.copy(object.position).sub(this.target);
-      spherical.radius = sphericalTarget.radius = offset.distance();
-      spherical.theta = sphericalTarget.theta = Math.atan2(offset.x, offset.z);
-      spherical.phi = sphericalTarget.phi = Math.acos(Math.min(Math.max(offset.y / sphericalTarget.radius, -1), 1));
-      object.lookAt(this.target);
-    };
-    const rotateStart = new Vec2();
-    const panStart = new Vec2();
-    const dollyStart = new Vec2();
-    let state = STATE.NONE;
-    this.mouseButtons = { ORBIT: 0, ZOOM: 1, PAN: 2 };
-    function getZoomScale() {
-      return Math.pow(0.95, zoomSpeed);
-    }
-    function panLeft(distance3, m) {
-      tempVec33.set(m[0], m[1], m[2]);
-      tempVec33.multiply(-distance3);
-      panDelta.add(tempVec33);
-    }
-    function panUp(distance3, m) {
-      tempVec33.set(m[4], m[5], m[6]);
-      tempVec33.multiply(distance3);
-      panDelta.add(tempVec33);
-    }
-    const pan = (deltaX, deltaY) => {
-      let el = element === document ? document.body : element;
-      tempVec33.copy(object.position).sub(this.target);
-      let targetDistance = tempVec33.distance();
-      targetDistance *= Math.tan((object.fov || 45) / 2 * Math.PI / 180);
-      panLeft(2 * deltaX * targetDistance / el.clientHeight, object.matrix);
-      panUp(2 * deltaY * targetDistance / el.clientHeight, object.matrix);
-    };
-    const dolly = (dollyScale) => {
-      if (this.zoomStyle === "dolly") sphericalDelta.radius /= dollyScale;
-      else {
-        object.fov /= dollyScale;
-        if (object.type === "orthographic") object.orthographic();
-        else object.perspective();
-      }
-    };
-    function handleAutoRotate() {
-      const angle2 = 2 * Math.PI / 60 / 60 * autoRotateSpeed;
-      sphericalDelta.theta -= angle2;
-    }
-    function handleMoveRotate(x, y) {
-      tempVec2a.set(x, y);
-      tempVec2b.sub(tempVec2a, rotateStart).multiply(rotateSpeed);
-      let el = element === document ? document.body : element;
-      sphericalDelta.theta -= 2 * Math.PI * tempVec2b.x / el.clientHeight;
-      sphericalDelta.phi -= 2 * Math.PI * tempVec2b.y / el.clientHeight;
-      rotateStart.copy(tempVec2a);
-    }
-    function handleMouseMoveDolly(e) {
-      tempVec2a.set(e.clientX, e.clientY);
-      tempVec2b.sub(tempVec2a, dollyStart);
-      if (tempVec2b.y > 0) {
-        dolly(getZoomScale());
-      } else if (tempVec2b.y < 0) {
-        dolly(1 / getZoomScale());
-      }
-      dollyStart.copy(tempVec2a);
-    }
-    function handleMovePan(x, y) {
-      tempVec2a.set(x, y);
-      tempVec2b.sub(tempVec2a, panStart).multiply(panSpeed);
-      pan(tempVec2b.x, tempVec2b.y);
-      panStart.copy(tempVec2a);
-    }
-    function handleTouchStartDollyPan(e) {
-      if (enableZoom) {
-        let dx = e.touches[0].pageX - e.touches[1].pageX;
-        let dy = e.touches[0].pageY - e.touches[1].pageY;
-        let distance3 = Math.sqrt(dx * dx + dy * dy);
-        dollyStart.set(0, distance3);
-      }
-      if (enablePan) {
-        let x = 0.5 * (e.touches[0].pageX + e.touches[1].pageX);
-        let y = 0.5 * (e.touches[0].pageY + e.touches[1].pageY);
-        panStart.set(x, y);
-      }
-    }
-    function handleTouchMoveDollyPan(e) {
-      if (enableZoom) {
-        let dx = e.touches[0].pageX - e.touches[1].pageX;
-        let dy = e.touches[0].pageY - e.touches[1].pageY;
-        let distance3 = Math.sqrt(dx * dx + dy * dy);
-        tempVec2a.set(0, distance3);
-        tempVec2b.set(0, Math.pow(tempVec2a.y / dollyStart.y, zoomSpeed));
-        dolly(tempVec2b.y);
-        dollyStart.copy(tempVec2a);
-      }
-      if (enablePan) {
-        let x = 0.5 * (e.touches[0].pageX + e.touches[1].pageX);
-        let y = 0.5 * (e.touches[0].pageY + e.touches[1].pageY);
-        handleMovePan(x, y);
-      }
-    }
-    const onMouseDown = (e) => {
-      if (!this.enabled) return;
-      switch (e.button) {
-        case this.mouseButtons.ORBIT:
-          if (enableRotate === false) return;
-          rotateStart.set(e.clientX, e.clientY);
-          state = STATE.ROTATE;
-          break;
-        case this.mouseButtons.ZOOM:
-          if (enableZoom === false) return;
-          dollyStart.set(e.clientX, e.clientY);
-          state = STATE.DOLLY;
-          break;
-        case this.mouseButtons.PAN:
-          if (enablePan === false) return;
-          panStart.set(e.clientX, e.clientY);
-          state = STATE.PAN;
-          break;
-      }
-      if (state !== STATE.NONE) {
-        window.addEventListener("mousemove", onMouseMove, false);
-        window.addEventListener("mouseup", onMouseUp, false);
-      }
-    };
-    const onMouseMove = (e) => {
-      if (!this.enabled) return;
-      switch (state) {
-        case STATE.ROTATE:
-          if (enableRotate === false) return;
-          handleMoveRotate(e.clientX, e.clientY);
-          break;
-        case STATE.DOLLY:
-          if (enableZoom === false) return;
-          handleMouseMoveDolly(e);
-          break;
-        case STATE.PAN:
-          if (enablePan === false) return;
-          handleMovePan(e.clientX, e.clientY);
-          break;
-      }
-    };
-    const onMouseUp = () => {
-      window.removeEventListener("mousemove", onMouseMove, false);
-      window.removeEventListener("mouseup", onMouseUp, false);
-      state = STATE.NONE;
-    };
-    const onMouseWheel = (e) => {
-      if (!this.enabled || !enableZoom || state !== STATE.NONE && state !== STATE.ROTATE) return;
-      e.stopPropagation();
-      e.preventDefault();
-      if (e.deltaY < 0) {
-        dolly(1 / getZoomScale());
-      } else if (e.deltaY > 0) {
-        dolly(getZoomScale());
-      }
-    };
-    const onTouchStart = (e) => {
-      if (!this.enabled) return;
-      e.preventDefault();
-      switch (e.touches.length) {
-        case 1:
-          if (enableRotate === false) return;
-          rotateStart.set(e.touches[0].pageX, e.touches[0].pageY);
-          state = STATE.ROTATE;
-          break;
-        case 2:
-          if (enableZoom === false && enablePan === false) return;
-          handleTouchStartDollyPan(e);
-          state = STATE.DOLLY_PAN;
-          break;
-        default:
-          state = STATE.NONE;
-      }
-    };
-    const onTouchMove = (e) => {
-      if (!this.enabled) return;
-      e.preventDefault();
-      e.stopPropagation();
-      switch (e.touches.length) {
-        case 1:
-          if (enableRotate === false) return;
-          handleMoveRotate(e.touches[0].pageX, e.touches[0].pageY);
-          break;
-        case 2:
-          if (enableZoom === false && enablePan === false) return;
-          handleTouchMoveDollyPan(e);
-          break;
-        default:
-          state = STATE.NONE;
-      }
-    };
-    const onTouchEnd = () => {
-      if (!this.enabled) return;
-      state = STATE.NONE;
-    };
-    const onContextMenu = (e) => {
-      if (!this.enabled) return;
-      e.preventDefault();
-    };
-    function addHandlers() {
-      element.addEventListener("contextmenu", onContextMenu, false);
-      element.addEventListener("mousedown", onMouseDown, false);
-      element.addEventListener("wheel", onMouseWheel, { passive: false });
-      element.addEventListener("touchstart", onTouchStart, { passive: false });
-      element.addEventListener("touchend", onTouchEnd, false);
-      element.addEventListener("touchmove", onTouchMove, { passive: false });
-    }
-    this.remove = function() {
-      element.removeEventListener("contextmenu", onContextMenu);
-      element.removeEventListener("mousedown", onMouseDown);
-      element.removeEventListener("wheel", onMouseWheel);
-      element.removeEventListener("touchstart", onTouchStart);
-      element.removeEventListener("touchend", onTouchEnd);
-      element.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-    addHandlers();
-  }
 
   // src/gl/camera.js
   var Cam = class extends Camera {
@@ -12830,9 +12315,6 @@ ${addLineNumbers(fragment)}`);
       this.scene = new Scene(this.gl);
       this.time = 0;
       handleResize(this.vp.container, this.resize.bind(this));
-      this.controls = new Orbit(this.camera, {
-        target: new Vec3(0, 0, 0)
-      });
     }
     static initEvents() {
     }
@@ -12855,9 +12337,9 @@ ${addLineNumbers(fragment)}`);
       this.scene.resize(this.vp);
     }
     /** -- Lifecycle */
-    async transitionIn() {
+    static async transitionIn() {
     }
-    async transitionOut() {
+    static async transitionOut() {
     }
   };
   function handleResize(container, cb) {
@@ -12886,7 +12368,7 @@ ${addLineNumbers(fragment)}`);
     async transitionIn(page) {
       await Promise.allSettled([
         App.dom.transitionIn(page),
-        Gl.gl.transitionIn(page)
+        Gl.transitionIn(page)
       ]);
     }
   };

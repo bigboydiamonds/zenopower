@@ -43,9 +43,9 @@ export class Gl {
 
     handleResize(this.vp.container, this.resize.bind(this));
 
-    this.controls = new Orbit(this.camera, {
-      target: new Vec3(0, 0, 0),
-    });
+    // this.controls = new Orbit(this.camera, {
+    //   target: new Vec3(0, 0, 0),
+    // });
   }
 
   static initEvents() {}
@@ -80,9 +80,9 @@ export class Gl {
 
   /** -- Lifecycle */
 
-  async transitionIn() {}
+  static async transitionIn() {}
 
-  async transitionOut() {}
+  static async transitionOut() {}
 }
 
 /** Utils */

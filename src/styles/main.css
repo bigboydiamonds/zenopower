@@ -9,6 +9,11 @@
   user-select: none;
 }
 
+html {
+  /* font-size: 24px !important; */
+  font-size: calc(((24 / 1920) * 100) * 1vw);
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,7 +35,14 @@ body {
 @media only screen and (max-width: 767px) {
   /* mobile */
   :root {
-    --text-h1: 3.2rem;
+    /* --text-h1: 3.2rem; */
+    --gx: 1rem;
+    --text--h1: 2.3rem;
+    --text--h2: 2.3rem;
+  }
+
+  html {
+    font-size: 16px;
   }
 
   [data-hide="mobile"] {
