@@ -1,0 +1,27 @@
+{
+  "name": "webflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=dev node esbuild.config.js",
+    "build": "NODE_ENV=production node esbuild.config.js",
+    "flow": "NODE_ENV=flow node esbuild.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "esbuild-plugin-alias-path": "^2.0.2",
+    "esbuild-plugin-glsl": "^1.2.2"
+  },
+  "dependencies": {
+    "@unseenco/taxi": "^1.7.0",
+    "gsap": "npm:@gsap/shockingly@^3.12.5",
+    "lenis": "^1.1.18",
+    "lil-gui": "^0.20.0",
+    "ogl": "^1.0.9"
+  }
+}
