@@ -12,6 +12,10 @@
 
 /* font-size: calc(((24 / 1920) * 100) * 1vw); */
 
+html {
+  font-size: clamp(16px, calc(((24 / 1920) * 100) * 1vw), 24px);
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,9 +43,9 @@ body {
     --text--h2: 2.3rem;
   }
 
-  html {
+  /* html {
     font-size: 16px;
-  }
+  } */
 
   [data-hide="mobile"] {
     display: none;
