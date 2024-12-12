@@ -31,9 +31,6 @@ html.lenis body {
   -ms-user-select: none;
   user-select: none;
 }
-html {
-  font-size: calc(((24 / 1920) * 100) * 1vw);
-}
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

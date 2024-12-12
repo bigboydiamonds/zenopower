@@ -9,10 +9,10 @@
   user-select: none;
 }
 
-html {
-  /* font-size: 24px !important; */
-  font-size: calc(((24 / 1920) * 100) * 1vw);
-}
+/* html { */
+/* font-size: 24px !important; */
+/* font-size: calc(((24 / 1920) * 100) * 1vw); */
+/* } */
 
 body {
   -webkit-font-smoothing: antialiased;
