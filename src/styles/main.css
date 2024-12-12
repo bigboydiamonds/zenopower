@@ -1,5 +1,6 @@
 @import "variables.css";
 @import "lenis.css";
+@import "menu.css";
 
 * {
   box-sizing: border-box;
@@ -9,10 +10,7 @@
   user-select: none;
 }
 
-/* html { */
-/* font-size: 24px !important; */
 /* font-size: calc(((24 / 1920) * 100) * 1vw); */
-/* } */
 
 body {
   -webkit-font-smoothing: antialiased;
