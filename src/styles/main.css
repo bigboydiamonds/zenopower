@@ -2,9 +2,11 @@
 @import "lenis.css";
 @import "menu.css";
 
+@import "corner-border.css";
+@import "lines.css";
+
 * {
   box-sizing: border-box;
-
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -13,7 +15,8 @@
 /* font-size: calc(((24 / 1920) * 100) * 1vw); */
 
 html {
-  font-size: clamp(16px, calc(((24 / 1920) * 100) * 1vw), 24px);
+  font-size: clamp(16px, calc(((24 / 1680) * 100) * 1vw), 24px);
+  /* font-size: 16px; */
 }
 
 body {
@@ -25,6 +28,14 @@ body {
 :root {
   overscroll-behavior: none;
   overflow-x: hidden;
+}
+
+/* gradients */
+[data-css="ho-tx1"] {
+  background: linear-gradient(90deg, #65baac, #94eadc);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 @media only screen and (min-width: 767px) {

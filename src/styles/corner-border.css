@@ -1,0 +1,51 @@
+[data-css="angles"] {
+  --size: 4px;
+  --color: #65baac;
+  position: relative;
+}
+
+[data-css="angles"]::before,
+[data-css="angles"]::after {
+  content: "";
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border: 1px solid var(--color);
+}
+
+[data-css="angles"]::before {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+[data-css="angles"]::after {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+
+[data-css="angles"] span::before,
+[data-css="angles"] span::after {
+  content: "";
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border: 1px solid var(--color);
+}
+
+[data-css="angles"] span::before {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+}
+
+[data-css="angles"] span::after {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+}
