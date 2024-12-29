@@ -1,21 +1,48 @@
-# Webflow Dev Boilerplate
+# Zeno Power
 
-Not sure it's needed should just use VITE
+## Todo
 
-```html
-<!--Double script for localhost vs cdn-->
-<script>
-  function onErrorLoader() {
-    const script = document.createElement("script");
-    script.src = "...";
-    script.defer = "true";
-    document.head.appendChild(script);
-  }
-</script>
+### Global
 
-<script
-  defer
-  src="http://localhost:8000/app.js"
-  onerror="onErrorLoader()"
-></script>
-```
+- [ ] (MOBILE) Menu Styling
+
+- [ ] (WEBGL) Gradient
+  - [ ] page dependand
+  - [ ] animation
+  - [ ] mouse animation
+  - [ ] fade in homepage
+- [ ] (WEBGL) 3d Model
+  - [ ] page dependant
+  - [ ] animation
+  - [ ] material
+- [ ] (WEBGL) Stars
+  - [ ] particle system
+
+### Animation
+
+- [ ] hover states
+  - [ ] nav
+
+### Home
+
+- [ ] CSS consolidation pass
+- [ ] images on 2-3 sections
+- [ ] Article slider
+  - [ ] Mobile slider
+
+### Careers
+
+- [ ] CSS consolidation pass
+- [ ] Breezy Integration
+  - [ ] Item Styling
+
+### News
+
+- [ ] CSS consolidation pass
+- [x] Article list system
+  - [ ] Article list functionality
+
+### News Article
+
+- [ ] HTML & CSS
+- [ ] CSS consolidation pass
