@@ -1,0 +1,4 @@
+:root {
+  --duration: 0.3s;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
