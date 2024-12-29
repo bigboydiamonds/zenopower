@@ -117,9 +117,14 @@ html.lenis body {
   left: 0;
   width: 100vw;
   height: 1px;
-  background: red;
+  background: var(--col--zeno-green);
 }
 .s {
+  .line-sep:before {
+    margin-left: calc(var(--sgx) * -1);
+  }
+}
+nav {
   .line-sep:before {
     margin-left: calc(var(--sgx) * -1);
   }
