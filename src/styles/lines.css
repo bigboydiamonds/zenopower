@@ -1,16 +1,18 @@
-.line-sep {
-  position: relative;
-}
+.s {
+  .line-sep {
+    position: relative;
+  }
 
-.line-sep:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 1px;
-  /* background: var(--col--yankeeblue); */
-  background: red;
-  margin-left: calc(var(--sgx) * -1);
-  /* opacity: 0.1; */
+  .line-sep:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 1px;
+    /* background: var(--col--yankeeblue); */
+    background: red;
+    margin-left: calc(var(--sgx) * -1);
+    /* opacity: 0.1; */
+  }
 }
