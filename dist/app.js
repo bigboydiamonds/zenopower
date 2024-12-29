@@ -8208,8 +8208,7 @@
         immediate: false
       });
     }
-    resize() {
-    }
+    // resize() {}
     render(t) {
       if (!this.isActive) return;
       this.raf(t);

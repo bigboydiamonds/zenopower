@@ -1,15 +1,55 @@
 /* src/styles/animation.css */
-:root {
-  --duration: 0.3s;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+[data-css=underline] {
+  position: relative;
+}
+[data-css=underline]:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--col--zeno-gray);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration) var(--ease-out);
+}
+[data-css=underline]:hover:after {
+  transform: scaleX(1);
+}
+[data-css=block-bg] {
+  position: relative;
+}
+[data-css=block-bg] > * {
+  position: relative;
+  z-index: 1;
+}
+[data-css=block-bg]:before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: black;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform var(--duration) var(--ease-out);
+}
+[data-css=block-bg]:hover > * {
+  opacity: 0.8;
+}
+[data-css=block-bg]:hover:before {
+  transform: scaleX(1);
 }
 
 /* src/styles/variables.css */
 :root {
-  --duration: 1.2s;
+  --duration: 0.8s;
   --easeOut: cubic-bezier(0.77, 0, 0.175, 1);
   --easeOutBack: cubic-bezier(0.175, 0, 0.77, 1);
   --easeOutQuint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* src/styles/lenis.css */
@@ -173,6 +213,7 @@ body {
 @media only screen and (max-width: 767px) {
   :root {
     --gx: 1rem;
+    --sgx: 0.5rem;
     --text--h1: 2.3rem;
     --text--h2: 2.3rem;
   }
@@ -218,6 +259,36 @@ body {
     [data-news=arrow] {
       transform: rotate(45deg);
     }
+  }
+}
+[data-tab=w] {
+  transition: background-color var(--duration) var(--ease-out);
+  [data-tab=content] {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration) var(--ease-out);
+  }
+  input {
+    opacity: 0;
+    cursor: pointer;
+    pointer-events: auto !important;
+  }
+  [data-tab=content] > * {
+    overflow: hidden;
+  }
+  [data-tab=cb] {
+  }
+  [data-tab=icon] {
+    transition: transform var(--duration) var(--ease-out);
+  }
+}
+[data-tab=w]:has(input:checked) {
+  background-color: var(--col--white-30);
+  [data-tab=content] {
+    grid-template-rows: 1fr;
+  }
+  [data-tab=icon] {
+    transform: rotate(180deg);
   }
 }
 /*# sourceMappingURL=main.css.map */
