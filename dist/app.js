@@ -4846,12 +4846,12 @@
   var _lastScrollTime = 0;
   var _enabled = 0;
   var _parseClamp = function _parseClamp2(value, type, self) {
-    var clamp4 = _isString3(value) && (value.substr(0, 6) === "clamp(" || value.indexOf("max") > -1);
-    self["_" + type + "Clamp"] = clamp4;
-    return clamp4 ? value.substr(6, value.length - 7) : value;
+    var clamp5 = _isString3(value) && (value.substr(0, 6) === "clamp(" || value.indexOf("max") > -1);
+    self["_" + type + "Clamp"] = clamp5;
+    return clamp5 ? value.substr(6, value.length - 7) : value;
   };
-  var _keepClamp = function _keepClamp2(value, clamp4) {
-    return clamp4 && (!_isString3(value) || value.substr(0, 6) !== "clamp(") ? "clamp(" + value + ")" : value;
+  var _keepClamp = function _keepClamp2(value, clamp5) {
+    return clamp5 && (!_isString3(value) || value.substr(0, 6) !== "clamp(") ? "clamp(" + value + ")" : value;
   };
   var _rafBugFix = function _rafBugFix2() {
     return _enabled && requestAnimationFrame(_rafBugFix2);
@@ -8360,13 +8360,14 @@
       this.isActive = value;
     }
     callbackRaf() {
-      this.callbacks.forEach((cb) => cb());
+      this.callbacks.forEach((cb) => cb.callback(this));
     }
-    subscribe(callback) {
-      this.callbacks.push(callback);
+    subscribe(callback, id = Symbol()) {
+      this.callbacks.push({ callback, id });
+      return this.unsubscribe.bind(this, id);
     }
-    unsubscribe(callback) {
-      this.callbacks = this.callbacks.filter((cb) => cb !== callback);
+    unsubscribe(id) {
+      this.callbacks = this.callbacks.filter((cb) => cb.id !== id);
     }
     unsunbscribeAll() {
       this.callbacks = [];
@@ -8757,17 +8758,17 @@
     delegate(event, delegate, callback) {
       const events = event.split(" ");
       for (let i = 0; i < events.length; i++) {
-        let map = eventTypes[events[i]];
-        if (map === void 0) {
-          map = new SelectorSet();
-          eventTypes[events[i]] = map;
+        let map2 = eventTypes[events[i]];
+        if (map2 === void 0) {
+          map2 = new SelectorSet();
+          eventTypes[events[i]] = map2;
           if (nonBubblers.indexOf(events[i]) !== -1) {
             document.addEventListener(events[i], handleDelegation, true);
           } else {
             document.addEventListener(events[i], handleDelegation);
           }
         }
-        map.add(delegate, callback);
+        map2.add(delegate, callback);
       }
     }
     /**
@@ -8790,10 +8791,10 @@
           listeners[events[i]].delete(el);
           continue;
         }
-        const map = eventTypes[events[i]];
-        if (map !== void 0) {
-          map.remove(el, callback);
-          if (map.size === 0) {
+        const map2 = eventTypes[events[i]];
+        if (map2 !== void 0) {
+          map2.remove(el, callback);
+          if (map2.size === 0) {
             delete eventTypes[events[i]];
             if (nonBubblers.indexOf(events[i]) !== -1) {
               document.removeEventListener(events[i], handleDelegation, true);
@@ -12323,12 +12324,111 @@ ${addLineNumbers(fragment)}`);
   var vertex_default = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec2 uv;\nattribute vec2 position;\nvarying vec2 v_uv;\n\nvoid main() {\n  vec2 pos = position;\n\n  gl_Position = vec4(pos, 0, 1);\n  v_uv = uv;\n}\n";
 
   // src/gl/screen/fragment.frag
-  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\n\nvarying vec2 v_uv;\n\nvoid main() {\n    float ns = simplex3d(vec3(v_uv * .5, u_time));\n\n    vec3 color = mix(u_color_dark1, u_color_dark2, ns);\n\n\n    // gl_FragColor.rgb = vec3(v_uv, 1.);\n    gl_FragColor.rgb = vec3(ns, ns, ns);\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform float u_a_dark;\n\nvarying vec2 v_uv;\n\nvoid main() {\n    float ns = simplex3d(vec3(v_uv * .5, u_time));\n\n    vec3 col1 = mix(u_color_light1,u_color_dark1,  u_a_dark);\n    vec3 col2 = mix(u_color_light1, u_color_dark2, u_a_dark);\n\n    vec3 color = mix(col1, col2, ns);\n\n    color = mix(u_color_light1,color, u_a_dark);\n\n\n    // gl_FragColor.rgb = vec3(v_uv, 1.);\n    gl_FragColor.rgb = vec3(ns, ns, ns);\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+
+  // src/util/clientRect.js
+  var clientRect = (element) => {
+    const bounds = element.getBoundingClientRect();
+    const scroll = App.scroll.y;
+    return {
+      // screen
+      top: bounds.top + scroll,
+      bottom: bounds.bottom + scroll,
+      width: bounds.width,
+      height: bounds.height,
+      left: bounds.left,
+      right: bounds.right,
+      wh: window.innerHeight,
+      ww: window.innerWidth,
+      offset: bounds.top + scroll
+      // centery: bounds.top + scroll + bounds.height / 2, // check if correct
+      // centerx: bounds.left + bounds.width / 2, // check if correct
+    };
+  };
+
+  // src/util/math.js
+  function map(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+  }
+  function clamp4(min, max, num) {
+    return Math.min(Math.max(num, min), max);
+  }
+
+  // src/util/track.js
+  var Track = class extends Observe {
+    constructor({ element, config: config3, cb, addClass }) {
+      super({ element, config: config3, cb, addClass });
+      this.element = element;
+      this.config = {
+        bounds: [0, 1],
+        top: "bottom",
+        bottom: "top",
+        ...config3
+      };
+      this.value = 0;
+      this.resize();
+      this.scrollUnsub = App.scroll.subscribe(this.#render.bind(this));
+    }
+    resize() {
+      this.bounds = computeBounds(this.element, this.config);
+    }
+    #render() {
+      this.value = clamp4(
+        0,
+        1,
+        map(
+          window.sscroll.y,
+          // value
+          this.bounds.top,
+          // low1
+          this.bounds.bottom,
+          // high1
+          this.config.bounds[0],
+          this.config.bounds[1]
+          // low2, high2
+        )
+      );
+      if (this.render) this.render(this.value);
+    }
+    destroy() {
+      this.stop();
+      this.in.disconnect();
+      this.out.disconnect();
+      this.scrollUnsub();
+    }
+  };
+  function computeBounds(el, config3) {
+    const bounds = clientRect(el);
+    switch (config3.top) {
+      case "top":
+        bounds.top = bounds.top;
+        break;
+      case "center":
+        bounds.top = bounds.top - bounds.wh / 2;
+        break;
+      case "bottom":
+        bounds.top = bounds.top - bounds.wh;
+        break;
+    }
+    switch (config3.bottom) {
+      case "top":
+        bounds.bottom = bounds.bottom;
+        break;
+      case "center":
+        bounds.bottom = bounds.bottom - bounds.wh / 2;
+        break;
+      case "bottom":
+        bounds.bottom = bounds.bottom - bounds.wh;
+        break;
+    }
+    return { ...bounds };
+  }
 
   // src/gl/screen/index.js
   var GRADIENT = {
     dark1: 857371,
-    dark2: 7447472
+    dark2: 7447472,
+    light1: 14017517
   };
   var Screen = class extends Mesh {
     a = {
@@ -12337,25 +12437,34 @@ ${addLineNumbers(fragment)}`);
     constructor(gl) {
       super(gl, { geometry: new Triangle(gl), program: new Program2(gl) });
       hey_default.on("PAGE", (page) => this.pageChange(page));
+      this.pageChange(hey_default.PAGE);
     }
     resize() {
+      this.track?.resize();
     }
     render(t) {
       this.program.time = t * 0.2;
-      this.program.uniforms.u_a_dark.value = this.a.dark;
+      this.program.uniforms.u_a_dark.value = this.a.dark - this.track?.value || 0;
     }
     /* lifecycle */
     pageChange(page) {
-      console.log("BG:pageChange", page);
       gsap_default.to(this.a, {
         dark: page === "home" ? 1 : 0,
         duration: ANIMATION.page.duration,
         ease: ANIMATION.page.ease
       });
       const track = document.querySelector("[data-track='gradient']");
-      console.log("track", track);
       if (track) {
-        console.log("found track");
+        this.track = new Track({
+          element: track,
+          config: {
+            bottom: "bottom"
+          }
+        });
+      } else {
+        if (this.track) {
+          this.track.destroy();
+        }
       }
     }
   };
@@ -12370,6 +12479,7 @@ ${addLineNumbers(fragment)}`);
           u_time: { value: 0 },
           u_color_dark1: { value: hexToVec3(GRADIENT.dark1) },
           u_color_dark2: { value: hexToVec3(GRADIENT.dark2) },
+          u_color_light1: { value: hexToVec3(GRADIENT.light1) },
           u_a_dark: { value: 0.5 }
         }
       });
@@ -12410,6 +12520,7 @@ ${addLineNumbers(fragment)}`);
       if (this.bg) this.bg.render(t);
     }
     resize(vp) {
+      if (this.bg) this.bg.resize(vp);
     }
   };
 

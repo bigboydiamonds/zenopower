@@ -78,15 +78,17 @@ export class Scroll extends Lenis {
 
   callbackRaf() {
     // call this in scroll method
-    this.callbacks.forEach((cb) => cb());
+    this.callbacks.forEach((cb) => cb.callback(this));
   }
 
-  subscribe(callback) {
-    this.callbacks.push(callback);
+  subscribe(callback, id = Symbol()) {
+    this.callbacks.push({ callback, id });
+
+    return this.unsubscribe.bind(this, id);
   }
 
-  unsubscribe(callback) {
-    this.callbacks = this.callbacks.filter((cb) => cb !== callback);
+  unsubscribe(id) {
+    this.callbacks = this.callbacks.filter((cb) => cb.id !== id);
   }
 
   unsunbscribeAll() {

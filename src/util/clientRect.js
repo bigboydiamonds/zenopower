@@ -1,8 +1,9 @@
+import { App } from "../app";
+
 export const clientRect = (element) => {
   const bounds = element.getBoundingClientRect();
 
-  let scroll = 0;
-  scroll = window.app?.scroll?.y || window.pageYOffset;
+  const scroll = App.scroll.y;
 
   return {
     // screen

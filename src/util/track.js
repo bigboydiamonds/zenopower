@@ -29,14 +29,14 @@ export class Track extends Observe {
     this.value = 0;
     this.resize();
 
-    App.scroll.subscribe(this.render.bind(this));
+    this.scrollUnsub = App.scroll.subscribe(this.#render.bind(this));
   }
 
   resize() {
     this.bounds = computeBounds(this.element, this.config);
   }
 
-  render() {
+  #render() {
     this.value = clamp(
       0,
       1,
@@ -49,10 +49,16 @@ export class Track extends Observe {
       )
     );
 
-    this.afterRender();
+    if (this.render) this.render(this.value);
   }
 
-  afterRender() {}
+  destroy() {
+    this.stop();
+    this.in.disconnect();
+    this.out.disconnect();
+
+    this.scrollUnsub();
+  }
 }
 
 // ---------

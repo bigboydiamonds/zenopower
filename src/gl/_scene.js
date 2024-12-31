@@ -46,6 +46,6 @@ export class Scene extends Transform {
   }
 
   resize(vp) {
-    // if (this.quad) this.quad.resize(vp);
+    if (this.bg) this.bg.resize(vp);
   }
 }
