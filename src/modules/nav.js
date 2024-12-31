@@ -11,7 +11,6 @@ export class Nav {
   }
 
   onLoad(state) {
-    console.log(state);
     switch (state) {
       //   case "full":
       // this.onLoadFull();

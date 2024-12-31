@@ -7380,7 +7380,6 @@
       this.handleColor(hey_default.PAGE);
     }
     onLoad(state) {
-      console.log(state);
       switch (state) {
         //   case "full":
         // this.onLoadFull();
