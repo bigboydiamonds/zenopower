@@ -6,9 +6,9 @@
 
 - [ ] (MOBILE) Menu Styling
 
-- [ ] (WEBGL) Gradient
-  - [ ] page dependand
-  - [ ] animation
+- [x] (WEBGL) Gradient
+  - [x] page dependand
+  - [x] animation
   - [ ] mouse animation
   - [ ] fade in homepage
 - [ ] (WEBGL) 3d Model
@@ -22,27 +22,26 @@
 
 - [ ] hover states
   - [ ] nav
+  - [ ] footer
 
 ### Home
 
 - [ ] CSS consolidation pass
 - [ ] images on 2-3 sections
-- [ ] Article slider
-  - [ ] Mobile slider
+
+- [ ] [COMP] Article slider
+- [ ] [COMP] hover partners component
 
 ### Careers
 
 - [ ] CSS consolidation pass
 - [ ] Breezy Integration
   - [ ] Item Styling
+- [ ] [COMP] items filtering system
+- [ ] [COMP] values tabs autoclose
 
 ### News
 
 - [ ] CSS consolidation pass
 - [x] Article list system
-  - [ ] Article list functionality
-
-### News Article
-
-- [ ] HTML & CSS
-- [ ] CSS consolidation pass
+- [ ] [COMP] Article list click functionality

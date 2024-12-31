@@ -1,6 +1,7 @@
 import { Triangle, Mesh, Program as P } from "ogl";
 import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
+import { clamp } from "../../util/math";
 
 import gsap, { ANIMATION } from "../../gsap";
 import Hey from "../../hey";
@@ -32,7 +33,11 @@ export class Screen extends Mesh {
     // if (this.track) console.log(this.track.value); // track homepage color
 
     this.program.time = t * 0.2;
-    this.program.uniforms.u_a_dark.value = this.a.dark - this.track?.value || 0;
+    this.program.uniforms.u_a_dark.value = clamp(
+      0,
+      1,
+      this.a.dark - this.track?.value || 0
+    );
   }
 
   /* lifecycle */

@@ -1,18 +1,15 @@
-[data-nav="w"] {
-  opacity: 0;
-  visibility: hidden;
-}
-
 [data-nav="w"].dark {
-  /* border: 2px solid blue; */
+  transition: color var(--duration) var(--easeOut); /* border: 2px solid blue; */
 
   color: var(--col--yankeeblue);
 
   svg {
+    transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 
   .nav-lk-w {
+    transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 }

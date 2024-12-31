@@ -177,16 +177,15 @@ nav {
 }
 
 /* src/styles/nav.css */
-[data-nav=w] {
-  opacity: 0;
-  visibility: hidden;
-}
 [data-nav=w].dark {
+  transition: color var(--duration) var(--easeOut);
   color: var(--col--yankeeblue);
   svg {
+    transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
   .nav-lk-w {
+    transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 }
