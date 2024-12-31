@@ -5,6 +5,7 @@
 
 @import "corner-border.css";
 @import "lines.css";
+@import "nav.css";
 
 * {
   box-sizing: border-box;

@@ -10,6 +10,11 @@ const ANIMATION = {
     duration: 1.2,
     ease: "expo.out",
   },
+  load: {
+    duration: 0.6,
+    ease: "linear",
+    delay: 0.5,
+  },
 };
 
 const def = {

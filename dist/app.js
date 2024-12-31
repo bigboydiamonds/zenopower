@@ -7120,6 +7120,11 @@
     page: {
       duration: 1.2,
       ease: "expo.out"
+    },
+    load: {
+      duration: 0.6,
+      ease: "linear",
+      delay: 0.5
     }
   };
   var def = {
@@ -7366,6 +7371,41 @@
   };
   var hey_default = new Proxy(State.proxy, proxyHandler);
 
+  // src/modules/nav.js
+  var Nav = class {
+    wrapper = document.querySelector("[data-nav='w']");
+    constructor() {
+      hey_default.on("PAGE", (page) => this.handleColor(page));
+      hey_default.on("LOAD", (state) => this.onLoad(state));
+      this.handleColor(hey_default.PAGE);
+    }
+    onLoad(state) {
+      console.log(state);
+      switch (state) {
+        //   case "full":
+        // this.onLoadFull();
+        // break;
+        case "screen":
+          gsap_default.to(this.wrapper, {
+            autoAlpha: 1,
+            duration: ANIMATION.load.duration,
+            ease: ANIMATION.load.ease,
+            delay: ANIMATION.load.delay
+          });
+          break;
+        default:
+          break;
+      }
+    }
+    handleColor(page) {
+      if (page !== "home") {
+        this.wrapper.classList.add("dark");
+      } else {
+        this.wrapper.classList.remove("dark");
+      }
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -7375,6 +7415,7 @@
   ];
   var Dom = class {
     wrapper = document.querySelector("[data-taxi]");
+    nav = new Nav();
     constructor() {
       this.create();
       hey_default.on("LOAD", (state) => {
@@ -7420,7 +7461,12 @@
     }
     /* -- Lifecycle */
     onFirstLoad() {
-      gsap_default.to(this.wrapper, { autoAlpha: 1, duration: 0.5, delay: 0.3 });
+      gsap_default.to(this.wrapper, {
+        autoAlpha: 1,
+        duration: ANIMATION.load.duration,
+        ease: ANIMATION.load.ease,
+        delay: ANIMATION.load.delay
+      });
     }
     onLoad() {
     }

@@ -1,6 +1,8 @@
 import { Text } from "./animation/text";
-import gsap from "../gsap";
+import gsap, { ANIMATION } from "../gsap";
 import Hey from "../hey";
+
+import { Nav } from "./nav";
 
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
@@ -14,6 +16,7 @@ const lib = [
 
 export class Dom {
   wrapper = document.querySelector("[data-taxi]");
+  nav = new Nav();
   constructor() {
     this.create();
 
@@ -68,8 +71,14 @@ export class Dom {
 
   /* -- Lifecycle */
   onFirstLoad() {
-    gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5, delay: 0.3 });
+    gsap.to(this.wrapper, {
+      autoAlpha: 1,
+      duration: ANIMATION.load.duration,
+      ease: ANIMATION.load.ease,
+      delay: ANIMATION.load.delay,
+    });
   }
+
   onLoad() {}
 
   /* --  Pages */
