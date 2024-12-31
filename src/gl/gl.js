@@ -51,7 +51,7 @@ export class Gl {
   static initEvents() {}
 
   static render() {
-    this.time += 0.5;
+    this.time += 0.005;
 
     this.controls?.update();
     this.scene?.render(this.time);

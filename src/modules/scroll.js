@@ -57,6 +57,13 @@ export class Scroll extends Lenis {
     });
   }
 
+  top() {
+    this.scrollTo(0, {
+      offset: 0,
+      immediate: true,
+    });
+  }
+
   // resize() {}
 
   render(t) {

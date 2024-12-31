@@ -1,5 +1,6 @@
 /* src/styles/out.css */
 [data-taxi] {
   visibility: hidden;
+  opacity: 0;
 }
 /*# sourceMappingURL=out.css.map */

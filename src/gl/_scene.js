@@ -18,24 +18,31 @@ export class Scene extends Transform {
   }
 
   async create() {
-    console.log(Hey.page); // init with correct params
+    // console.log(Hey.page); // init with correct params
+
     // Hey.on("page", (page) => {
     //   console.log(page);
     // });
 
-    //1. create BG
+    // 1. create BG
+    this.bg = new Screen(this.gl);
+    this.bg.setParent(this);
+
+    Hey.LOAD = "screen";
 
     // 2. load assets
+    console.time("::load");
     await this.load();
 
     // 3. create model
-    this.quad = new Screen(this.gl);
-    this.quad.setParent(this);
+
+    console.timeEnd("::load");
+    Hey.LOAD = "full";
   }
 
   render(t) {
     if (!this.isOn) return;
-    if (this.quad) this.quad.render(t);
+    if (this.bg) this.bg.render(t);
   }
 
   resize(vp) {

@@ -16,6 +16,19 @@ export class Dom {
   wrapper = document.querySelector("[data-taxi]");
   constructor() {
     this.create();
+
+    Hey.on("LOAD", (state) => {
+      switch (state) {
+        case "full":
+          this.onLoad();
+          break;
+        case "screen":
+          this.onFirstLoad();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   resize() {}
@@ -40,7 +53,6 @@ export class Dom {
 
   create() {
     this.children = this._children.flat().filter((child) => child !== null);
-
     this.start();
   }
 
@@ -53,6 +65,12 @@ export class Dom {
   destroy() {
     this.texts.forEach((text) => text.animateOut());
   }
+
+  /* -- Lifecycle */
+  onFirstLoad() {
+    gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5, delay: 0.3 });
+  }
+  onLoad() {}
 
   /* --  Pages */
   async transitionOut(page) {

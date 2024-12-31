@@ -5,6 +5,13 @@ import { SplitText } from "gsap/SplitText";
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SplitText);
 
+const ANIMATION = {
+  page: {
+    duration: 1.2,
+    ease: "expo.out",
+  },
+};
+
 const def = {
   duration: 1,
   ease: "expo.out",
@@ -16,3 +23,5 @@ const utils = {};
 
 export default gsap;
 export { def, utils, ScrollTrigger, SplitText };
+
+export { ANIMATION };

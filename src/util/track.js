@@ -1,6 +1,7 @@
 import { clientRect } from "./clientRect.js";
 import { map, clamp, lerp } from "./math.js";
 import { Observe } from "./observe.js";
+import { App } from "../app.js";
 
 /**
  * Represents a track that observes an element and renders based on scroll position.
@@ -28,7 +29,7 @@ export class Track extends Observe {
     this.value = 0;
     this.resize();
 
-    if (window.sscroll) window.sscroll.subscribe(this.render.bind(this));
+    App.scroll.subscribe(this.render.bind(this));
   }
 
   resize() {

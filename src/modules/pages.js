@@ -18,7 +18,7 @@ export class Pages extends Core {
 
     console.log(":p:", this.current);
 
-    Hey.page = this.current;
+    Hey.PAGE = this.current;
   }
 
   async transitionOut(page) {
@@ -26,11 +26,13 @@ export class Pages extends Core {
       App.dom.transitionOut(page),
       Gl.transitionOut(page),
     ]);
+
+    App.scroll.top();
   }
 
   async transitionIn(page) {
     this.current = page.dataset.page;
-    Hey.page = this.current;
+    Hey.PAGE = this.current;
     console.log(":p:", this.current);
 
     await Promise.allSettled([
