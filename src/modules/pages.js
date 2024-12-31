@@ -1,8 +1,10 @@
 import { Core } from "@unseenco/taxi";
 import { App } from "../app";
 import { Gl } from "../gl/gl";
+import Hey from "../hey";
 
 export class Pages extends Core {
+  current = document.querySelector("[data-page]").dataset.page;
   constructor() {
     super({
       links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -13,6 +15,10 @@ export class Pages extends Core {
         default: Tra,
       },
     });
+
+    console.log(":p:", this.current);
+
+    Hey.page = this.current;
   }
 
   async transitionOut(page) {
@@ -23,26 +29,16 @@ export class Pages extends Core {
   }
 
   async transitionIn(page) {
+    this.current = page.dataset.page;
+    Hey.page = this.current;
+    console.log(":p:", this.current);
+
     await Promise.allSettled([
       App.dom.transitionIn(page),
       Gl.transitionIn(page),
     ]);
   }
 }
-
-// initEvents() {
-//   this.on("NAVIGATE_OUT", ({ from, trigger }) => {
-//     // console.log("OUT", from, trigger);
-//   });
-
-//   this.on("NAVIGATE_IN", ({ to, trigger }) => {
-//     // console.log("IN", to, trigger);
-//   });
-
-//   this.on("NAVIGATE_END", ({ to, from, trigger }) => {
-//     // console.log("END", to, from, trigger);
-//   });
-// }
 
 /* -- Transition */
 class Tra {
@@ -70,3 +66,17 @@ class Tra {
     App.pages.transitionIn(to).then(() => done());
   }
 }
+
+// initEvents() {
+//   this.on("NAVIGATE_OUT", ({ from, trigger }) => {
+//     // console.log("OUT", from, trigger);
+//   });
+
+//   this.on("NAVIGATE_IN", ({ to, trigger }) => {
+//     // console.log("IN", to, trigger);
+//   });
+
+//   this.on("NAVIGATE_END", ({ to, from, trigger }) => {
+//     // console.log("END", to, from, trigger);
+//   });
+// }

@@ -1,7 +1,7 @@
 {
   "version": 3,
-  "sources": [],
-  "sourcesContent": [],
-  "mappings": "",
+  "sources": ["../../src/styles/out.css"],
+  "sourcesContent": ["[data-taxi] {\n  visibility: hidden;\n}\n"],
+  "mappings": ";AAAA,CAAC;AACC,cAAY;AACd;",
   "names": []
 }

@@ -7240,6 +7240,126 @@
     wrapper.appendChild(el);
   }
 
+  // src/hey.js
+  var SimpleEmitter = class {
+    constructor() {
+      this.events = {};
+    }
+    /**
+     * Register an event handler for a given event.
+     * @param {string} event - The name of the event.
+     * @param {Function} handler - The callback function to handle the event.
+     */
+    on(event, handler) {
+      if (!this.events[event]) {
+        this.events[event] = [];
+      }
+      this.events[event].push(handler);
+    }
+    /**
+     * Unregister an event handler for a given event.
+     * @param {string} event - The name of the event.
+     * @param {Function} handler - The callback function to remove.
+     */
+    off(event, handler) {
+      if (!this.events[event]) return;
+      this.events[event] = this.events[event].filter((h) => h !== handler);
+    }
+    /**
+     * Emit an event, calling all registered handlers.
+     * @param {string} event - The name of the event.
+     * @param {*} data - The data to pass to the event handlers.
+     */
+    emit(event, data) {
+      if (!this.events[event]) return;
+      this.events[event].forEach((handler) => handler(data));
+    }
+  };
+  var State = class _State {
+    /**
+     * @type {SimpleEmitter}
+     * @static
+     * @private
+     */
+    static emitter = new SimpleEmitter();
+    /**
+     * @type {Object}
+     * @static
+     * @private
+     */
+    static state = {};
+    /**
+     * Create a proxy for an object to enable nested reactivity.
+     * @param {Object} obj - The object to create a proxy for.
+     * @returns {Proxy} - The proxied object.
+     * @private
+     */
+    static createProxy(obj) {
+      return new Proxy(obj, {
+        set: function(target, property, value, receiver) {
+          _State.emitter.emit(property, value);
+          return Reflect.set(target, property, value, receiver);
+        }
+      });
+    }
+    /**
+     * @type {Proxy}
+     * @static
+     * @private
+     */
+    static proxy = new Proxy(_State.state, {
+      set: function(target, property, value, receiver) {
+        if (typeof value === "object" && value !== null) {
+          value = _State.createProxy(value);
+        }
+        _State.emitter.emit(property, value);
+        return Reflect.set(target, property, value, receiver);
+      }
+    });
+    /**
+     * Register an event handler for a given event.
+     * @param {string} event - The name of the event.
+     * @param {Function} handler - The callback function to handle the event.
+     */
+    static on(event, handler) {
+      this.emitter.on(event, handler);
+    }
+    /**
+     * Unregister an event handler for a given event.
+     * @param {string} event - The name of the event.
+     * @param {Function} handler - The callback function to remove.
+     */
+    static off(event, handler) {
+      this.emitter.off(event, handler);
+    }
+  };
+  var proxyHandler = {
+    /**
+     * Proxy handler to intercept property access.
+     * @param {Object} target - The target object.
+     * @param {string|symbol} property - The name of the property to get.
+     * @returns {*} - The value of the property.
+     */
+    get(target, property) {
+      if (property in State) {
+        return State[property].bind(State);
+      }
+      return target[property];
+    },
+    /**
+     * Proxy handler to intercept property setting.
+     * @param {Object} target - The target object.
+     * @param {string|symbol} property - The name of the property to set.
+     * @param {*} value - The new value of the property.
+     * @param {Object} receiver - The proxy or object that initially received the request.
+     * @returns {boolean} - True if the property was set successfully, false otherwise.
+     */
+    set(target, property, value, receiver) {
+      return Reflect.set(State.proxy, property, value, receiver);
+    }
+  };
+  var hey_default = new Proxy(State.proxy, proxyHandler);
+
   // src/modules/dom.js
   var lib = [
     {
@@ -7248,6 +7368,7 @@
     }
   ];
   var Dom = class {
+    wrapper = document.querySelector("[data-taxi]");
     constructor() {
       this.create();
     }
@@ -7280,19 +7401,11 @@
       this.texts.forEach((text) => text.animateOut());
     }
     /* --  Pages */
-    transitionOut(page) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 100);
-      });
+    async transitionOut(page) {
+      await gsap_default.to(this.wrapper, { autoAlpha: 0, duration: 0.5 });
     }
-    transitionIn(page) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 100);
-      });
+    async transitionIn(page) {
+      await gsap_default.to(this.wrapper, { autoAlpha: 1, duration: 0.5 });
     }
   };
 
@@ -12149,56 +12262,14 @@ ${addLineNumbers(fragment)}`);
     }
   };
 
-  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Plane.js
-  var Plane = class _Plane extends Geometry {
-    constructor(gl, { width = 1, height = 1, widthSegments = 1, heightSegments = 1, attributes = {} } = {}) {
-      const wSegs = widthSegments;
-      const hSegs = heightSegments;
-      const num = (wSegs + 1) * (hSegs + 1);
-      const numIndices = wSegs * hSegs * 6;
-      const position = new Float32Array(num * 3);
-      const normal = new Float32Array(num * 3);
-      const uv = new Float32Array(num * 2);
-      const index = numIndices > 65536 ? new Uint32Array(numIndices) : new Uint16Array(numIndices);
-      _Plane.buildPlane(position, normal, uv, index, width, height, 0, wSegs, hSegs);
+  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Triangle.js
+  var Triangle = class extends Geometry {
+    constructor(gl, { attributes = {} } = {}) {
       Object.assign(attributes, {
-        position: { size: 3, data: position },
-        normal: { size: 3, data: normal },
-        uv: { size: 2, data: uv },
-        index: { data: index }
+        position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
+        uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
       });
       super(gl, attributes);
-    }
-    static buildPlane(position, normal, uv, index, width, height, depth, wSegs, hSegs, u = 0, v = 1, w = 2, uDir = 1, vDir = -1, i = 0, ii = 0) {
-      const io = i;
-      const segW = width / wSegs;
-      const segH = height / hSegs;
-      for (let iy = 0; iy <= hSegs; iy++) {
-        let y = iy * segH - height / 2;
-        for (let ix = 0; ix <= wSegs; ix++, i++) {
-          let x = ix * segW - width / 2;
-          position[i * 3 + u] = x * uDir;
-          position[i * 3 + v] = y * vDir;
-          position[i * 3 + w] = depth / 2;
-          normal[i * 3 + u] = 0;
-          normal[i * 3 + v] = 0;
-          normal[i * 3 + w] = depth >= 0 ? 1 : -1;
-          uv[i * 2] = ix / wSegs;
-          uv[i * 2 + 1] = 1 - iy / hSegs;
-          if (iy === hSegs || ix === wSegs) continue;
-          let a = io + ix + iy * (wSegs + 1);
-          let b = io + ix + (iy + 1) * (wSegs + 1);
-          let c = io + ix + (iy + 1) * (wSegs + 1) + 1;
-          let d = io + ix + iy * (wSegs + 1) + 1;
-          index[ii * 6] = a;
-          index[ii * 6 + 1] = b;
-          index[ii * 6 + 2] = d;
-          index[ii * 6 + 3] = b;
-          index[ii * 6 + 4] = c;
-          index[ii * 6 + 5] = d;
-          ii++;
-        }
-      }
     }
   };
 
@@ -12218,44 +12289,38 @@ ${addLineNumbers(fragment)}`);
     }
   };
 
-  // src/gl/mat/_quad/vertex.vert
-  var vertex_default = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\n\nvoid main() {\n  vec3 pos = position;\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);\n\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
+  // src/gl/screen/vertex.vert
+  var vertex_default = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec2 uv;\nattribute vec2 position;\nvarying vec2 v_uv;\n\nvoid main() {\n  vec2 pos = position;\n\n  gl_Position = vec4(pos, 0, 1);\n  v_uv = uv;\n}\n";
 
-  // src/gl/mat/_quad/fragment.frag
-  var fragment_default = "precision highp float;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\n\n\nvoid main() {\n\n  gl_FragColor.rgb = vec3(v_uv, 2.);\n  gl_FragColor.a = 1.0;\n}\n";
+  // src/gl/screen/fragment.frag
+  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n\nuniform float u_time;\nvarying vec2 v_uv;\n\nvoid main() {\n\n    gl_FragColor.rgb = vec3(v_uv, 1.);\n    gl_FragColor.a = 1.0;\n}\n";
 
-  // src/gl/mat/_quad/index.js
-  var quad_default = class extends Program {
-    constructor(gl, opt = {}) {
-      super(gl, {
-        vertex: vertex_default,
-        fragment: fragment_default,
-        transparent: true,
-        cullFace: null
-      });
-      this.uniforms = {
-        u_time: { value: 0 },
-        u_diff: { value: opt.diff || null }
-      };
-    }
-    set time(t) {
-      this.uniforms.u_time.value = t;
-    }
-  };
-
-  // src/gl/_quad.js
-  var Quad2 = class extends Mesh {
-    constructor(gl, diff = null) {
-      super(gl, {
-        geometry: new Plane(gl),
-        program: new quad_default(gl)
-      });
+  // src/gl/screen/index.js
+  var Screen = class extends Mesh {
+    constructor(gl) {
+      super(gl, { geometry: new Triangle(gl), program: new Program2(gl) });
       this.gl = gl;
     }
     resize() {
     }
     render(t) {
       this.program.time = t;
+    }
+  };
+  var Program2 = class extends Program {
+    constructor(gl) {
+      super(gl, {
+        vertex: vertex_default,
+        fragment: fragment_default,
+        transparent: true,
+        cullFace: null,
+        uniforms: {
+          u_time: { value: 0 }
+        }
+      });
+    }
+    set time(t) {
+      this.uniforms.u_time.value = t;
     }
   };
 
@@ -12270,8 +12335,9 @@ ${addLineNumbers(fragment)}`);
     async load() {
     }
     async create() {
+      console.log(hey_default.page);
       await this.load();
-      this.quad = new Quad2(this.gl);
+      this.quad = new Screen(this.gl);
       this.quad.setParent(this);
     }
     render(t) {
@@ -12347,6 +12413,7 @@ ${addLineNumbers(fragment)}`);
 
   // src/modules/pages.js
   var Pages = class extends Core {
+    current = document.querySelector("[data-page]").dataset.page;
     constructor() {
       super({
         links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -12357,6 +12424,8 @@ ${addLineNumbers(fragment)}`);
           default: Tra
         }
       });
+      console.log(":p:", this.current);
+      hey_default.page = this.current;
     }
     async transitionOut(page) {
       await Promise.allSettled([
@@ -12365,6 +12434,9 @@ ${addLineNumbers(fragment)}`);
       ]);
     }
     async transitionIn(page) {
+      this.current = page.dataset.page;
+      hey_default.page = this.current;
+      console.log(":p:", this.current);
       await Promise.allSettled([
         App.dom.transitionIn(page),
         Gl.transitionIn(page)

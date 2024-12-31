@@ -1,4 +1,7 @@
 import { Text } from "./animation/text";
+import gsap from "../gsap";
+import Hey from "../hey";
+
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
 
@@ -10,6 +13,7 @@ const lib = [
 ];
 
 export class Dom {
+  wrapper = document.querySelector("[data-taxi]");
   constructor() {
     this.create();
   }
@@ -51,23 +55,13 @@ export class Dom {
   }
 
   /* --  Pages */
-  transitionOut(page) {
+  async transitionOut(page) {
+    await gsap.to(this.wrapper, { autoAlpha: 0, duration: 0.5 });
     // console.log("DOM::transitionOut", page);
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 100);
-    });
   }
 
-  transitionIn(page) {
+  async transitionIn(page) {
+    await gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5 });
     // console.log("DOM::transitionIn", page);
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 100);
-    });
   }
 }
