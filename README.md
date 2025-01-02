@@ -4,13 +4,15 @@
 
 ### Global
 
+- [ ] Nav current page mark
+
 - [ ] (MOBILE) Menu Styling
 
 - [x] (WEBGL) Gradient
   - [x] page dependand
   - [x] animation
   - [ ] mouse animation
-  - [ ] fade in homepage
+  - [x] fade in homepage
 - [ ] (WEBGL) 3d Model
   - [ ] page dependant
   - [ ] animation
@@ -29,8 +31,8 @@
 - [ ] CSS consolidation pass
 - [ ] images on 2-3 sections
 
-- [ ] [COMP] Article slider
-- [ ] [COMP] hover partners component
+- [x] [COMP] Article slider
+- [x] [COMP] hover partners component
 
 ### Careers
 
@@ -38,10 +40,15 @@
 - [ ] Breezy Integration
   - [ ] Item Styling
 - [ ] [COMP] items filtering system
-- [ ] [COMP] values tabs autoclose
+- [x] [COMP] values tabs autoclose
 
 ### News
 
 - [ ] CSS consolidation pass
 - [x] Article list system
-- [ ] [COMP] Article list click functionality
+- [x] [COMP] Article list click functionality
+  - [ ] selected article indicator
+
+#### Qs
+
+- [ ] newsletter subscribe how/where?

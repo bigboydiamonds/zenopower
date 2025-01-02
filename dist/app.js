@@ -9070,6 +9070,59 @@
     }
   };
 
+  // src/modules/news.js
+  var News = class {
+    current = 0;
+    constructor(el) {
+      this.el = el;
+      this.btns = this.el.querySelectorAll('[data-news="btn"]');
+      this.articles = this.el.querySelectorAll('[data-news="article"]');
+      this.btns.forEach((btn, index) => {
+        btn.onclick = () => {
+          if (this.current === index) return;
+          this.articles[this.current].style.display = "none";
+          this.current = index;
+          this.articles[this.current].style.display = "block";
+        };
+      });
+    }
+    destroy() {
+      this.btns.forEach((btn) => {
+        btn.onclick = null;
+      });
+      this.btns = null;
+      this.articles = null;
+    }
+  };
+
+  // src/modules/partners.js
+  var Partners = class {
+    constructor(el) {
+      this.el = el;
+      this.hovers = [...this.el.querySelectorAll("[data-partners='hover']")];
+      this.imgs = [...this.el.querySelectorAll("[data-partners='img']")];
+      this.imgs.forEach((img, i) => {
+        img.style.zIndex = 0;
+        if (i === 0) {
+          img.style.zIndex = 10;
+        }
+      });
+      this.hovers.forEach((hover, i) => {
+        hover.onmouseenter = () => {
+          this.imgs.forEach((img) => {
+            img.style.zIndex = 0;
+          });
+          this.imgs[i].style.zIndex = 10;
+        };
+      });
+    }
+    destroy() {
+      this.hovers.forEach((hover) => {
+        hover.onmouseenter = null;
+      });
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -9083,6 +9136,14 @@
     {
       selector: '[data-tabs="w"]',
       class: Dropdowns
+    },
+    {
+      selector: '[data-news="w"]',
+      class: News
+    },
+    {
+      selector: '[data-partners="w"]',
+      class: Partners
     }
   ];
   var Dom = class {

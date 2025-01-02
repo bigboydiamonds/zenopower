@@ -5,6 +5,8 @@ import { Text } from "./animation/text";
 import { Nav } from "./nav";
 import { Slider } from "./slider";
 import { Dropdowns } from "./Dropdowns";
+import { News } from "./news";
+import { Partners } from "./partners";
 
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
@@ -21,6 +23,14 @@ const lib = [
   {
     selector: '[data-tabs="w"]',
     class: Dropdowns,
+  },
+  {
+    selector: '[data-news="w"]',
+    class: News,
+  },
+  {
+    selector: '[data-partners="w"]',
+    class: Partners,
   },
 ];
 
