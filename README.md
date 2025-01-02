@@ -4,7 +4,7 @@
 
 ### Global
 
-- [ ] Nav current page mark
+- [x] Nav current page mark
 
 - [ ] (MOBILE) Menu Styling
 
@@ -22,14 +22,14 @@
 
 ### Animation
 
-- [ ] hover states
-  - [ ] nav
-  - [ ] footer
+- [x] hover states
+  - [x] nav
+  - [x] footer
 
 ### Home
 
 - [ ] CSS consolidation pass
-- [ ] images on 2-3 sections
+- [x] images on 2-3 sections
 
 - [x] [COMP] Article slider
 - [x] [COMP] hover partners component
