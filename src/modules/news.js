@@ -8,13 +8,18 @@ export class News {
     this.articles = this.el.querySelectorAll('[data-news="article"]');
     this.corners = [...this.el.querySelectorAll('[data-corners="news"]')];
 
+    this.btns[this.current].parentNode.classList.add("current");
+
     this.btns.forEach((btn, index) => {
       btn.onclick = () => {
         if (this.current === index) return;
 
         this.articles[this.current].style.display = "none";
+        this.btns[this.current].parentNode.classList.remove("current");
+
         this.current = index;
         this.articles[this.current].style.display = "block";
+        this.btns[this.current].parentNode.classList.add("current");
       };
     });
   }
