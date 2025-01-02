@@ -40,7 +40,7 @@
 
 - [ ] CSS consolidation pass
 - [ ] Breezy Integration
-  - [ ] Item Styling
+  - [x] Item Styling
 - [ ] [COMP] items filtering system
 - [x] [COMP] values tabs autoclose
 
@@ -49,7 +49,7 @@
 - [ ] CSS consolidation pass
 - [x] Article list system
 - [x] [COMP] Article list click functionality
-  - [ ] selected article indicator
+  - [x] selected article indicator
 
 #### Qs
 
