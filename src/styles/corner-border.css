@@ -119,7 +119,7 @@
 }
 
 /* --- news articles */
-[data-css="angles-b"] {
+/* [data-css="angles-b"] {
   --size: 4px;
   --color: black;
   position: relative;
@@ -169,11 +169,4 @@
   left: 0;
   border-right: 0;
   border-top: 0;
-}
-
-[data-corners="news"] {
-  opacity: 0;
-}
-[data-corners="news"].current {
-  opacity: 1;
-}
+} */

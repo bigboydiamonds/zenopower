@@ -208,57 +208,6 @@ html.lenis body {
   border-right: 0;
   border-top: 0;
 }
-[data-css=angles-b] {
-  --size: 4px;
-  --color: black;
-  position: relative;
-}
-[data-css=angles-b]::before,
-[data-css=angles-b]::after {
-  content: "";
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border: 1px solid var(--color);
-}
-[data-css=angles-b]::before {
-  top: 0;
-  left: 0;
-  border-right: 0;
-  border-bottom: 0;
-}
-[data-css=angles-b]::after {
-  bottom: 0;
-  right: 0;
-  border-left: 0;
-  border-top: 0;
-}
-[data-css=angles-b] span::before,
-[data-css=angles-b] span::after {
-  content: "";
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border: 1px solid var(--color);
-}
-[data-css=angles-b] span::before {
-  top: 0;
-  right: 0;
-  border-left: 0;
-  border-bottom: 0;
-}
-[data-css=angles-b] span::after {
-  bottom: 0;
-  left: 0;
-  border-right: 0;
-  border-top: 0;
-}
-[data-corners=news] {
-  opacity: 0;
-}
-[data-corners=news].current {
-  opacity: 1;
-}
 
 /* src/styles/lines.css */
 .line-sep {
