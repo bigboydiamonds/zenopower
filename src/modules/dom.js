@@ -4,7 +4,7 @@ import gsap, { ANIMATION } from "../gsap";
 import { Text } from "./animation/text";
 import { Nav } from "./nav";
 import { Slider } from "./slider";
-import { Dropdowns } from "./Dropdowns";
+import { Dropdowns } from "./dropdowns";
 import { News } from "./news";
 import { Partners } from "./partners";
 

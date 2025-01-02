@@ -7374,6 +7374,7 @@
   // src/modules/nav.js
   var Nav = class {
     wrapper = document.querySelector("[data-nav='w']");
+    links = [...document.querySelectorAll("[data-nav='link']")];
     constructor() {
       hey_default.on("PAGE", (page) => this.handleColor(page));
       hey_default.on("LOAD", (state) => this.onLoad(state));
@@ -7397,6 +7398,15 @@
       }
     }
     handleColor(page) {
+      this.links.forEach((link) => {
+        let pathName = new URL(link.href).pathname;
+        if (pathName === "/") pathName = "home";
+        if (pathName === "/" + page) {
+          link.classList.add("w--current");
+        } else {
+          link.classList.remove("w--current");
+        }
+      });
       if (page !== "home") {
         this.wrapper.classList.add("dark");
       } else {
@@ -9047,7 +9057,7 @@
     }
   };
 
-  // src/modules/Dropdowns.js
+  // src/modules/dropdowns.js
   var Dropdowns = class {
     current = null;
     constructor(el) {
