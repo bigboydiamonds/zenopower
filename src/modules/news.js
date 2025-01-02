@@ -6,6 +6,11 @@ export class News {
 
     this.btns = this.el.querySelectorAll('[data-news="btn"]');
     this.articles = this.el.querySelectorAll('[data-news="article"]');
+    this.corners = [...this.el.querySelectorAll('[data-corners="news"]')];
+
+    console.log(this.corners);
+
+    this.corners[0].classList.add("active");
 
     this.btns.forEach((btn, index) => {
       btn.onclick = () => {
