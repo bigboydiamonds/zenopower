@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@unseenco/taxi": "^1.7.0",
+    "embla-carousel": "^8.5.1",
     "gsap": "npm:@gsap/shockingly@^3.12.5",
     "lenis": "^1.1.18",
     "lil-gui": "^0.20.0",

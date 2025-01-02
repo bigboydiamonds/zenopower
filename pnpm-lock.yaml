@@ -11,6 +11,9 @@ importers:
       '@unseenco/taxi':
         specifier: ^1.7.0
         version: 1.7.0
+      embla-carousel:
+        specifier: ^8.5.1
+        version: 8.5.1
       gsap:
         specifier: npm:@gsap/shockingly@^3.12.5
         version: '@gsap/shockingly@3.12.5'
@@ -189,6 +192,9 @@ packages:
   '@unseenco/taxi@1.7.0':
     resolution: {integrity: sha512-SBkbfnvn6nqyP80DKsUGA2o6AVat+escAOKuiPssrveFfQwJhiKg9IZ6eyJFqAeNoo4LdKH6hSCdyLoNtj4r0Q==}
 
+  embla-carousel@8.5.1:
+    resolution: {integrity: sha512-JUb5+FOHobSiWQ2EJNaueCNT/cQU9L6XWBbWmorWPQT9bkbk+fhsuLr8wWrzXKagO3oWszBO7MSx+GfaRk4E6A==}
+
   esbuild-plugin-alias-path@2.0.2:
     resolution: {integrity: sha512-YK8H9bzx6/CG6YBV11XjoNLjRhNZP0Ta4xZ3ATHhPn7pN8ljQGg+zne4d47DpIzF8/sX2qM+xQWev0CvaD2rSQ==}
     peerDependencies:
@@ -346,6 +352,8 @@ snapshots:
   '@unseenco/taxi@1.7.0':
     dependencies:
       '@unseenco/e': 2.4.0
+
+  embla-carousel@8.5.1: {}
 
   esbuild-plugin-alias-path@2.0.2(esbuild@0.24.0):
     dependencies:

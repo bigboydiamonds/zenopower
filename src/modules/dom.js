@@ -1,8 +1,10 @@
-import { Text } from "./animation/text";
-import gsap, { ANIMATION } from "../gsap";
 import Hey from "../hey";
+import gsap, { ANIMATION } from "../gsap";
 
+import { Text } from "./animation/text";
 import { Nav } from "./nav";
+import { Slider } from "./slider";
+import { Dropdowns } from "./Dropdowns";
 
 // import { Track } from "../util/track";
 // import { Alpha } from "./animation/alpha";
@@ -11,6 +13,14 @@ const lib = [
   {
     selector: '[data-a="char"],[data-a="word"],[data-a="line"]',
     class: Text,
+  },
+  {
+    selector: '[data-embla="wrapper"]',
+    class: Slider,
+  },
+  {
+    selector: '[data-tabs="w"]',
+    class: Dropdowns,
   },
 ];
 
@@ -66,7 +76,9 @@ export class Dom {
   }
 
   destroy() {
-    this.texts.forEach((text) => text.animateOut());
+    this.children.forEach((child) => {
+      if (child.destroy) child.destroy();
+    });
   }
 
   /* -- Lifecycle */
@@ -83,11 +95,13 @@ export class Dom {
 
   /* --  Pages */
   async transitionOut(page) {
+    this.destroy();
     await gsap.to(this.wrapper, { autoAlpha: 0, duration: 0.5 });
     // console.log("DOM::transitionOut", page);
   }
 
   async transitionIn(page) {
+    this.create();
     await gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5 });
     // console.log("DOM::transitionIn", page);
   }

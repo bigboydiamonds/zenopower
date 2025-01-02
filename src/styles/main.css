@@ -6,6 +6,7 @@
 @import "corner-border.css";
 @import "lines.css";
 @import "nav.css";
+@import "embla.css";
 
 * {
   box-sizing: border-box;
