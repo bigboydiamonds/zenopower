@@ -3,7 +3,7 @@ import { Viewport } from "./modules/viewport";
 import { Scroll } from "./modules/scroll";
 import { Pages } from "./modules/pages";
 import { Gl } from "./gl/gl";
-
+import { isTablet } from "./util/queries";
 import gsap from "./gsap";
 
 export class App {
@@ -14,6 +14,7 @@ export class App {
   static pages = new Pages();
   static dom = new Dom();
   static gl = new Gl();
+  static isMobile = isTablet();
 
   static {
     this.initEvents();
@@ -26,6 +27,8 @@ export class App {
   }
 
   static resize({ contentRect }) {
+    this.isMobile = isTablet();
+
     this.viewport?.resize();
     this.dom?.resize();
     Resizer?.resize();

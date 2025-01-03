@@ -1,6 +1,7 @@
 import { Renderer, Orbit, Vec3 } from "ogl";
 import { Cam } from "./camera.js";
 import { Scene } from "./_scene.js";
+import { lerp } from "../util/math.js";
 
 export const params = {
   clearColor: [0, 0, 0, 0],
@@ -8,7 +9,7 @@ export const params = {
 
 export class Gl {
   static time = 0;
-  static mouse = { x: 0, y: 0 };
+  static mouse = { x: 0, y: 0, ex: 0, ey: 0 };
 
   static {
     this.vp = {
@@ -42,16 +43,25 @@ export class Gl {
     this.time = 0;
 
     handleResize(this.vp.container, this.resize.bind(this));
+    this.initEvents();
 
     // this.controls = new Orbit(this.camera, {
     //   target: new Vec3(0, 0, 0),
     // });
   }
 
-  static initEvents() {}
+  static initEvents() {
+    window.addEventListener("mousemove", (e) => {
+      this.mouse.x = e.clientX / this.vp.w;
+      this.mouse.y = 1.0 - e.clientY / this.vp.h;
+    });
+  }
 
   static render() {
     this.time += 0.005;
+
+    this.mouse.ex = lerp(this.mouse.ex, this.mouse.x, 0.1);
+    this.mouse.ey = lerp(this.mouse.ey, this.mouse.y, 0.1);
 
     this.controls?.update();
     this.scene?.render(this.time);

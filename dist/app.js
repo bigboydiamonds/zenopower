@@ -15378,6 +15378,9 @@ ${addLineNumbers(fragment2)}`);
   var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform float u_a_dark;\n\nvarying vec2 v_uv;\n\nvoid main() {\n    float ns = simplex3d(vec3(v_uv , u_time));\n\n    vec3 col1 = mix(u_color_light1,u_color_dark1,  u_a_dark);\n    vec3 col2 = mix(u_color_light1, u_color_dark2, u_a_dark);\n\n    vec3 color = mix(col1, col2, ns);\n\n    color = mix(u_color_light1,color, u_a_dark);\n\n\n    // gl_FragColor.rgb = vec3(v_uv, 1.);\n    gl_FragColor.rgb = vec3(ns, ns, ns);\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/util/math.js
+  function lerp4(v0, v1, t) {
+    return v0 * (1 - t) + v1 * t;
+  }
   function map(value, low1, high1, low2, high2) {
     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
   }
@@ -15556,7 +15559,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default2 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\nvarying vec3 v_view;\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
 
   // src/gl/battery/fragment.frag
-  var fragment_default2 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc = texture2D(u_mtc, fakeUv).rgb;\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default2 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc = texture2D(u_mtc, fakeUv).rgb;\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/gl/battery/index.js
   var Battery = class extends Transform {
@@ -15572,9 +15575,13 @@ ${addLineNumbers(fragment2)}`);
     }
     render(t) {
       this.battery?.render(t);
+      this.rotation.x = Gl.mouse.ey * 0.5;
+      this.rotation.y = Gl.mouse.ex * Math.PI + t;
     }
     resize() {
       this.position.x = Gl.vp.viewSize.w / 5;
+      const hsize = Gl.vp.viewSize.h / 2;
+      this.scale.set(hsize, hsize, hsize);
       this.battery?.resize();
     }
   };
@@ -15582,14 +15589,28 @@ ${addLineNumbers(fragment2)}`);
     constructor(gl) {
       super(gl, {
         geometry: Gl.scene.assets.model.scenes[0][0].children[0].geometry,
-        program: new Program3(gl)
+        program: new Program3(gl),
+        frustumCulled: false
+      });
+      this.scale.set(0, 0, 0);
+      this.position.y = -Gl.vp.viewSize.h;
+      hey_default.on("LOAD", (state) => {
+        gsap_default.to(this.scale, {
+          x: 1,
+          y: 1,
+          z: 1,
+          delay: 0.5
+        });
+        gsap_default.to(this.position, {
+          y: 0,
+          delay: 0.5
+        });
       });
     }
     resize() {
     }
     render(t) {
       this.program.time = t;
-      this.rotation.y = t * 0.1;
     }
   };
   var Program3 = class extends Program {
@@ -15625,6 +15646,7 @@ ${addLineNumbers(fragment2)}`);
       img.crossOrigin = "anonymous";
       img.onload = () => {
         const texture = new Texture(gl, { image: img });
+        texture.flipY = false;
         resolve(texture);
       };
     });
@@ -15635,7 +15657,7 @@ ${addLineNumbers(fragment2)}`);
   var assets = {
     //   img: null,
     matcap: URL2 + "metal1.png",
-    model: URL2 + "zeno2.glb",
+    model: URL2 + "zeno3.glb",
     light: URL2 + "light1.png"
   };
 
@@ -15702,7 +15724,7 @@ ${addLineNumbers(fragment2)}`);
   };
   var Gl = class {
     static time = 0;
-    static mouse = { x: 0, y: 0 };
+    static mouse = { x: 0, y: 0, ex: 0, ey: 0 };
     static {
       this.vp = {
         container: document.querySelector('[data-gl="c"]'),
@@ -15728,11 +15750,18 @@ ${addLineNumbers(fragment2)}`);
       this.scene = new Scene(this.gl);
       this.time = 0;
       handleResize(this.vp.container, this.resize.bind(this));
+      this.initEvents();
     }
     static initEvents() {
+      window.addEventListener("mousemove", (e) => {
+        this.mouse.x = e.clientX / this.vp.w;
+        this.mouse.y = 1 - e.clientY / this.vp.h;
+      });
     }
     static render() {
       this.time += 5e-3;
+      this.mouse.ex = lerp4(this.mouse.ex, this.mouse.x, 0.1);
+      this.mouse.ey = lerp4(this.mouse.ey, this.mouse.y, 0.1);
       this.controls?.update();
       this.scene?.render(this.time);
       this.renderer.render({
@@ -15814,6 +15843,20 @@ ${addLineNumbers(fragment2)}`);
     }
   };
 
+  // src/util/queries.js
+  function isTablet() {
+    let check = false;
+    (function(a) {
+      if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
+        a
+      ) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
+        a.substr(0, 4)
+      ))
+        check = true;
+    })(navigator.userAgent || navigator.vendor || window.opera);
+    return check;
+  }
+
   // src/app.js
   var App = class {
     static body = document.querySelector("body");
@@ -15823,6 +15866,7 @@ ${addLineNumbers(fragment2)}`);
     static pages = new Pages();
     static dom = new Dom();
     static gl = new Gl();
+    static isMobile = isTablet();
     static {
       this.initEvents();
       gsap_default.ticker.add((t) => this.render(t));
@@ -15831,6 +15875,7 @@ ${addLineNumbers(fragment2)}`);
       new ResizeObserver((entry) => this.resize(entry[0])).observe(this.body);
     }
     static resize({ contentRect }) {
+      this.isMobile = isTablet();
       this.viewport?.resize();
       this.dom?.resize();
       Resizer?.resize();

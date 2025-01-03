@@ -23,11 +23,14 @@ void main() {
     // * light
     vec3 light = texture2D(u_light, v_uv).rgb;
 
+    vec3 color = (mtc * light) * 1.5;
+
 
 
 
     gl_FragColor.rgb = vec3(fakeUv, 1.);
     gl_FragColor.rgb = mtc;
     gl_FragColor.rgb = light;
+    gl_FragColor.rgb = color;
     gl_FragColor.a = 1.0;
 }

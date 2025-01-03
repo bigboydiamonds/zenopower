@@ -8,6 +8,7 @@ export async function loadTexture(gl, path) {
 
     img.onload = () => {
       const texture = new Texture(gl, { image: img });
+      texture.flipY = false;
       resolve(texture);
     };
   });
