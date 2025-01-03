@@ -1,5 +1,7 @@
 import { Transform } from "ogl";
 import { Screen } from "./screen/";
+import { Battery } from "./battery/index.js";
+import { loadAssets } from "./util/loader.js";
 
 import Hey from "../hey.js";
 
@@ -13,21 +15,14 @@ export class Scene extends Transform {
   }
 
   async load() {
-    // const ass = await loadAssets(this.gl);
-    // console.log(":::", ass);
+    this.assets = await loadAssets(this.gl);
+    console.log(":::", this.assets);
   }
 
   async create() {
-    // console.log(Hey.page); // init with correct params
-
-    // Hey.on("page", (page) => {
-    //   console.log(page);
-    // });
-
     // 1. create BG
     this.bg = new Screen(this.gl);
     this.bg.setParent(this);
-
     Hey.LOAD = "screen";
 
     // 2. load assets
@@ -35,6 +30,8 @@ export class Scene extends Transform {
     await this.load();
 
     // 3. create model
+    this.battery = new Battery(this.gl);
+    this.battery.setParent(this);
 
     console.timeEnd("::load");
     Hey.LOAD = "full";
@@ -42,10 +39,12 @@ export class Scene extends Transform {
 
   render(t) {
     if (!this.isOn) return;
-    if (this.bg) this.bg.render(t);
+    this.bg?.render(t);
+    this.battery?.render(t);
   }
 
   resize(vp) {
-    if (this.bg) this.bg.resize(vp);
+    this.bg?.resize(vp);
+    this.battery?.resize(vp);
   }
 }

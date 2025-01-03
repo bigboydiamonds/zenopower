@@ -16,7 +16,7 @@ export class Pages extends Core {
       },
     });
 
-    console.log(":p:", this.current);
+    // console.log(":p:", this.current);
 
     Hey.PAGE = this.current;
   }
@@ -33,7 +33,7 @@ export class Pages extends Core {
   async transitionIn(page) {
     this.current = page.dataset.page;
     Hey.PAGE = this.current;
-    console.log(":p:", this.current);
+    // console.log(":p:", this.current);
 
     await Promise.allSettled([
       App.dom.transitionIn(page),

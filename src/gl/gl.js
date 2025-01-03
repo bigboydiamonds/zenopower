@@ -66,8 +66,8 @@ export class Gl {
     this.vp.w = width;
     this.vp.h = height;
 
-    // this.vp.viewSize = this.camera.getViewSize(this.vp.ratio);
-    // this.vp.viewRatio = this.vp.viewSize.w / this.vp.w;
+    this.vp.viewSize = this.camera.getViewSize(this.vp.aspect());
+    this.vp.viewRatio = this.vp.viewSize.w / this.vp.w;
 
     this.renderer.setSize(this.vp.w, this.vp.h);
 

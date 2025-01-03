@@ -23,6 +23,8 @@ export class Screen extends Mesh {
     super(gl, { geometry: new Triangle(gl), program: new Program(gl) });
     Hey.on("PAGE", (page) => this.pageChange(page));
     this.pageChange(Hey.PAGE);
+
+    // this.position.z = 10;
   }
 
   resize() {
@@ -73,7 +75,7 @@ class Program extends P {
     super(gl, {
       vertex: vertex,
       fragment: fragment,
-      transparent: true,
+      transparent: false,
       cullFace: null,
       uniforms: {
         u_time: { value: 0 },
@@ -82,6 +84,7 @@ class Program extends P {
         u_color_light1: { value: hexToVec3(GRADIENT.light1) },
         u_a_dark: { value: 0.5 },
       },
+      depthTest: false,
     });
   }
 
