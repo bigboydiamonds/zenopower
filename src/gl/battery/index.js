@@ -58,6 +58,7 @@ class Program extends P {
       uniforms: {
         u_time: { value: 0 },
         u_mtc: { value: Gl.scene.assets.matcap },
+        u_light: { value: Gl.scene.assets.light },
       },
       // depthTest: false,
     });

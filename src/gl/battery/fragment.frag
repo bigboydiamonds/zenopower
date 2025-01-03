@@ -1,6 +1,7 @@
 precision highp float;
 
 uniform sampler2D u_mtc;
+uniform sampler2D u_light;
 
 varying vec3 v_normal;
 varying vec2 v_uv;
@@ -19,9 +20,14 @@ void main() {
     // * matcap
     vec3 mtc = texture2D(u_mtc, fakeUv).rgb;
 
+    // * light
+    vec3 light = texture2D(u_light, v_uv).rgb;
+
+
 
 
     gl_FragColor.rgb = vec3(fakeUv, 1.);
     gl_FragColor.rgb = mtc;
+    gl_FragColor.rgb = light;
     gl_FragColor.a = 1.0;
 }
