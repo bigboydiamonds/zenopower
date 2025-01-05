@@ -15613,18 +15613,20 @@ ${addLineNumbers(fragment2)}`);
     }
     pageChange(page) {
       const track = document.querySelector("[data-track='gradient']");
-      if (track) {
-        this.track = new Track({
-          element: track,
-          config: {
-            top: "top",
-            bottom: "top"
-          }
-        });
-        setTimeout(() => {
-          this.track.resize();
-        }, 10);
-      }
+      setTimeout(() => {
+        if (track) {
+          this.track = new Track({
+            element: track,
+            config: {
+              top: "top",
+              bottom: "top"
+            }
+          });
+          setTimeout(() => {
+            this.track.resize();
+          }, 10);
+        }
+      });
     }
     pageOut() {
       if (this.track) {

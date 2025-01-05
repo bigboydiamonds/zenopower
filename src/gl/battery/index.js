@@ -70,19 +70,21 @@ export class Battery extends Transform {
   pageChange(page) {
     const track = document.querySelector("[data-track='gradient']");
 
-    if (track) {
-      this.track = new Track({
-        element: track,
-        config: {
-          top: "top",
-          bottom: "top",
-        },
-      });
+    setTimeout(() => {
+      if (track) {
+        this.track = new Track({
+          element: track,
+          config: {
+            top: "top",
+            bottom: "top",
+          },
+        });
 
-      setTimeout(() => {
-        this.track.resize();
-      }, 10);
-    }
+        setTimeout(() => {
+          this.track.resize();
+        }, 10);
+      }
+    });
   }
 
   pageOut() {
@@ -137,8 +139,6 @@ class BatteryModel extends Mesh {
   }
 
   pageChange(page) {
-    // console.log("Battery:pageChange", page);
-
     if (page === "home") {
       this.animateIn();
     }
