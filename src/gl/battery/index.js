@@ -42,27 +42,28 @@ export class Battery extends Transform {
   }
 
   resize() {
-    const hsize = Gl.vp.viewSize.h / 2;
-    console.log("Battery:resize", hsize);
+    setTimeout(() => {
+      if (!App.isMobile) {
+        const hsize = Gl.vp.viewSize.h / 2;
+        this.position.x = Gl.vp.viewSize.w / 5;
+        this.scale.set(hsize, hsize, hsize);
+        this.a.baseY = 0;
+      } else {
+        const hsize = Gl.vp.viewSize.w / 2;
+        const mobileScale = 1.5;
+        this.position.x = 0;
+        this.scale.set(
+          hsize * mobileScale,
+          hsize * mobileScale,
+          hsize * mobileScale
+        );
+        this.a.baseY = -Gl.vp.viewSize.h / 6;
+      }
 
-    if (!App.isMobile) {
-      this.position.x = Gl.vp.viewSize.w / 5;
-      this.scale.set(hsize, hsize, hsize);
-      this.a.baseY = 0;
-    } else {
-      const mobileScale = 0.6;
-      this.position.x = 0;
-      this.scale.set(
-        hsize * mobileScale,
-        hsize * mobileScale,
-        hsize * mobileScale
-      );
-      this.a.baseY = -Gl.vp.viewSize.h / 6;
-    }
-
-    queueMicrotask(() => {
-      this.battery?.resize();
-      this.track?.resize();
+      queueMicrotask(() => {
+        this.battery?.resize();
+        this.track?.resize();
+      });
     });
   }
 
@@ -83,7 +84,9 @@ export class Battery extends Transform {
         },
       });
 
-      this.track.resize();
+      setTimeout(() => {
+        this.track.resize();
+      }, 10);
     }
   }
 

@@ -41,7 +41,7 @@ export class Track extends Observe {
       0,
       1,
       map(
-        window.sscroll.y, // value
+        App.scroll.y, // value
         this.bounds.top, // low1
         this.bounds.bottom, // high1
         this.config.bounds[0],
