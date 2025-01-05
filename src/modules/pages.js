@@ -22,6 +22,8 @@ export class Pages extends Core {
   }
 
   async transitionOut(page) {
+    Hey.PAGE_OUT = page.dataset.page;
+
     await Promise.allSettled([
       App.dom.transitionOut(page),
       Gl.transitionOut(page),

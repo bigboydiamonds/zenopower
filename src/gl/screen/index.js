@@ -22,6 +22,7 @@ export class Screen extends Mesh {
   constructor(gl) {
     super(gl, { geometry: new Triangle(gl), program: new Program(gl) });
     Hey.on("PAGE", (page) => this.pageChange(page));
+
     this.pageChange(Hey.PAGE);
 
     // this.position.z = 10;

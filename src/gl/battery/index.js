@@ -5,11 +5,23 @@ import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
 import gsap from "../../gsap";
 
+import { Track } from "../../util/track";
+import { App } from "../../app";
+
 export class Battery extends Transform {
+  a = {
+    baseY: 0,
+  };
+
   constructor(gl) {
     super();
     this.gl = gl;
     this.create();
+
+    Hey.on("PAGE", (page) => this.pageChange(page));
+    Hey.on("PAGE_OUT", (page) => this.pageOut(page));
+
+    this.pageChange();
   }
 
   async create() {
@@ -23,13 +35,63 @@ export class Battery extends Transform {
 
     this.rotation.x = Gl.mouse.ey * 0.5;
     this.rotation.y = Gl.mouse.ex * Math.PI + t;
+
+    if (this.track) {
+      this.position.y = this.a.baseY + this.track.value * Gl.vp.viewSize.h;
+    }
   }
 
   resize() {
-    this.position.x = Gl.vp.viewSize.w / 5;
     const hsize = Gl.vp.viewSize.h / 2;
-    this.scale.set(hsize, hsize, hsize);
-    this.battery?.resize();
+    console.log("Battery:resize", hsize);
+
+    if (!App.isMobile) {
+      this.position.x = Gl.vp.viewSize.w / 5;
+      this.scale.set(hsize, hsize, hsize);
+      this.a.baseY = 0;
+    } else {
+      const mobileScale = 0.6;
+      this.position.x = 0;
+      this.scale.set(
+        hsize * mobileScale,
+        hsize * mobileScale,
+        hsize * mobileScale
+      );
+      this.a.baseY = -Gl.vp.viewSize.h / 6;
+    }
+
+    queueMicrotask(() => {
+      this.battery?.resize();
+      this.track?.resize();
+    });
+  }
+
+  pageChange(page) {
+    const track = document.querySelector("[data-track='gradient']");
+
+    if (track) {
+      this.track = new Track({
+        element: track,
+        config: {
+          top: "top",
+          bottom: "top",
+        },
+        cb: {
+          in: () => {
+            console.log("is in");
+          },
+        },
+      });
+
+      this.track.resize();
+    }
+  }
+
+  pageOut() {
+    if (this.track) {
+      this.track.destroy();
+      this.track = null;
+    }
   }
 }
 
@@ -44,32 +106,50 @@ class BatteryModel extends Mesh {
     this.scale.set(0, 0, 0);
     this.position.y = -Gl.vp.viewSize.h;
 
-    // this.position.z = 1;
-    // console.log(Gl.scene.assets.model.scenes[0][0].children[0].geometry);
+    Hey.on("LOAD", (state) => this.pageChange(Hey.PAGE));
+    Hey.on("PAGE", (page) => this.pageChange(page));
+    Hey.on("PAGE_OUT", (page) => this.animateOut(page));
+  }
 
-    // this.gl = gl;
-
-    Hey.on("LOAD", (state) => {
-      gsap.to(this.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
-        delay: 0.5,
-      });
-
-      gsap.to(this.position, {
-        y: 0,
-        delay: 0.5,
-      });
+  animateIn() {
+    gsap.to(this.scale, {
+      x: 1,
+      y: 1,
+      z: 1,
+      delay: 0.2,
     });
+
+    gsap.to(this.position, {
+      y: 0,
+      delay: 0.2,
+    });
+  }
+
+  async animateOut() {
+    await gsap.to(this.scale, {
+      x: 0,
+      y: 0,
+      z: 0,
+      duration: 0.4,
+    });
+
+    gsap.set(this.position, {
+      y: -Gl.vp.viewSize.h,
+    });
+  }
+
+  pageChange(page) {
+    console.log("Battery:pageChange", page);
+
+    if (page === "home") {
+      this.animateIn();
+    }
   }
 
   resize() {}
 
   render(t) {
     this.program.time = t;
-
-    // this.rotation.y = t * 0.5;
   }
 }
 
