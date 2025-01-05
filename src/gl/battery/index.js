@@ -77,11 +77,6 @@ export class Battery extends Transform {
           top: "top",
           bottom: "top",
         },
-        cb: {
-          in: () => {
-            console.log("is in");
-          },
-        },
       });
 
       setTimeout(() => {
@@ -142,7 +137,7 @@ class BatteryModel extends Mesh {
   }
 
   pageChange(page) {
-    console.log("Battery:pageChange", page);
+    // console.log("Battery:pageChange", page);
 
     if (page === "home") {
       this.animateIn();

@@ -15619,11 +15619,6 @@ ${addLineNumbers(fragment2)}`);
           config: {
             top: "top",
             bottom: "top"
-          },
-          cb: {
-            in: () => {
-              console.log("is in");
-            }
           }
         });
         setTimeout(() => {
@@ -15675,7 +15670,6 @@ ${addLineNumbers(fragment2)}`);
       });
     }
     pageChange(page) {
-      console.log("Battery:pageChange", page);
       if (page === "home") {
         this.animateIn();
       }
