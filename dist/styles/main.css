@@ -375,10 +375,6 @@ nav {
   .w--current [data-css=corner-nav] {
     opacity: 1;
   }
-  [data-css=corner-nav] {
-    [data-css=angles-a] {
-    }
-  }
 }
 [data-nav=w].dark {
   transition: color var(--duration) var(--easeOut);
@@ -396,6 +392,20 @@ nav {
   }
   .menu-icon-line {
     background-color: var(--col--yankeeblue);
+  }
+}
+.nav-bg {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+.dark {
+  .nav-bg {
+    background-color: #fff;
+  }
+}
+.scrolled {
+  .nav-bg {
+    opacity: 1;
   }
 }
 

@@ -71,10 +71,10 @@
     opacity: 1;
   }
 
-  [data-css="corner-nav"] {
+  /* [data-css="corner-nav"] {
     [data-css="angles-a"] {
     }
-  }
+  } */
 }
 
 /* dark nav (other) */
@@ -101,5 +101,23 @@
 
   .menu-icon-line {
     background-color: var(--col--yankeeblue);
+  }
+}
+
+/* background Bar */
+.nav-bg {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.dark {
+  .nav-bg {
+    background-color: #fff;
+  }
+}
+
+.scrolled {
+  .nav-bg {
+    opacity: 1;
   }
 }

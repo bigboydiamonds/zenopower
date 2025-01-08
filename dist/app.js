@@ -7375,12 +7375,31 @@
   var Nav = class {
     wrapper = document.querySelector("[data-nav='w']");
     links = [...document.querySelectorAll("[data-nav='link']")];
+    isTop = true;
     constructor() {
       this.input = this.wrapper.querySelector("input");
       hey_default.on("PAGE", (page) => this.handleColor(page));
       hey_default.on("LOAD", (state) => this.onLoad(state));
       this.handleColor(hey_default.PAGE);
+      queueMicrotask(() => {
+        App.scroll.subscribe(this.onScroll);
+      });
     }
+    onScroll = (e) => {
+      if (e.progress < 0.01) {
+        if (!this.isTop) {
+          this.isTop = true;
+          this.wrapper.classList.remove("scrolled");
+          console.log("top");
+        }
+      } else {
+        if (this.isTop) {
+          this.isTop = false;
+          this.wrapper.classList.add("scrolled");
+          console.log("not top");
+        }
+      }
+    };
     onLoad(state) {
       switch (state) {
         //   case "full":

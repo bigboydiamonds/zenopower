@@ -1,9 +1,12 @@
 import gsap, { ANIMATION } from "../gsap";
 import Hey from "../hey";
+import { App } from "../app";
 
 export class Nav {
   wrapper = document.querySelector("[data-nav='w']");
   links = [...document.querySelectorAll("[data-nav='link']")];
+
+  isTop = true;
 
   constructor() {
     this.input = this.wrapper.querySelector("input");
@@ -12,7 +15,28 @@ export class Nav {
     this.handleColor(Hey.PAGE);
 
     // console.log(this.input);
+
+    queueMicrotask(() => {
+      App.scroll.subscribe(this.onScroll);
+    });
   }
+
+  onScroll = (e) => {
+    // console.log(e.progress);
+    if (e.progress < 0.01) {
+      if (!this.isTop) {
+        this.isTop = true;
+        this.wrapper.classList.remove("scrolled");
+        console.log("top");
+      }
+    } else {
+      if (this.isTop) {
+        this.isTop = false;
+        this.wrapper.classList.add("scrolled");
+        console.log("not top");
+      }
+    }
+  };
 
   onLoad(state) {
     switch (state) {
