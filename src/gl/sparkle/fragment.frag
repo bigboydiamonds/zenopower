@@ -18,10 +18,9 @@ void main() {
 
     float color = smoothstep(0.5, 0.3, dist);
 
-    alpha *= (v_random * 0.5 + 0.5 + sin(u_time * 3. + v_random)) * .5;
+    alpha *= (v_random * 0.5 + 0.5 + sin(u_time * 3. + v_random)) * .5 - u_a_scroll * .05;
     
-    alpha = mix(alpha, 0., u_a_scroll);
 
     gl_FragColor.rgb = vec3(1.);
-    gl_FragColor.a = alpha * .3;
+    gl_FragColor.a = alpha * .5;
 }
