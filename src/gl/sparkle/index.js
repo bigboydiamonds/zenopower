@@ -1,9 +1,13 @@
-import { Plane, Geometry, Mesh, Program } from "ogl";
+import { Plane, Geometry, Mesh, Program as P } from "ogl";
 import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
 
-export class Instance extends Mesh {
-  constructor(gl, num = 10, { attribs } = {}) {
+import Hey from "../../hey";
+
+import { App } from "../../app";
+
+export class Sparkle extends Mesh {
+  constructor(gl, num = 8, { attribs } = {}) {
     if (!attribs) attribs = new Plane(gl).attributes;
 
     super(gl, {
@@ -11,39 +15,52 @@ export class Instance extends Mesh {
         ...attribs,
         ...calcAttributes(num),
       }),
-      program: new Material(gl),
+      program: new Program(gl),
     });
 
     const scale = 0.2;
     this.scale.set(scale, scale, scale);
+
+    Hey.on("PAGE", (page) => this.pageChange(page));
+    this.pageChange(Hey.PAGE);
+  }
+
+  pageChange(page) {
+    if (page === "home") {
+      this.visible = true;
+    } else {
+      this.visible = false;
+    }
   }
 
   resize() {}
 
   render(t) {
     this.program.time = t;
+
     // this.position.x = Math.sin(t) * 0.2;
   }
 }
 
-export default class extends Program {
+class Program extends P {
   constructor(gl, options = {}) {
     super(gl, {
       vertex: vertex,
       fragment: fragment,
       transparent: true,
       cullFace: null,
-      // depthTest: false,
-      // depthWrite: false,
+      depthTest: false,
+      depthWrite: false,
+      uniforms: {
+        u_time: { value: 0 },
+        u_a_scroll: { value: 0 },
+      },
     });
-
-    this.uniforms = {
-      u_time: { value: 0 },
-    };
   }
 
   set time(t) {
     this.uniforms.u_time.value = t;
+    this.uniforms.u_a_scroll.value = App.scroll.y;
   }
 }
 

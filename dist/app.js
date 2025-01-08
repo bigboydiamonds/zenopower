@@ -14335,6 +14335,59 @@ ${addLineNumbers(fragment2)}`);
     }
   };
 
+  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Plane.js
+  var Plane = class _Plane extends Geometry {
+    constructor(gl, { width = 1, height = 1, widthSegments = 1, heightSegments = 1, attributes = {} } = {}) {
+      const wSegs = widthSegments;
+      const hSegs = heightSegments;
+      const num = (wSegs + 1) * (hSegs + 1);
+      const numIndices = wSegs * hSegs * 6;
+      const position = new Float32Array(num * 3);
+      const normal = new Float32Array(num * 3);
+      const uv = new Float32Array(num * 2);
+      const index = numIndices > 65536 ? new Uint32Array(numIndices) : new Uint16Array(numIndices);
+      _Plane.buildPlane(position, normal, uv, index, width, height, 0, wSegs, hSegs);
+      Object.assign(attributes, {
+        position: { size: 3, data: position },
+        normal: { size: 3, data: normal },
+        uv: { size: 2, data: uv },
+        index: { data: index }
+      });
+      super(gl, attributes);
+    }
+    static buildPlane(position, normal, uv, index, width, height, depth, wSegs, hSegs, u = 0, v = 1, w = 2, uDir = 1, vDir = -1, i = 0, ii = 0) {
+      const io = i;
+      const segW = width / wSegs;
+      const segH = height / hSegs;
+      for (let iy = 0; iy <= hSegs; iy++) {
+        let y = iy * segH - height / 2;
+        for (let ix = 0; ix <= wSegs; ix++, i++) {
+          let x = ix * segW - width / 2;
+          position[i * 3 + u] = x * uDir;
+          position[i * 3 + v] = y * vDir;
+          position[i * 3 + w] = depth / 2;
+          normal[i * 3 + u] = 0;
+          normal[i * 3 + v] = 0;
+          normal[i * 3 + w] = depth >= 0 ? 1 : -1;
+          uv[i * 2] = ix / wSegs;
+          uv[i * 2 + 1] = 1 - iy / hSegs;
+          if (iy === hSegs || ix === wSegs) continue;
+          let a = io + ix + iy * (wSegs + 1);
+          let b = io + ix + (iy + 1) * (wSegs + 1);
+          let c = io + ix + (iy + 1) * (wSegs + 1) + 1;
+          let d = io + ix + iy * (wSegs + 1) + 1;
+          index[ii * 6] = a;
+          index[ii * 6 + 1] = b;
+          index[ii * 6 + 2] = d;
+          index[ii * 6 + 3] = b;
+          index[ii * 6 + 4] = c;
+          index[ii * 6 + 5] = d;
+          ii++;
+        }
+      }
+    }
+  };
+
   // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/extras/Triangle.js
   var Triangle = class extends Geometry {
     constructor(gl, { attributes = {} } = {}) {
@@ -15394,6 +15447,93 @@ ${addLineNumbers(fragment2)}`);
     return Math.min(Math.max(num, min), max);
   }
 
+  // src/gl/sparkle/vertex.vert
+  var vertex_default2 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec3 a_posmod;\nattribute float a_random;\nattribute vec4 a_id;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying float v_random;\n// varying vec4 v_id;\n\nvoid main() {\n  vec3 pos = position;\n  pos *= vec3(.1);\n  pos += a_posmod * 2.;\n\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);\n\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n  v_random = a_random;\n\n}\n";
+
+  // src/gl/sparkle/fragment.frag
+  var fragment_default2 = "precision highp float;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n// varying vec4 v_id;\n\nvarying float v_random;\n\nuniform float u_time;\nuniform float u_a_scroll;\n\n\n\nvoid main() {\n    float dist = distance(v_uv, vec2(0.5));\n    float alpha = 1.0 - smoothstep(0., 0.5, dist);\n\n    float color = smoothstep(0.5, 0.3, dist);\n\n    alpha *= (v_random * 0.5 + 0.5 + sin(u_time * 3. + v_random)) * .5 - u_a_scroll * .5;\n    \n\n    gl_FragColor.rgb = vec3(1.);\n    gl_FragColor.a = alpha * .5;\n}\n";
+
+  // src/gl/sparkle/index.js
+  var Sparkle = class extends Mesh {
+    constructor(gl, num = 8, { attribs } = {}) {
+      if (!attribs) attribs = new Plane(gl).attributes;
+      super(gl, {
+        geometry: new Geometry(gl, {
+          ...attribs,
+          ...calcAttributes(num)
+        }),
+        program: new Program2(gl)
+      });
+      const scale5 = 0.2;
+      this.scale.set(scale5, scale5, scale5);
+      hey_default.on("PAGE", (page) => this.pageChange(page));
+      this.pageChange(hey_default.PAGE);
+    }
+    pageChange(page) {
+      if (page === "home") {
+        this.visible = true;
+      } else {
+        this.visible = false;
+      }
+    }
+    resize() {
+    }
+    render(t) {
+      this.program.time = t;
+    }
+  };
+  var Program2 = class extends Program {
+    constructor(gl, options = {}) {
+      super(gl, {
+        vertex: vertex_default2,
+        fragment: fragment_default2,
+        transparent: true,
+        cullFace: null,
+        depthTest: false,
+        depthWrite: false,
+        uniforms: {
+          u_time: { value: 0 },
+          u_a_scroll: { value: 0 }
+        }
+      });
+    }
+    set time(t) {
+      this.uniforms.u_time.value = t;
+      this.uniforms.u_a_scroll.value = App.scroll.y;
+    }
+  };
+  function calcAttributes(num) {
+    let idA = new Float32Array(num * 4);
+    let posmodA = new Float32Array(num * 3);
+    let randomA = new Float32Array(num * 1);
+    for (let i = 0; i < num; i += 1) {
+      let id = i + 1;
+      idA.set(
+        [
+          (id >> 0 & 255) / 255,
+          (id >> 8 & 255) / 255,
+          (id >> 16 & 255) / 255,
+          (id >> 24 & 255) / 255
+        ],
+        i * 4
+      );
+      posmodA.set(
+        [
+          Math.random() * 5 - 2.5,
+          Math.random() * 5 - 2.5,
+          Math.random() * 5 - 2.5
+        ],
+        i * 3
+      );
+      randomA.set([Math.random() * 4], i);
+    }
+    return {
+      a_id: { instanced: 1, size: 4, data: idA },
+      a_random: { instanced: 1, size: 1, data: randomA },
+      a_posmod: { instanced: 1, size: 3, data: posmodA }
+    };
+  }
+
   // src/util/clientRect.js
   var clientRect = (element) => {
     const bounds = element.getBoundingClientRect();
@@ -15496,9 +15636,11 @@ ${addLineNumbers(fragment2)}`);
       dark: hey_default.PAGE === "home" ? 1 : 0
     };
     constructor(gl) {
-      super(gl, { geometry: new Triangle(gl), program: new Program2(gl) });
+      super(gl, { geometry: new Triangle(gl), program: new Program3(gl) });
       hey_default.on("PAGE", (page) => this.pageChange(page));
       this.pageChange(hey_default.PAGE);
+      this.sparkle = new Sparkle(gl, 10);
+      this.addChild(this.sparkle);
     }
     resize() {
       this.track?.resize();
@@ -15510,6 +15652,7 @@ ${addLineNumbers(fragment2)}`);
         1,
         this.a.dark - this.track?.value || 0
       );
+      this.sparkle?.render(t);
     }
     /* lifecycle */
     pageChange(page) {
@@ -15533,7 +15676,7 @@ ${addLineNumbers(fragment2)}`);
       }
     }
   };
-  var Program2 = class extends Program {
+  var Program3 = class extends Program {
     constructor(gl) {
       super(gl, {
         vertex: vertex_default,
@@ -15566,10 +15709,10 @@ ${addLineNumbers(fragment2)}`);
   }
 
   // src/gl/battery/vertex.vert
-  var vertex_default2 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\nvarying vec3 v_view;\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
+  var vertex_default3 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\nvarying vec3 v_view;\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
 
   // src/gl/battery/fragment.frag
-  var fragment_default2 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc = texture2D(u_mtc, fakeUv).rgb;\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc = texture2D(u_mtc, fakeUv).rgb;\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/gl/battery/index.js
   var Battery = class extends Transform {
@@ -15649,7 +15792,7 @@ ${addLineNumbers(fragment2)}`);
     constructor(gl) {
       super(gl, {
         geometry: Gl.scene.assets.model.scenes[0][0].children[0].geometry,
-        program: new Program3(gl),
+        program: new Program4(gl),
         frustumCulled: false
       });
       this.scale.set(0, 0, 0);
@@ -15692,11 +15835,11 @@ ${addLineNumbers(fragment2)}`);
       this.program.time = t;
     }
   };
-  var Program3 = class extends Program {
+  var Program4 = class extends Program {
     constructor(gl) {
       super(gl, {
-        vertex: vertex_default2,
-        fragment: fragment_default2,
+        vertex: vertex_default3,
+        fragment: fragment_default3,
         transparent: true,
         cullFace: null,
         uniforms: {

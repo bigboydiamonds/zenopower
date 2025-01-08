@@ -7,6 +7,8 @@ import gsap, { ANIMATION } from "../../gsap";
 import Hey from "../../hey";
 import { Gl } from "../gl";
 
+import { Sparkle } from "../sparkle";
+
 import { Track } from "../../util/track";
 
 const GRADIENT = {
@@ -23,9 +25,12 @@ export class Screen extends Mesh {
 
   constructor(gl) {
     super(gl, { geometry: new Triangle(gl), program: new Program(gl) });
-    Hey.on("PAGE", (page) => this.pageChange(page));
 
+    Hey.on("PAGE", (page) => this.pageChange(page));
     this.pageChange(Hey.PAGE);
+
+    this.sparkle = new Sparkle(gl, 10);
+    this.addChild(this.sparkle);
   }
 
   resize() {
@@ -39,6 +44,8 @@ export class Screen extends Mesh {
       1,
       this.a.dark - this.track?.value || 0
     );
+
+    this.sparkle?.render(t);
   }
 
   /* lifecycle */

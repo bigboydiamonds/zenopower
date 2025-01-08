@@ -16,15 +16,19 @@ uniform float u_time;
 
 varying vec3 v_normal;
 varying vec2 v_uv;
+varying float v_random;
 // varying vec4 v_id;
 
 void main() {
   vec3 pos = position;
-  pos += a_posmod;
+  pos *= vec3(.1);
+  pos += a_posmod * 2.;
+
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 
   v_normal = normalize(normalMatrix * normal);
   v_uv = uv;
-  // v_id = a_id;
+  v_random = a_random;
+
 }
