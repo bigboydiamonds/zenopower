@@ -485,7 +485,7 @@ body {
       transition: filter var(--duration) var(--ease-out);
     }
     [data-news=arrow] {
-      transform: rotate(0deg);
+      transform: rotate(45deg);
       transition: transform var(--duration) var(--ease-out);
     }
   }
@@ -494,7 +494,7 @@ body {
       filter: grayscale(0%);
     }
     [data-news=arrow] {
-      transform: rotate(45deg);
+      transform: rotate(90deg);
     }
   }
 }
