@@ -38,7 +38,8 @@ export class Battery extends Transform {
     this.rotation.z = (-Math.PI / 4) * 0.5;
 
     if (this.track) {
-      this.position.y = this.a.baseY + this.track.value * Gl.vp.viewSize.h;
+      this.position.y =
+        this.a.baseY + this.track.value * Gl.vp.viewSize.h * 0.8;
     }
 
     if (Gl.scene.bg.track) {
