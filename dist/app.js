@@ -10123,6 +10123,7 @@
       this.callbacks = [];
       this.init();
       window.sscroll = this;
+      queueMicrotask(() => this.scrollTo(0, { offset: 0, immediate: true }));
     }
     init() {
       this.y = window.scrollY;

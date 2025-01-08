@@ -30,6 +30,7 @@ export class Scroll extends Lenis {
 
     this.init();
     window.sscroll = this;
+    queueMicrotask(() => this.scrollTo(0, { offset: 0, immediate: true }));
   }
 
   init() {
