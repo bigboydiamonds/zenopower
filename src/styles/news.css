@@ -5,3 +5,15 @@
 
   color: black;
 } */
+
+.news-slider-w {
+  /* outline: 1px solid red; */
+
+  svg {
+    transition: opacity 0.3s;
+  }
+
+  .disabled svg {
+    opacity: 0.5;
+  }
+}

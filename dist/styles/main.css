@@ -422,6 +422,14 @@ nav {
 }
 
 /* src/styles/news.css */
+.news-slider-w {
+  svg {
+    transition: opacity 0.3s;
+  }
+  .disabled svg {
+    opacity: 0.5;
+  }
+}
 
 /* src/styles/main.css */
 * {
