@@ -7402,7 +7402,7 @@
       this.input.checked = false;
       this.links.forEach((link) => {
         let pathName = new URL(link.href).pathname;
-        if (pathName === "/") pathName = "home";
+        if (pathName === "/") pathName = "/home";
         if (pathName === "/" + page) {
           link.classList.add("w--current");
         } else {

@@ -38,7 +38,9 @@ export class Nav {
     // console.log(this.links, page);
     this.links.forEach((link) => {
       let pathName = new URL(link.href).pathname;
-      if (pathName === "/") pathName = "home";
+      if (pathName === "/") pathName = "/home";
+
+      // console.log(pathName, "/" + page, pathName === "/" + page);
 
       if (pathName === "/" + page) {
         link.classList.add("w--current");
