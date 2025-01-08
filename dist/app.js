@@ -15913,6 +15913,7 @@ ${addLineNumbers(fragment2)}`);
   var assets = {
     //   img: null,
     matcap: URL2 + "metal1.png",
+    matcap2: URL2 + "metal3.png",
     model: URL2 + "zeno3.glb",
     light: URL2 + "light1.png"
   };
