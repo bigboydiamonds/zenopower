@@ -12,7 +12,8 @@ import { Track } from "../../util/track";
 const GRADIENT = {
   dark1: 0x0d151b,
   dark2: 0x71a3b0,
-  light1: 0xd5e3ed,
+  light1: 0xf4f7fa,
+  light2: 0xd4e5ed,
 };
 
 export class Screen extends Mesh {
@@ -84,6 +85,7 @@ class Program extends P {
         u_color_dark1: { value: hexToVec3(GRADIENT.dark1) },
         u_color_dark2: { value: hexToVec3(GRADIENT.dark2) },
         u_color_light1: { value: hexToVec3(GRADIENT.light1) },
+        u_color_light2: { value: hexToVec3(GRADIENT.light2) },
         u_a_dark: { value: 0.5 },
         u_a_mouse: { value: [0, 0] },
       },
