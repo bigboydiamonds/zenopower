@@ -15,7 +15,7 @@ uniform vec2 u_a_mouse;
 const vec2 light_focus = vec2(0.75, 0.5);
 
 void main() {
-    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv, u_time)));
+    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv, u_time * 2.)));
     float ho_grad = smoothstep(0.5, 1., v_uv.x + ns);
 
     vec3 col1 = mix(u_color_light1, u_color_dark1, u_a_dark);
