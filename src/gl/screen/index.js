@@ -8,10 +8,9 @@ import Hey from "../../hey";
 import { Gl } from "../gl";
 
 import { Sparkle } from "../sparkle";
+import { Track } from "../../util/track";
 
 import { visible } from "../../util/gui";
-
-import { Track } from "../../util/track";
 
 const GRADIENT = {
   dark1: 0x0d151b,

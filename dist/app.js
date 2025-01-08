@@ -15467,7 +15467,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec2 uv;\nattribute vec2 position;\nvarying vec2 v_uv;\n\nvoid main() {\n  vec2 pos = position;\n\n  gl_Position = vec4(pos, 0, 1);\n  v_uv = uv;\n}\n";
 
   // src/gl/screen/fragment.frag
-  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform vec3 u_color_light2;\nuniform float u_a_dark;\n\nvarying vec2 v_uv;\nuniform vec2 u_a_mouse;\n\nconst vec2 light_focus = vec2(0.75, 0.5);\n\nvoid main() {\n    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv, u_time)));\n\n    vec3 col1 = mix(u_color_light1, u_color_dark1, u_a_dark);\n    vec3 col2 = mix(u_color_light2, u_color_dark2, u_a_dark);\n\n    vec3 color = mix(col1, col2, ns);\n\n    \n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform vec3 u_color_light2;\nuniform float u_a_dark;\n\nvarying vec2 v_uv;\nuniform vec2 u_a_mouse;\n\nconst vec2 light_focus = vec2(0.75, 0.5);\n\nvoid main() {\n    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv, u_time)));\n    float ho_grad = smoothstep(0.5, 1., v_uv.x + ns);\n\n    vec3 col1 = mix(u_color_light1, u_color_dark1, u_a_dark);\n    vec3 col2 = mix(u_color_light2, u_color_dark2, u_a_dark);\n\n    vec3 color = mix(col1, col2, (ns + ho_grad)/2.);\n\n \n    gl_FragColor.rgb = color;\n    // gl_FragColor.rgb = vec3(ho_grad);\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/util/math.js
   function lerp4(v0, v1, t) {
@@ -15565,6 +15565,96 @@ ${addLineNumbers(fragment2)}`);
       a_random: { instanced: 1, size: 1, data: randomA },
       a_posmod: { instanced: 1, size: 3, data: posmodA }
     };
+  }
+
+  // src/util/clientRect.js
+  var clientRect = (element) => {
+    const bounds = element.getBoundingClientRect();
+    const scroll = App.scroll.y;
+    return {
+      // screen
+      top: bounds.top + scroll,
+      bottom: bounds.bottom + scroll,
+      width: bounds.width,
+      height: bounds.height,
+      left: bounds.left,
+      right: bounds.right,
+      wh: window.innerHeight,
+      ww: window.innerWidth,
+      offset: bounds.top + scroll
+      // centery: bounds.top + scroll + bounds.height / 2, // check if correct
+      // centerx: bounds.left + bounds.width / 2, // check if correct
+    };
+  };
+
+  // src/util/track.js
+  var Track = class extends Observe {
+    constructor({ element, config: config3, cb, addClass }) {
+      super({ element, config: config3, cb, addClass });
+      this.element = element;
+      this.config = {
+        bounds: [0, 1],
+        top: "bottom",
+        bottom: "top",
+        ...config3
+      };
+      this.value = 0;
+      this.resize();
+      this.scrollUnsub = App.scroll.subscribe(this.#render.bind(this));
+    }
+    resize() {
+      this.bounds = computeBounds(this.element, this.config);
+    }
+    #render() {
+      this.value = clamp4(
+        0,
+        1,
+        map(
+          App.scroll.y,
+          // value
+          this.bounds.top,
+          // low1
+          this.bounds.bottom,
+          // high1
+          this.config.bounds[0],
+          this.config.bounds[1]
+          // low2, high2
+        )
+      );
+      if (this.render) this.render(this.value);
+    }
+    destroy() {
+      this.stop();
+      this.in.disconnect();
+      this.out.disconnect();
+      this.scrollUnsub();
+    }
+  };
+  function computeBounds(el, config3) {
+    const bounds = clientRect(el);
+    switch (config3.top) {
+      case "top":
+        bounds.top = bounds.top;
+        break;
+      case "center":
+        bounds.top = bounds.top - bounds.wh / 2;
+        break;
+      case "bottom":
+        bounds.top = bounds.top - bounds.wh;
+        break;
+    }
+    switch (config3.bottom) {
+      case "top":
+        bounds.bottom = bounds.bottom;
+        break;
+      case "center":
+        bounds.bottom = bounds.bottom - bounds.wh / 2;
+        break;
+      case "bottom":
+        bounds.bottom = bounds.bottom - bounds.wh;
+        break;
+    }
+    return { ...bounds };
   }
 
   // node_modules/.pnpm/lil-gui@0.20.0/node_modules/lil-gui/dist/lil-gui.esm.js
@@ -17305,96 +17395,6 @@ ${addLineNumbers(fragment2)}`);
   gui.add(gui.params, "lightColor1");
   gui.add(gui.params, "lightColor2");
 
-  // src/util/clientRect.js
-  var clientRect = (element) => {
-    const bounds = element.getBoundingClientRect();
-    const scroll = App.scroll.y;
-    return {
-      // screen
-      top: bounds.top + scroll,
-      bottom: bounds.bottom + scroll,
-      width: bounds.width,
-      height: bounds.height,
-      left: bounds.left,
-      right: bounds.right,
-      wh: window.innerHeight,
-      ww: window.innerWidth,
-      offset: bounds.top + scroll
-      // centery: bounds.top + scroll + bounds.height / 2, // check if correct
-      // centerx: bounds.left + bounds.width / 2, // check if correct
-    };
-  };
-
-  // src/util/track.js
-  var Track = class extends Observe {
-    constructor({ element, config: config3, cb, addClass }) {
-      super({ element, config: config3, cb, addClass });
-      this.element = element;
-      this.config = {
-        bounds: [0, 1],
-        top: "bottom",
-        bottom: "top",
-        ...config3
-      };
-      this.value = 0;
-      this.resize();
-      this.scrollUnsub = App.scroll.subscribe(this.#render.bind(this));
-    }
-    resize() {
-      this.bounds = computeBounds(this.element, this.config);
-    }
-    #render() {
-      this.value = clamp4(
-        0,
-        1,
-        map(
-          App.scroll.y,
-          // value
-          this.bounds.top,
-          // low1
-          this.bounds.bottom,
-          // high1
-          this.config.bounds[0],
-          this.config.bounds[1]
-          // low2, high2
-        )
-      );
-      if (this.render) this.render(this.value);
-    }
-    destroy() {
-      this.stop();
-      this.in.disconnect();
-      this.out.disconnect();
-      this.scrollUnsub();
-    }
-  };
-  function computeBounds(el, config3) {
-    const bounds = clientRect(el);
-    switch (config3.top) {
-      case "top":
-        bounds.top = bounds.top;
-        break;
-      case "center":
-        bounds.top = bounds.top - bounds.wh / 2;
-        break;
-      case "bottom":
-        bounds.top = bounds.top - bounds.wh;
-        break;
-    }
-    switch (config3.bottom) {
-      case "top":
-        bounds.bottom = bounds.bottom;
-        break;
-      case "center":
-        bounds.bottom = bounds.bottom - bounds.wh / 2;
-        break;
-      case "bottom":
-        bounds.bottom = bounds.bottom - bounds.wh;
-        break;
-    }
-    return { ...bounds };
-  }
-
   // src/gl/screen/index.js
   var GRADIENT = {
     dark1: 857371,
@@ -17498,7 +17498,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default3 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\nvarying vec3 v_view;\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
 
   // src/gl/battery/fragment.frag
-  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;\n    vec3 mtc = mix(mtc1, mtc2, .3);\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\nvarying vec3 v_view;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;\n    vec3 mtc = mix(mtc1, mtc2, .8);\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/gl/battery/index.js
   var Battery = class extends Transform {
@@ -17667,7 +17667,7 @@ ${addLineNumbers(fragment2)}`);
   var assets = {
     //   img: null,
     matcap: URL2 + "metal1.png",
-    matcap2: URL2 + "metal3.png",
+    matcap2: URL2 + "metal4.png",
     model: URL2 + "zeno3.glb",
     light: URL2 + "light1.png"
   };
