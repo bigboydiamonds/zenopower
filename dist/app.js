@@ -7390,13 +7390,11 @@
         if (!this.isTop) {
           this.isTop = true;
           this.wrapper.classList.remove("scrolled");
-          console.log("top");
         }
       } else {
         if (this.isTop) {
           this.isTop = false;
           this.wrapper.classList.add("scrolled");
-          console.log("not top");
         }
       }
     };
