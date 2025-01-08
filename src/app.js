@@ -5,6 +5,7 @@ import { Pages } from "./modules/pages";
 import { Gl } from "./gl/gl";
 import { isTablet } from "./util/queries";
 import gsap from "./gsap";
+import "./util/gui";
 
 export class App {
   static body = document.querySelector("body");

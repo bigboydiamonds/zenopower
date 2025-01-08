@@ -60,8 +60,8 @@ export class Gl {
   static render() {
     this.time += 0.005;
 
-    this.mouse.ex = lerp(this.mouse.ex, this.mouse.x, 0.1);
-    this.mouse.ey = lerp(this.mouse.ey, this.mouse.y, 0.1);
+    this.mouse.ex = lerp(this.mouse.ex, this.mouse.x, 0.05);
+    this.mouse.ey = lerp(this.mouse.ey, this.mouse.y, 0.05);
 
     this.controls?.update();
     this.scene?.render(this.time);

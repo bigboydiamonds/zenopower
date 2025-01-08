@@ -53,6 +53,7 @@ export class Battery extends Transform {
         const hsize = Gl.vp.viewSize.w / 2;
         const mobileScale = 1.5;
         this.position.x = 0;
+
         this.scale.set(
           hsize * mobileScale,
           hsize * mobileScale,
@@ -162,6 +163,7 @@ class Program extends P {
       uniforms: {
         u_time: { value: 0 },
         u_mtc: { value: Gl.scene.assets.matcap },
+        u_mtc2: { value: Gl.scene.assets.matcap2 },
         u_light: { value: Gl.scene.assets.light },
       },
       // depthTest: false,

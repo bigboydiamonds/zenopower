@@ -9,6 +9,8 @@ import { Gl } from "../gl";
 
 import { Sparkle } from "../sparkle";
 
+import { visible } from "../../util/gui";
+
 import { Track } from "../../util/track";
 
 const GRADIENT = {
@@ -46,6 +48,15 @@ export class Screen extends Mesh {
     );
 
     this.sparkle?.render(t);
+
+    if (window.gui && visible) {
+      this.program.uniforms.u_color_light1.value = hexToVec3String(
+        window.gui.params.lightColor1
+      );
+      this.program.uniforms.u_color_light2.value = hexToVec3String(
+        window.gui.params.lightColor2
+      );
+    }
   }
 
   /* lifecycle */
@@ -106,5 +117,14 @@ function hexToVec3(hex) {
     ((hex >> 16) & 255) / 255,
     ((hex >> 8) & 255) / 255,
     (hex & 255) / 255,
+  ];
+}
+
+// hex to vec for strings with # in front
+function hexToVec3String(hex) {
+  return [
+    parseInt(hex.substring(1, 3), 16) / 255,
+    parseInt(hex.substring(3, 5), 16) / 255,
+    parseInt(hex.substring(5, 7), 16) / 255,
   ];
 }

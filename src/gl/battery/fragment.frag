@@ -1,6 +1,8 @@
 precision highp float;
 
 uniform sampler2D u_mtc;
+uniform sampler2D u_mtc2;
+
 uniform sampler2D u_light;
 
 varying vec3 v_normal;
@@ -18,7 +20,9 @@ void main() {
     vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;
 
     // * matcap
-    vec3 mtc = texture2D(u_mtc, fakeUv).rgb;
+    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;
+    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;
+    vec3 mtc = mix(mtc1, mtc2, .3);
 
     // * light
     vec3 light = texture2D(u_light, v_uv).rgb;
