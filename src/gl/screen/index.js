@@ -14,8 +14,8 @@ import { Track } from "../../util/track";
 const GRADIENT = {
   dark1: 0x0d151b,
   dark2: 0x71a3b0,
-  light1: 0xf4f7fa,
-  light2: 0xd4e5ed,
+  light1: 0xf7fafc,
+  light2: 0xc4dce5,
 };
 
 export class Screen extends Mesh {
