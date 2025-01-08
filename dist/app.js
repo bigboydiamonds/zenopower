@@ -17371,7 +17371,7 @@ ${addLineNumbers(fragment2)}`);
   // src/util/gui.js
   window.gui = new GUI();
   gui.params = {
-    progress: 0,
+    // progress: 0,
     lightColor1: "#f7fafc",
     lightColor2: "#c4dce5"
   };
@@ -17391,7 +17391,6 @@ ${addLineNumbers(fragment2)}`);
       }
     }
   });
-  gui.add(gui.params, "progress", 0, 1, 0.01);
   gui.add(gui.params, "lightColor1");
   gui.add(gui.params, "lightColor2");
 
