@@ -40,6 +40,12 @@ export class Battery extends Transform {
     if (this.track) {
       this.position.y = this.a.baseY + this.track.value * Gl.vp.viewSize.h;
     }
+
+    if (Gl.scene.bg.track) {
+      this.battery.program.uniforms.u_a_illuminate.value =
+        Gl.scene.bg.track.value;
+      // console.log(Gl.scene.bg.track.value);
+    }
   }
 
   resize() {
@@ -165,6 +171,7 @@ class Program extends P {
         u_mtc: { value: Gl.scene.assets.matcap },
         u_mtc2: { value: Gl.scene.assets.matcap2 },
         u_light: { value: Gl.scene.assets.light },
+        u_a_illuminate: { value: 0 },
       },
       // depthTest: false,
     });

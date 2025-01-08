@@ -9,7 +9,10 @@ varying vec3 v_normal;
 varying vec2 v_uv;
 varying vec4 v_color;
 
+
 varying vec3 v_view;
+
+uniform float u_a_illuminate;
 
 
 void main() {
@@ -22,7 +25,7 @@ void main() {
     // * matcap
     vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;
     vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;
-    vec3 mtc = mix(mtc1, mtc2, .8);
+    vec3 mtc = mix(mtc1, mtc2, u_a_illuminate * .8 + .2);
 
     // * light
     vec3 light = texture2D(u_light, v_uv).rgb;
