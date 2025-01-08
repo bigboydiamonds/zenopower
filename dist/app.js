@@ -7380,7 +7380,6 @@
       hey_default.on("PAGE", (page) => this.handleColor(page));
       hey_default.on("LOAD", (state) => this.onLoad(state));
       this.handleColor(hey_default.PAGE);
-      console.log(this.input);
     }
     onLoad(state) {
       switch (state) {

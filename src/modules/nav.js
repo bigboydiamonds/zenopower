@@ -11,7 +11,7 @@ export class Nav {
     Hey.on("LOAD", (state) => this.onLoad(state));
     this.handleColor(Hey.PAGE);
 
-    console.log(this.input);
+    // console.log(this.input);
   }
 
   onLoad(state) {
