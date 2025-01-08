@@ -26,8 +26,6 @@ export class Screen extends Mesh {
     Hey.on("PAGE", (page) => this.pageChange(page));
 
     this.pageChange(Hey.PAGE);
-
-    // this.position.z = 10;
   }
 
   resize() {
@@ -35,8 +33,6 @@ export class Screen extends Mesh {
   }
 
   render(t) {
-    // if (this.track) console.log(this.track.value); // track homepage color
-
     this.program.time = t * 0.2;
     this.program.uniforms.u_a_dark.value = clamp(
       0,
@@ -47,8 +43,6 @@ export class Screen extends Mesh {
 
   /* lifecycle */
   pageChange(page) {
-    // console.log("BG:pageChange", page);
-
     gsap.to(this.a, {
       dark: page === "home" ? 1 : 0,
       duration: ANIMATION.page.duration,
