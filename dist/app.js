@@ -7411,10 +7411,8 @@
       });
       if (page !== "home") {
         this.wrapper.classList.add("dark");
-        console.log("not home");
       } else {
         this.wrapper.classList.remove("dark");
-        console.log("home");
       }
     }
   };
