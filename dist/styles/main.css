@@ -19,6 +19,9 @@
 }
 [data-css=block-bg] {
   position: relative;
+  svg {
+    transition: transform var(--duration) var(--ease-out);
+  }
 }
 [data-css=block-bg] > * {
   position: relative;
@@ -35,6 +38,11 @@
   transform-origin: left;
   transform: scaleX(0);
   transition: transform var(--duration) var(--ease-out);
+}
+[data-css=block-bg]:hover {
+  svg {
+    transform: rotate(45deg);
+  }
 }
 [data-css=block-bg]:hover > * {
   color: #65baac;

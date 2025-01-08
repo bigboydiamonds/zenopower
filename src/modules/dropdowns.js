@@ -1,5 +1,5 @@
 export class Dropdowns {
-  current = null;
+  current = 0;
 
   constructor(el) {
     this.el = el;

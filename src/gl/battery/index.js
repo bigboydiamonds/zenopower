@@ -35,6 +35,7 @@ export class Battery extends Transform {
 
     this.rotation.x = Gl.mouse.ey * 0.3;
     this.rotation.y = Gl.mouse.ex * 0.3;
+    this.rotation.z = (-Math.PI / 4) * 0.5;
 
     if (this.track) {
       this.position.y = this.a.baseY + this.track.value * Gl.vp.viewSize.h;

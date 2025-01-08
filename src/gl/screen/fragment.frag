@@ -24,10 +24,10 @@ void main() {
 
     // mix with light focus
     // vec2 focus_uv = mix(vec2(ns), v_uv, .8);
-    float dist = distance(v_uv, light_focus * (u_a_mouse + .5));
-    dist = smoothstep(.5, .0, dist);
+    // float dist = distance(v_uv, light_focus * (u_a_mouse + .5));
+    // dist = smoothstep(.5, .0, dist);
 
-    color += dist * .3;
+    // color += dist * .3;
 
     // float ho_grad = smoothstep(.0, .5, v_uv.x);
     // color += ho_grad * .1;
