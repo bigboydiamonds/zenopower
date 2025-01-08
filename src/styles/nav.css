@@ -12,4 +12,14 @@
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
+
+  .w--current.nav-lk-w {
+    /* transition: color var(--duration) var(--easeOut);
+    color: var(--col--yankeeblue); */
+    color: #10728c;
+  }
+
+  .menu-icon-line {
+    background-color: var(--col--yankeeblue);
+  }
 }

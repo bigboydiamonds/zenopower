@@ -37,10 +37,41 @@
   transition: transform var(--duration) var(--ease-out);
 }
 [data-css=block-bg]:hover > * {
-  opacity: 0.8;
+  color: #65baac;
 }
 [data-css=block-bg]:hover:before {
   transform: scaleX(1);
+}
+[data-css=shiny] {
+  --duration: 5s;
+  img:nth-child(1) {
+    animation: shiny1 var(--duration) infinite;
+  }
+  img:nth-child(2) {
+    animation: shiny2 var(--duration) infinite;
+  }
+}
+@keyframes shiny1 {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes shiny2 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* src/styles/variables.css */
@@ -160,13 +191,15 @@ html.lenis body {
   transition: opacity 0.5s;
 }
 .w--current [data-css=corner-r] {
-  opacity: 1;
   transition: opacity 0.5s;
 }
 [data-css=angles-a] {
   --size: 4px;
   --color: #65baac;
   position: relative;
+}
+.w--current [data-css=angles-a] {
+  --color: #10728c;
 }
 [data-css=angles-a]::before,
 [data-css=angles-a]::after {
@@ -297,6 +330,12 @@ nav {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
+  .w--current.nav-lk-w {
+    color: #10728c;
+  }
+  .menu-icon-line {
+    background-color: var(--col--yankeeblue);
+  }
 }
 
 /* src/styles/embla.css */
@@ -310,6 +349,8 @@ nav {
   flex: 0 0 100%;
   min-width: 0;
 }
+
+/* src/styles/news.css */
 
 /* src/styles/main.css */
 * {
@@ -411,10 +452,13 @@ body {
   [data-tab=content] > * {
     overflow: hidden;
   }
-  [data-tab=cb] {
-  }
   [data-tab=icon] {
+    transform: rotate(180deg);
     transition: transform var(--duration) var(--ease-out);
+  }
+  .crosshair {
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease-out);
   }
 }
 [data-tab=w]:has(input:checked) {
@@ -423,7 +467,15 @@ body {
     grid-template-rows: 1fr;
   }
   [data-tab=icon] {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
   }
+  .crosshair {
+    opacity: 1;
+    transition: opacity var(--duration) var(--ease-out);
+  }
+}
+.newsletter-field::placeholder {
+  color: var(--col--yankeeblue);
+  opacity: 0.5;
 }
 /*# sourceMappingURL=main.css.map */

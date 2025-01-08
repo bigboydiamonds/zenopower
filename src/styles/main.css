@@ -7,6 +7,7 @@
 @import "lines.css";
 @import "nav.css";
 @import "embla.css";
+@import "news.css";
 
 * {
   box-sizing: border-box;
@@ -15,11 +16,8 @@
   user-select: none;
 }
 
-/* font-size: calc(((24 / 1920) * 100) * 1vw); */
-
 html {
   font-size: clamp(16px, calc(((24 / 1680) * 100) * 1vw), 24px);
-  /* font-size: 16px; */
 }
 
 body {
@@ -136,11 +134,17 @@ body {
     overflow: hidden;
   }
 
-  [data-tab="cb"] {
-  }
+  /* [data-tab="cb"] {
+  } */
 
   [data-tab="icon"] {
+    transform: rotate(180deg);
     transition: transform var(--duration) var(--ease-out);
+  }
+
+  .crosshair {
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease-out);
   }
 }
 
@@ -152,6 +156,17 @@ body {
   }
 
   [data-tab="icon"] {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
   }
+
+  .crosshair {
+    opacity: 1;
+    transition: opacity var(--duration) var(--ease-out);
+  }
+}
+
+/* newsletter placeholder */
+.newsletter-field::placeholder {
+  color: var(--col--yankeeblue);
+  opacity: 0.5;
 }

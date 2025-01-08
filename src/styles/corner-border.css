@@ -62,7 +62,6 @@
 }
 
 .w--current [data-css="corner-r"] {
-  opacity: 1;
   transition: opacity 0.5s;
 }
 
@@ -70,6 +69,10 @@
   --size: 4px;
   --color: #65baac;
   position: relative;
+}
+
+.w--current [data-css="angles-a"] {
+  --color: #10728c;
 }
 
 [data-css="angles-a"]::before,

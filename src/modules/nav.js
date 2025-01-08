@@ -6,9 +6,12 @@ export class Nav {
   links = [...document.querySelectorAll("[data-nav='link']")];
 
   constructor() {
+    this.input = this.wrapper.querySelector("input");
     Hey.on("PAGE", (page) => this.handleColor(page));
     Hey.on("LOAD", (state) => this.onLoad(state));
     this.handleColor(Hey.PAGE);
+
+    console.log(this.input);
   }
 
   onLoad(state) {
@@ -30,6 +33,8 @@ export class Nav {
   }
 
   handleColor(page) {
+    this.input.checked = false;
+
     // console.log(this.links, page);
     this.links.forEach((link) => {
       let pathName = new URL(link.href).pathname;
@@ -46,8 +51,10 @@ export class Nav {
 
     if (page !== "home") {
       this.wrapper.classList.add("dark");
+      console.log("not home");
     } else {
       this.wrapper.classList.remove("dark");
+      console.log("home");
     }
   }
 }

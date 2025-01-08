@@ -8,6 +8,8 @@ export class Dropdowns {
     this.items.forEach((item, i) => {
       item.querySelector("input").onchange = this.onChange.bind(this, i);
     });
+
+    this.items[0].querySelector("input").checked = true;
   }
 
   onChange(i, e) {

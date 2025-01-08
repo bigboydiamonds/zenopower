@@ -5,6 +5,7 @@ import { clamp } from "../../util/math";
 
 import gsap, { ANIMATION } from "../../gsap";
 import Hey from "../../hey";
+import { Gl } from "../gl";
 
 import { Track } from "../../util/track";
 
@@ -84,6 +85,7 @@ class Program extends P {
         u_color_dark2: { value: hexToVec3(GRADIENT.dark2) },
         u_color_light1: { value: hexToVec3(GRADIENT.light1) },
         u_a_dark: { value: 0.5 },
+        u_a_mouse: { value: [0, 0] },
       },
       depthTest: false,
     });
@@ -91,6 +93,7 @@ class Program extends P {
 
   set time(t) {
     this.uniforms.u_time.value = t;
+    this.uniforms.u_a_mouse.value = [Gl.mouse.ex, Gl.mouse.ey];
   }
 }
 

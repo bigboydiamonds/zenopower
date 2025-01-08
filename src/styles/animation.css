@@ -51,9 +51,46 @@
 }
 
 [data-css="block-bg"]:hover > * {
-  opacity: 0.8;
+  color: #65baac;
 }
 
 [data-css="block-bg"]:hover:before {
   transform: scaleX(1);
+}
+
+/* newsletter images alternate */
+[data-css="shiny"] {
+  --duration: 5s;
+
+  img:nth-child(1) {
+    animation: shiny1 var(--duration) infinite;
+  }
+
+  img:nth-child(2) {
+    animation: shiny2 var(--duration) infinite;
+  }
+}
+
+@keyframes shiny1 {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shiny2 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
