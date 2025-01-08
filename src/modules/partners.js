@@ -6,11 +6,11 @@ export class Partners {
     this.imgs = [...this.el.querySelectorAll("[data-partners='img']")];
 
     this.imgs.forEach((img, i) => {
-      img.style.zIndex = 0;
+      img.style.zIndex = -0;
 
-      if (i === 0) {
-        img.style.zIndex = 10;
-      }
+      // if (i === 0) {
+      //   img.style.zIndex = 10;
+      // }
     });
 
     this.hovers.forEach((hover, i) => {
@@ -20,6 +20,12 @@ export class Partners {
         });
 
         this.imgs[i].style.zIndex = 10;
+      };
+
+      hover.onmouseleave = () => {
+        this.imgs.forEach((img, i) => {
+          img.style.zIndex = 0;
+        });
       };
     });
   }
