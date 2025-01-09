@@ -9325,7 +9325,7 @@
     }
     async transitionIn(page) {
       this.create();
-      await gsap_default.to(this.wrapper, { autoAlpha: 1, duration: 0.5 });
+      await gsap_default.to(this.wrapper, { autoAlpha: 1, duration: 0.5, delay: 0.2 });
     }
   };
 

@@ -110,7 +110,7 @@ export class Dom {
 
   async transitionIn(page) {
     this.create();
-    await gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5 });
+    await gsap.to(this.wrapper, { autoAlpha: 1, duration: 0.5, delay: 0.2 });
     // console.log("DOM::transitionIn", page);
   }
 }
