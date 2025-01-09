@@ -4,7 +4,9 @@ window.gui = new GUI();
 
 gui.params = {
   // progress: 0,
-  lightColor1: "#f7fafc",
+  bgPower: 0.9,
+  // lightColor1: "#D9E5EF",
+  lightColor1: "#d9e5ef",
   lightColor2: "#c4dce5",
 };
 
@@ -28,7 +30,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// gui.add(gui.params, "progress", 0, 1, 0.01);
+gui.add(gui.params, "bgPower", 0, 1, 0.01);
 gui.add(gui.params, "lightColor1");
 gui.add(gui.params, "lightColor2");
 

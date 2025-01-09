@@ -55,6 +55,8 @@ export class Screen extends Mesh {
       this.program.uniforms.u_color_light2.value = hexToVec3String(
         window.gui.params.lightColor2
       );
+
+      this.program.uniforms.u_BG_POWER.value = window.gui.params.bgPower;
     }
   }
 
@@ -97,6 +99,7 @@ class Program extends P {
         u_color_dark2: { value: hexToVec3(GRADIENT.dark2) },
         u_color_light1: { value: hexToVec3(GRADIENT.light1) },
         u_color_light2: { value: hexToVec3(GRADIENT.light2) },
+        u_BG_POWER: { value: 0.9 },
         u_a_dark: { value: 0.5 },
         u_a_mouse: { value: [0, 0] },
       },
