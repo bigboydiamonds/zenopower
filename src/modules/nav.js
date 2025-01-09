@@ -17,37 +17,28 @@ export class Nav {
     Hey.on("LOAD", (state) => this.onLoad(state));
     this.handleColor(Hey.PAGE);
 
-    console.log(this.anchor, this.anchorTarget);
-
     queueMicrotask(() => {
       App.scroll.subscribe(this.onScroll);
-
       this.anchor.onclick = () => this.handleAnchorClick();
     });
   }
 
   onScroll = (e) => {
-    // console.log(e.progress);
     if (e.progress < 0.01) {
       if (!this.isTop) {
         this.isTop = true;
         this.wrapper.classList.remove("scrolled");
-        // console.log("top");
       }
     } else {
       if (this.isTop) {
         this.isTop = false;
         this.wrapper.classList.add("scrolled");
-        // console.log("not top");
       }
     }
   };
 
   onLoad(state) {
     switch (state) {
-      //   case "full":
-      // this.onLoadFull();
-      // break;
       case "screen":
         gsap.to(this.wrapper, {
           autoAlpha: 1,
@@ -62,8 +53,6 @@ export class Nav {
   }
 
   handleAnchorClick() {
-    // console.log("handleClick", Hey.PAGE, this.anchor);
-
     if (Hey.PAGE === "home") {
       App.scroll.scrollTo(this.anchorTarget);
     } else {
@@ -95,7 +84,6 @@ export class Nav {
       this.anchor.classList.remove("w--current");
     }
 
-    // console.log(this.links, page);
     this.links.forEach((link) => {
       let pathName = new URL(link.href).pathname;
       if (pathName === "/") pathName = "/home";
@@ -105,16 +93,12 @@ export class Nav {
       } else {
         link.classList.remove("w--current");
       }
-
-      // if
     });
 
     if (page !== "home") {
       this.wrapper.classList.add("dark");
-      // console.log("not home");
     } else {
       this.wrapper.classList.remove("dark");
-      // console.log("home");
     }
   }
 }
