@@ -172,7 +172,7 @@ body {
 }
 
 /* lock mobile */
-html,
+/* html,
 body {
   overflow: hidden;
   height: 100%;
@@ -181,4 +181,4 @@ body {
 main {
   height: 100%;
   overflow-y: auto;
-}
+} */
