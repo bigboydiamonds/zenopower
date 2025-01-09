@@ -19,11 +19,27 @@ varying vec2 v_uv;
 varying float v_random;
 // varying vec4 v_id;
 
+#include '../glsl/simplex.glsl'
+
 void main() {
   vec3 pos = position;
-  pos *= vec3(.1);
-  pos += a_posmod * 2.;
+  float ns = simplex3d(vec3(pos.x + u_time, pos.y, pos.z));
+  
 
+  pos *= vec3(.3);
+
+  vec3 posmod = a_posmod;
+  float multi = 1.;
+  float multi_time = 2.;
+
+  posmod.x += sin(u_time * multi_time + v_random + posmod.x * .7) * multi;
+  posmod.y += sin(u_time * multi_time + v_random + posmod.y * .2) * multi;
+  posmod.z += sin(u_time * multi_time + v_random + posmod.z * .5) * multi;
+  
+  pos += posmod;
+
+  pos *= 2.;
+  
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 

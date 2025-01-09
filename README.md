@@ -63,12 +63,11 @@
 
   - [ ] material
   - [ ] new movement
-  - [ ] new movement
 
 - [ ] [gradient]
 
   - [ ] use references (or use gradient in figma)
-  - [ ] make the lights into rendertargets and render to plane
+  - [x] make the lights into rendertargets and render to plane
 
 - [ ] [breezy]
 

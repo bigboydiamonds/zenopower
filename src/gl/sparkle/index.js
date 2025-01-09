@@ -7,7 +7,7 @@ import Hey from "../../hey";
 import { App } from "../../app";
 
 export class Sparkle extends Mesh {
-  constructor(gl, num = 8, { attribs } = {}) {
+  constructor(gl, num = 30, { attribs } = {}) {
     if (!attribs) attribs = new Plane(gl).attributes;
 
     super(gl, {
@@ -18,7 +18,7 @@ export class Sparkle extends Mesh {
       program: new Program(gl),
     });
 
-    const scale = 0.2;
+    const scale = 0.1;
     this.scale.set(scale, scale, scale);
 
     Hey.on("PAGE", (page) => this.pageChange(page));
