@@ -6,7 +6,7 @@ gui.params = {
   // progress: 0,
   bgPower: 0.9,
   // lightColor1: "#D9E5EF",
-  lightColor1: "#d9e5ef",
+  lightColor1: "#bccedd",
   lightColor2: "#c4dce5",
 };
 
