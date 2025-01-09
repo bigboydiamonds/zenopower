@@ -58,6 +58,7 @@
 
 .dark [data-css="angles-nav"] {
   --color: #10728c !important;
+  opacity: 1 !important;
 }
 
 /* light nav (home) */

@@ -195,7 +195,6 @@ html.lenis body {
   transition: opacity 0.5s;
 }
 .w--current.nav-lk-w {
-  opacity: 0.5;
   transition: opacity 0.5s;
 }
 .w--current [data-css=corner-r] {
@@ -374,6 +373,7 @@ nav {
 }
 .dark [data-css=angles-nav] {
   --color: #10728c !important;
+  opacity: 1 !important;
 }
 [data-nav=w] {
   [data-css=corner-nav] {
