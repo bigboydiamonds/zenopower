@@ -14359,6 +14359,159 @@ ${addLineNumbers(fragment2)}`);
     }
   };
 
+  // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/core/RenderTarget.js
+  var RenderTarget = class {
+    constructor(gl, {
+      width = gl.canvas.width,
+      height = gl.canvas.height,
+      target = gl.FRAMEBUFFER,
+      color = 1,
+      // number of color attachments
+      depth = true,
+      stencil = false,
+      depthTexture = false,
+      // note - stencil breaks
+      wrapS = gl.CLAMP_TO_EDGE,
+      wrapT = gl.CLAMP_TO_EDGE,
+      minFilter = gl.LINEAR,
+      magFilter = minFilter,
+      type = gl.UNSIGNED_BYTE,
+      format = gl.RGBA,
+      internalFormat = format,
+      unpackAlignment,
+      premultiplyAlpha
+    } = {}) {
+      this.gl = gl;
+      this.width = width;
+      this.height = height;
+      this.depth = depth;
+      this.buffer = this.gl.createFramebuffer();
+      this.target = target;
+      this.gl.renderer.bindFramebuffer(this);
+      this.textures = [];
+      const drawBuffers = [];
+      for (let i = 0; i < color; i++) {
+        this.textures.push(
+          new Texture(gl, {
+            width,
+            height,
+            wrapS,
+            wrapT,
+            minFilter,
+            magFilter,
+            type,
+            format,
+            internalFormat,
+            unpackAlignment,
+            premultiplyAlpha,
+            flipY: false,
+            generateMipmaps: false
+          })
+        );
+        this.textures[i].update();
+        this.gl.framebufferTexture2D(
+          this.target,
+          this.gl.COLOR_ATTACHMENT0 + i,
+          this.gl.TEXTURE_2D,
+          this.textures[i].texture,
+          0
+          /* level */
+        );
+        drawBuffers.push(this.gl.COLOR_ATTACHMENT0 + i);
+      }
+      if (drawBuffers.length > 1) this.gl.renderer.drawBuffers(drawBuffers);
+      this.texture = this.textures[0];
+      if (depthTexture && (this.gl.renderer.isWebgl2 || this.gl.renderer.getExtension("WEBGL_depth_texture"))) {
+        this.depthTexture = new Texture(gl, {
+          width,
+          height,
+          minFilter: this.gl.NEAREST,
+          magFilter: this.gl.NEAREST,
+          format: this.gl.DEPTH_COMPONENT,
+          internalFormat: gl.renderer.isWebgl2 ? this.gl.DEPTH_COMPONENT16 : this.gl.DEPTH_COMPONENT,
+          type: this.gl.UNSIGNED_INT
+        });
+        this.depthTexture.update();
+        this.gl.framebufferTexture2D(
+          this.target,
+          this.gl.DEPTH_ATTACHMENT,
+          this.gl.TEXTURE_2D,
+          this.depthTexture.texture,
+          0
+          /* level */
+        );
+      } else {
+        if (depth && !stencil) {
+          this.depthBuffer = this.gl.createRenderbuffer();
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+          this.gl.framebufferRenderbuffer(this.target, this.gl.DEPTH_ATTACHMENT, this.gl.RENDERBUFFER, this.depthBuffer);
+        }
+        if (stencil && !depth) {
+          this.stencilBuffer = this.gl.createRenderbuffer();
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.stencilBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.STENCIL_INDEX8, width, height);
+          this.gl.framebufferRenderbuffer(this.target, this.gl.STENCIL_ATTACHMENT, this.gl.RENDERBUFFER, this.stencilBuffer);
+        }
+        if (depth && stencil) {
+          this.depthStencilBuffer = this.gl.createRenderbuffer();
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthStencilBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_STENCIL, width, height);
+          this.gl.framebufferRenderbuffer(this.target, this.gl.DEPTH_STENCIL_ATTACHMENT, this.gl.RENDERBUFFER, this.depthStencilBuffer);
+        }
+      }
+      this.gl.renderer.bindFramebuffer({ target: this.target });
+    }
+    setSize(width, height) {
+      if (this.width === width && this.height === height) return;
+      this.width = width;
+      this.height = height;
+      this.gl.renderer.bindFramebuffer(this);
+      for (let i = 0; i < this.textures.length; i++) {
+        this.textures[i].width = width;
+        this.textures[i].height = height;
+        this.textures[i].needsUpdate = true;
+        this.textures[i].update();
+        this.gl.framebufferTexture2D(
+          this.target,
+          this.gl.COLOR_ATTACHMENT0 + i,
+          this.gl.TEXTURE_2D,
+          this.textures[i].texture,
+          0
+          /* level */
+        );
+      }
+      if (this.depthTexture) {
+        this.depthTexture.width = width;
+        this.depthTexture.height = height;
+        this.depthTexture.needsUpdate = true;
+        this.depthTexture.update();
+        this.gl.framebufferTexture2D(
+          this.target,
+          this.gl.DEPTH_ATTACHMENT,
+          this.gl.TEXTURE_2D,
+          this.depthTexture.texture,
+          0
+          /* level */
+        );
+      } else {
+        if (this.depthBuffer) {
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+        }
+        if (this.stencilBuffer) {
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.stencilBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.STENCIL_INDEX8, width, height);
+        }
+        if (this.depthStencilBuffer) {
+          this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.depthStencilBuffer);
+          this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_STENCIL, width, height);
+        }
+      }
+      this.gl.renderer.bindFramebuffer({ target: this.target });
+    }
+  };
+
   // node_modules/.pnpm/ogl@1.0.9/node_modules/ogl/src/math/Vec4.js
   var Vec4 = class extends Array {
     constructor(x = 0, y = x, z = x, w = x) {
@@ -15524,7 +15677,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec2 uv;\nattribute vec2 position;\nvarying vec2 v_uv;\n\nvoid main() {\n  vec2 pos = position;\n\n  gl_Position = vec4(pos, 0, 1);\n  v_uv = uv;\n}\n";
 
   // src/gl/screen/fragment.frag
-  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform vec3 u_color_light2;\nuniform float u_a_dark;\n\nvarying vec2 v_uv;\nuniform vec2 u_a_mouse;\n\nconst vec2 light_focus = vec2(0.75, 0.5);\n\nuniform float u_BG_POWER;\n\nvoid main() {\n    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv * .5 + u_time, u_time * 1.5)));\n    float ho_grad = smoothstep(0.5, 1., v_uv.x + ns);\n\n    float grad = (ns + ho_grad) / 2.;\n\n    vec3 col1 = mix(u_color_dark1 * 1.2, u_color_dark2,  grad);\n    vec3 col2 = mix(u_color_light1, u_color_light2, grad);\n\n    vec3 color = mix(col2 * u_BG_POWER, col1, u_a_dark);\n\n    \n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default = "precision highp float;\nconst vec3 BLUE_DARK = vec3(0.0, 0.0, 0.5);\nconst vec3 BLUE_LIGHT = vec3(0.0, 0.0, 1.0);\n//	Simplex 3D Noise\n//	by Ian McEwan, Stefan Gustavson (https://github.com/stegu/webgl-noise)\n//\nvec4 permute(vec4 x) {\n    return mod(((x * 34.0) + 1.0) * x, 289.0);\n}\nvec4 taylorInvSqrt(vec4 r) {\n    return 1.79284291400159 - 0.85373472095314 * r;\n}\n\nfloat simplex3d(vec3 v) {\n    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n\n    // First corner\n    vec3 i = floor(v + dot(v, C.yyy));\n    vec3 x0 = v - i + dot(i, C.xxx);\n\n    // Other corners\n    vec3 g = step(x0.yzx, x0.xyz);\n    vec3 l = 1.0 - g;\n    vec3 i1 = min(g.xyz, l.zxy);\n    vec3 i2 = max(g.xyz, l.zxy);\n\n    //  x0 = x0 - 0. + 0.0 * C\n    vec3 x1 = x0 - i1 + 1.0 * C.xxx;\n    vec3 x2 = x0 - i2 + 2.0 * C.xxx;\n    vec3 x3 = x0 - 1. + 3.0 * C.xxx;\n\n    // Permutations\n    i = mod(i, 289.0);\n    vec4 p = permute(permute(permute(\n                    i.z + vec4(0.0, i1.z, i2.z, 1.0))\n                    + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n                + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n\n    // Gradients\n    // ( N*N points uniformly over a square, mapped onto an octahedron.)\n    float n_ = 1.0 / 7.0; // N=7\n    vec3 ns = n_ * D.wyz - D.xzx;\n\n    vec4 j = p - 49.0 * floor(p * ns.z * ns.z); //  mod(p,N*N)\n\n    vec4 x_ = floor(j * ns.z);\n    vec4 y_ = floor(j - 7.0 * x_); // mod(j,N)\n\n    vec4 x = x_ * ns.x + ns.yyyy;\n    vec4 y = y_ * ns.x + ns.yyyy;\n    vec4 h = 1.0 - abs(x) - abs(y);\n\n    vec4 b0 = vec4(x.xy, y.xy);\n    vec4 b1 = vec4(x.zw, y.zw);\n\n    vec4 s0 = floor(b0) * 2.0 + 1.0;\n    vec4 s1 = floor(b1) * 2.0 + 1.0;\n    vec4 sh = -step(h, vec4(0.0));\n\n    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n\n    vec3 p0 = vec3(a0.xy, h.x);\n    vec3 p1 = vec3(a0.zw, h.y);\n    vec3 p2 = vec3(a1.xy, h.z);\n    vec3 p3 = vec3(a1.zw, h.w);\n\n    //Normalise gradients\n    vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));\n    p0 *= norm.x;\n    p1 *= norm.y;\n    p2 *= norm.z;\n    p3 *= norm.w;\n\n    // Mix final noise value\n    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n    m = m * m;\n    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1),\n                dot(p2, x2), dot(p3, x3)));\n}\n\n\nuniform float u_time;\nuniform vec3 u_color_dark1;\nuniform vec3 u_color_dark2;\nuniform vec3 u_color_light1;\nuniform vec3 u_color_light2;\nuniform float u_a_dark;\nuniform sampler2D u_sparkle;\n\nvarying vec2 v_uv;\nuniform vec2 u_a_mouse;\n\nconst vec2 light_focus = vec2(0.75, 0.5);\n\nuniform float u_BG_POWER;\n\nvoid main() {\n    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv * .5 + u_time, u_time * 1.5)));\n    float ho_grad = smoothstep(0.5, 1., v_uv.x + ns);\n\n\n    float grad = (ns + ho_grad) / 2.;\n\n    vec3 col1 = mix(u_color_dark1 * 1.2, u_color_dark2,  grad);\n    vec3 col2 = mix(u_color_light1, u_color_light2, grad);\n\n    vec3 color = mix(col2 * u_BG_POWER, col1, u_a_dark);\n\n    // sparkle texture\n    vec4 sparkle = texture2D(u_sparkle, v_uv);\n    color = mix(color, sparkle.rgb, sparkle.a);\n\n    \n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/util/math.js
   function lerp4(v0, v1, t) {
@@ -17461,19 +17614,26 @@ ${addLineNumbers(fragment2)}`);
     light1: 16251644,
     light2: 12901605
   };
+  function getSize() {
+    return {
+      width: Gl.vp.w * Gl.vp.dpr(),
+      height: Gl.vp.h * Gl.vp.dpr()
+    };
+  }
   var Screen = class extends Mesh {
+    target = new RenderTarget(Gl.gl, getSize());
     a = {
       dark: hey_default.PAGE === "home" ? 1 : 0
     };
     constructor(gl) {
       super(gl, { geometry: new Triangle(gl), program: new Program3(gl) });
+      this.sparkle = new Sparkle(gl, 10);
       hey_default.on("PAGE", (page) => this.pageChange(page));
       this.pageChange(hey_default.PAGE);
-      this.sparkle = new Sparkle(gl, 10);
-      this.addChild(this.sparkle);
     }
     resize() {
       this.track?.resize();
+      this.target = new RenderTarget(Gl.gl, getSize());
     }
     render(t) {
       this.program.time = t * 0.2;
@@ -17483,6 +17643,14 @@ ${addLineNumbers(fragment2)}`);
         this.a.dark - this.track?.value || 0
       );
       this.sparkle?.render(t);
+      if (this.sparkle) {
+        Gl.renderer.render({
+          scene: this.sparkle,
+          camera: Gl.camera,
+          target: this.target
+        });
+        this.program.uniforms.u_sparkle.value = this.target.texture;
+      }
       if (window.gui && visible) {
         this.program.uniforms.u_color_light1.value = hexToVec3String(
           window.gui.params.lightColor1
@@ -17530,7 +17698,8 @@ ${addLineNumbers(fragment2)}`);
           u_color_light2: { value: hexToVec3(GRADIENT.light2) },
           u_BG_POWER: { value: 0.9 },
           u_a_dark: { value: 0.5 },
-          u_a_mouse: { value: [0, 0] }
+          u_a_mouse: { value: [0, 0] },
+          u_sparkle: { value: new Texture(gl) }
         },
         depthTest: false
       });

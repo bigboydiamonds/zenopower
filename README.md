@@ -55,17 +55,32 @@
 
 ---
 
-- [ ] new news loop
+- [ ] [new-news-loop]
+
   - [ ] new news loop
-- [ ] model
+
+- [ ] [model]
+
   - [ ] material
   - [ ] new movement
   - [ ] new movement
-- [ ] gradient
+
+- [ ] [gradient]
+
   - [ ] use references (or use gradient in figma)
   - [ ] make the lights into rendertargets and render to plane
-- [ ] breezy
+
+- [ ] [breezy]
+
   - [ ] color for toggle background
-  - [ ]
-- [ ] mailchimp
+  - [ ] missing fields
+
+- [ ] [mailchimp]
+
   - [ ] custom submit component
+
+- [ ] markup [tickets]
+
+- [ ] [BUGS]
+
+  - [ ] wrap mobile safari

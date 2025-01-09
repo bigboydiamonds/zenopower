@@ -1,4 +1,4 @@
-import { Triangle, Mesh, Program as P } from "ogl";
+import { Triangle, Mesh, Program as P, RenderTarget, Texture } from "ogl";
 import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
 import { clamp } from "../../util/math";
@@ -19,7 +19,15 @@ const GRADIENT = {
   light2: 0xc4dce5,
 };
 
+function getSize() {
+  return {
+    width: Gl.vp.w * Gl.vp.dpr(),
+    height: Gl.vp.h * Gl.vp.dpr(),
+  };
+}
+
 export class Screen extends Mesh {
+  target = new RenderTarget(Gl.gl, getSize());
   a = {
     dark: Hey.PAGE === "home" ? 1 : 0,
   };
@@ -27,15 +35,15 @@ export class Screen extends Mesh {
   constructor(gl) {
     super(gl, { geometry: new Triangle(gl), program: new Program(gl) });
 
+    this.sparkle = new Sparkle(gl, 10);
+
     Hey.on("PAGE", (page) => this.pageChange(page));
     this.pageChange(Hey.PAGE);
-
-    this.sparkle = new Sparkle(gl, 10);
-    this.addChild(this.sparkle);
   }
 
   resize() {
     this.track?.resize();
+    this.target = new RenderTarget(Gl.gl, getSize());
   }
 
   render(t) {
@@ -47,6 +55,17 @@ export class Screen extends Mesh {
     );
 
     this.sparkle?.render(t);
+
+    // render to target
+    if (this.sparkle) {
+      Gl.renderer.render({
+        scene: this.sparkle,
+        camera: Gl.camera,
+        target: this.target,
+      });
+
+      this.program.uniforms.u_sparkle.value = this.target.texture;
+    }
 
     if (window.gui && visible) {
       this.program.uniforms.u_color_light1.value = hexToVec3String(
@@ -102,6 +121,7 @@ class Program extends P {
         u_BG_POWER: { value: 0.9 },
         u_a_dark: { value: 0.5 },
         u_a_mouse: { value: [0, 0] },
+        u_sparkle: { value: new Texture(gl) },
       },
       depthTest: false,
     });
