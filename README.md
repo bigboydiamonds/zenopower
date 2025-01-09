@@ -55,9 +55,10 @@
 
 ---
 
-- [ ] [new-news-loop]
+- [x] [new-news-loop]
 
-  - [ ] new news loop
+  - [x] new news loop
+  - [ ] add back button
 
 - [ ] [model]
 
@@ -66,7 +67,7 @@
 
 - [ ] [gradient]
 
-  - [ ] use references (or use gradient in figma)
+  - [x] use references (or use gradient in figma)
   - [x] make the lights into rendertargets and render to plane
 
 - [ ] [breezy]
@@ -76,7 +77,9 @@
 
 - [ ] [mailchimp]
 
-  - [ ] custom submit component
+  - [x] custom submit component
+  - [ ] final testing
+  - [ ] states
 
 - [ ] markup [tickets]
 

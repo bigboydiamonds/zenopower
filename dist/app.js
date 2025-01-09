@@ -9232,6 +9232,39 @@
     }
   };
 
+  // src/modules/submit.js
+  var Submit = class {
+    field = document.querySelector('[data-newsletter="field"]');
+    constructor(el) {
+      this.el = el;
+      this.receiver = [...this.el.querySelectorAll("input")];
+      hey_default.on("PAGE", () => this.init());
+      this.init();
+    }
+    init = () => {
+      if (this.field) {
+        this.field.onchange = null;
+      }
+      const fld = document.querySelector('[data-newsletter="field"]');
+      const sub = document.querySelector('[data-newsletter="subscribe"]');
+      if (fld) {
+        fld.oninput = () => {
+          this.receiver[0].value = fld.value;
+        };
+      }
+      if (sub) {
+        sub.onclick = (e) => {
+          e.preventDefault();
+          console.log("submit", this.receiver[0].value);
+          this.receiver[1].click();
+        };
+      }
+    };
+    onChange() {
+      console.log("submit change");
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -9253,6 +9286,10 @@
     {
       selector: '[data-openings="w"]',
       class: Openings
+    },
+    {
+      selector: '[data-submit="w"]',
+      class: Submit
     }
   ];
   var Dom = class {
@@ -15707,7 +15744,6 @@ ${addLineNumbers(fragment2)}`);
         }),
         program: new Program2(gl)
       });
-      console.log(calcAttributes(num));
       const scale5 = 0.1;
       this.scale.set(scale5, scale5, scale5);
       hey_default.on("PAGE", (page) => this.pageChange(page));

@@ -8,6 +8,7 @@ import { Dropdowns } from "./dropdowns";
 
 import { Partners } from "./partners";
 import { Openings } from "./openings";
+import { Submit } from "./submit";
 
 const lib = [
   {
@@ -29,6 +30,10 @@ const lib = [
   {
     selector: '[data-openings="w"]',
     class: Openings,
+  },
+  {
+    selector: '[data-submit="w"]',
+    class: Submit,
   },
 ];
 

@@ -18,8 +18,6 @@ export class Sparkle extends Mesh {
       program: new Program(gl),
     });
 
-    console.log(calcAttributes(num));
-
     const scale = 0.1;
     this.scale.set(scale, scale, scale);
 
