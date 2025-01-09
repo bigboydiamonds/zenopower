@@ -463,6 +463,28 @@ nav {
   }
 }
 
+/* src/styles/location.css */
+[data-svg-loc-def="Seattle, WA"] {
+  [data-svg-loc=washington] {
+    display: none;
+  }
+}
+[data-svg-loc-def="Washington, DC"] {
+  [data-svg-loc=seattle] {
+    display: none;
+  }
+}
+
+/* src/styles/openings.css */
+[data-openings=w] {
+  .dropdown-list {
+    visibility: hidden;
+  }
+  .active .dropdown-list {
+    visibility: visible;
+  }
+}
+
 /* src/styles/main.css */
 * {
   box-sizing: border-box;

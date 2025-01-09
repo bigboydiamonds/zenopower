@@ -1,0 +1,11 @@
+[data-svg-loc-def="Seattle, WA"] {
+  [data-svg-loc="washington"] {
+    display: none;
+  }
+}
+
+[data-svg-loc-def="Washington, DC"] {
+  [data-svg-loc="seattle"] {
+    display: none;
+  }
+}

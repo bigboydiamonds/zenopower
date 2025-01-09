@@ -9116,35 +9116,6 @@
     }
   };
 
-  // src/modules/news.js
-  var News = class {
-    current = 0;
-    constructor(el) {
-      this.el = el;
-      this.btns = this.el.querySelectorAll('[data-news="btn"]');
-      this.articles = this.el.querySelectorAll('[data-news="article"]');
-      this.corners = [...this.el.querySelectorAll('[data-corners="news"]')];
-      this.btns[this.current].parentNode.classList.add("current");
-      this.btns.forEach((btn, index) => {
-        btn.onclick = () => {
-          if (this.current === index) return;
-          this.articles[this.current].style.display = "none";
-          this.btns[this.current].parentNode.classList.remove("current");
-          this.current = index;
-          this.articles[this.current].style.display = "block";
-          this.btns[this.current].parentNode.classList.add("current");
-        };
-      });
-    }
-    destroy() {
-      this.btns.forEach((btn) => {
-        btn.onclick = null;
-      });
-      this.btns = null;
-      this.articles = null;
-    }
-  };
-
   // src/modules/partners.js
   var Partners = class {
     constructor(el) {
@@ -9175,6 +9146,67 @@
     }
   };
 
+  // src/modules/openings.js
+  var Openings = class {
+    constructor(el) {
+      this.el = el;
+      this.filters = [
+        ...this.el.querySelectorAll(
+          '[data-filter="locations"] , [data-filter="department"]'
+        )
+      ];
+      this.filterData = {
+        locations: ["Washington, DC"],
+        departments: []
+      };
+      this.items = [...this.el.querySelectorAll("[data-filter='item']")].map(
+        (it, i) => {
+          const location = it.querySelector("[data-filter-location]").textContent;
+          if (!this.filterData.locations.includes(location)) {
+            this.filterData.locations.push(location);
+          }
+          return {
+            item: it,
+            location,
+            index: i
+          };
+        }
+      );
+      this.filterData.locations.forEach((loc) => {
+        const el2 = this.filters[0].children[1].children[0].cloneNode(true);
+        el2.textContent = loc;
+        this.filters[0].children[1].appendChild(el2);
+        el2.onclick = () => this.filterItems("locations", loc);
+      });
+      this.filters[0].children[1].children[0].onclick = () => this.filterItems("locations", "all");
+      this.filters.forEach((filter) => {
+        filter.onclick = (e) => {
+          e.stopPropagation();
+          filter.classList.toggle("active");
+        };
+      });
+    }
+    filterItems(filter, data) {
+      if (filter === "locations") {
+        this.items.forEach((it) => {
+          if (data === "all") {
+            it.item.style.display = "flex";
+          } else {
+            it.item.style.display = it.location === data ? "flex" : "none";
+          }
+        });
+      }
+    }
+    destroy() {
+      this.filterData.forEach((filter) => {
+        filter.onclick = null;
+      });
+      this.filters.forEach((filter) => {
+        filter.onclick = null;
+      });
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -9190,12 +9222,12 @@
       class: Dropdowns
     },
     {
-      selector: '[data-news="w"]',
-      class: News
-    },
-    {
       selector: '[data-partners="w"]',
       class: Partners
+    },
+    {
+      selector: '[data-openings="w"]',
+      class: Openings
     }
   ];
   var Dom = class {

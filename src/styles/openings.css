@@ -1,0 +1,9 @@
+[data-openings="w"] {
+  .dropdown-list {
+    visibility: hidden;
+  }
+
+  .active .dropdown-list {
+    visibility: visible;
+  }
+}
