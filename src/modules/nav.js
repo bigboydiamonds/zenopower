@@ -5,6 +5,9 @@ import { App } from "../app";
 export class Nav {
   wrapper = document.querySelector("[data-nav='w']");
   links = [...document.querySelectorAll("[data-nav='link']")];
+  anchor = document.querySelector("[data-nav='anchor']");
+  anchorTarget = document.querySelector("[data-s='news']");
+  shouldScrollToAnchor = false;
 
   isTop = true;
 
@@ -14,10 +17,12 @@ export class Nav {
     Hey.on("LOAD", (state) => this.onLoad(state));
     this.handleColor(Hey.PAGE);
 
-    // console.log(this.input);
+    console.log(this.anchor, this.anchorTarget);
 
     queueMicrotask(() => {
       App.scroll.subscribe(this.onScroll);
+
+      this.anchor.onclick = () => this.handleAnchorClick();
     });
   }
 
@@ -56,15 +61,44 @@ export class Nav {
     }
   }
 
+  handleAnchorClick() {
+    // console.log("handleClick", Hey.PAGE, this.anchor);
+
+    if (Hey.PAGE === "home") {
+      App.scroll.scrollTo(this.anchorTarget);
+    } else {
+      this.anchor.querySelector("a").click();
+      this.shouldScrollToAnchor = true;
+    }
+  }
+
   handleColor(page) {
     this.input.checked = false;
+
+    this.anchorTarget = document.querySelector("[data-s='news']");
+
+    if (this.shouldScrollToAnchor) {
+      setTimeout(
+        () =>
+          App.scroll.scrollTo(this.anchorTarget, {
+            duration: 2.2,
+            // immediate: true,
+          }),
+        300
+      );
+      this.shouldScrollToAnchor = false;
+    }
+
+    if (page === "news") {
+      this.anchor.classList.add("w--current");
+    } else {
+      this.anchor.classList.remove("w--current");
+    }
 
     // console.log(this.links, page);
     this.links.forEach((link) => {
       let pathName = new URL(link.href).pathname;
       if (pathName === "/") pathName = "/home";
-
-      // console.log(pathName, "/" + page, pathName === "/" + page);
 
       if (pathName === "/" + page) {
         link.classList.add("w--current");
