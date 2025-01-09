@@ -72,6 +72,14 @@
     opacity: 1;
   }
 
+  [data-css="angles-nav"] {
+    --color: #65baac !important;
+  }
+
+  .w--current > div {
+    color: #65baac !important;
+  }
+
   /* [data-css="corner-nav"] {
     [data-css="angles-a"] {
     }
@@ -79,6 +87,29 @@
 }
 
 /* dark nav (other) */
+[data-nav="w"].dark {
+  transition: color var(--duration) var(--easeOut); /* border: 2px solid blue; */
+
+  color: var(--col--yankeeblue);
+
+  svg {
+    transition: color var(--duration) var(--easeOut);
+    color: var(--col--yankeeblue);
+  }
+
+  .nav-lk-w {
+    transition: color var(--duration) var(--easeOut);
+    color: var(--col--yankeeblue);
+  }
+
+  .w--current > div {
+    color: #10728c !important;
+  }
+
+  .menu-icon-line {
+    background-color: var(--col--yankeeblue);
+  }
+}
 [data-nav="w"].dark {
   transition: color var(--duration) var(--easeOut); /* border: 2px solid blue; */
 
