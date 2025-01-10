@@ -33,6 +33,9 @@ export class Scene extends Transform {
     this.battery = new Battery(this.gl);
     this.battery.setParent(this);
 
+    this.trackBattery = new Battery(this.gl, "[data-mark='battery']");
+    this.trackBattery.setParent(this);
+
     console.timeEnd("::load");
     Hey.LOAD = "full";
   }
@@ -41,10 +44,12 @@ export class Scene extends Transform {
     if (!this.isOn) return;
     this.bg?.render(t);
     this.battery?.render(t);
+    this.trackBattery?.render(t);
   }
 
   resize(vp) {
     this.bg?.resize(vp);
     this.battery?.resize(vp);
+    this.trackBattery?.resize(vp);
   }
 }

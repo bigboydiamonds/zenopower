@@ -74,7 +74,7 @@
 - [ ] [breezy]
 
   - [ ] color for toggle background
-  - [ ] missing fields
+  - [ ] missing fields ???
 
 - [ ] [mailchimp]
 
@@ -84,6 +84,6 @@
 
 - [ ] markup [tickets]
 
-- [ ] [BUGS]
+- [x] [BUGS]
 
-  - [ ] wrap mobile safari
+  - [x] wrap mobile safari

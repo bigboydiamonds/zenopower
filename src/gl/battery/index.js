@@ -11,17 +11,24 @@ import { App } from "../../app";
 export class Battery extends Transform {
   a = {
     baseY: 0,
+    markY: 0,
   };
 
-  constructor(gl) {
+  constructor(gl, mark = null) {
     super();
     this.gl = gl;
+    this.mark = mark;
+
     this.create();
 
     Hey.on("PAGE", (page) => this.pageChange(page));
     Hey.on("PAGE_OUT", (page) => this.pageOut(page));
 
     this.pageChange();
+
+    setTimeout(() => {
+      if (this.mark) this.getTracking();
+    }, 100);
 
     App.scroll.subscribe(() => this.handleScroll());
   }
@@ -41,20 +48,28 @@ export class Battery extends Transform {
     this.rotation.y = Gl.mouse.ex * 0.3;
     this.rotation.z = (-Math.PI / 4) * 0.5;
 
-    if (this.track) {
+    if (this.mark) {
       this.position.y =
-        this.a.baseY + this.track.value * Gl.vp.viewSize.h * 0.8;
+        App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY;
+    } else {
+      this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
 
     if (Gl.scene.bg.track) {
       this.battery.program.uniforms.u_a_illuminate.value =
         Gl.scene.bg.track.value;
-      // console.log(Gl.scene.bg.track.value);
     }
+  }
+
+  getTracking() {
+    const { top } = this.markItem.getBoundingClientRect();
+    this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
   }
 
   resize() {
     setTimeout(() => {
+      if (this.mark && this.markItem) this.getTracking();
+
       if (!App.isMobile) {
         const hsize = Gl.vp.viewSize.h / 2;
         this.position.x = Gl.vp.viewSize.w / 5;
@@ -82,6 +97,16 @@ export class Battery extends Transform {
 
   pageChange(page) {
     const track = document.querySelector("[data-track='gradient']");
+    if (this.mark) {
+      this.markItem = document.querySelector(this.mark);
+
+      if (this.markItem) {
+        this.getTracking();
+        // this.visible = true;
+      } else {
+        // this.visible = false;s
+      }
+    }
 
     setTimeout(() => {
       if (track) {

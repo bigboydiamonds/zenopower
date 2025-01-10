@@ -17781,15 +17781,20 @@ ${addLineNumbers(fragment2)}`);
   // src/gl/battery/index.js
   var Battery = class extends Transform {
     a = {
-      baseY: 0
+      baseY: 0,
+      markY: 0
     };
-    constructor(gl) {
+    constructor(gl, mark = null) {
       super();
       this.gl = gl;
+      this.mark = mark;
       this.create();
       hey_default.on("PAGE", (page) => this.pageChange(page));
       hey_default.on("PAGE_OUT", (page) => this.pageOut(page));
       this.pageChange();
+      setTimeout(() => {
+        if (this.mark) this.getTracking();
+      }, 100);
       App.scroll.subscribe(() => this.handleScroll());
     }
     async create() {
@@ -17804,15 +17809,22 @@ ${addLineNumbers(fragment2)}`);
       this.rotation.x = Gl.mouse.ey * 0.3;
       this.rotation.y = Gl.mouse.ex * 0.3;
       this.rotation.z = -Math.PI / 4 * 0.5;
-      if (this.track) {
-        this.position.y = this.a.baseY + this.track.value * Gl.vp.viewSize.h * 0.8;
+      if (this.mark) {
+        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY;
+      } else {
+        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
       }
       if (Gl.scene.bg.track) {
         this.battery.program.uniforms.u_a_illuminate.value = Gl.scene.bg.track.value;
       }
     }
+    getTracking() {
+      const { top } = this.markItem.getBoundingClientRect();
+      this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
+    }
     resize() {
       setTimeout(() => {
+        if (this.mark && this.markItem) this.getTracking();
         if (!App.isMobile) {
           const hsize = Gl.vp.viewSize.h / 2;
           this.position.x = Gl.vp.viewSize.w / 5;
@@ -17837,6 +17849,13 @@ ${addLineNumbers(fragment2)}`);
     }
     pageChange(page) {
       const track = document.querySelector("[data-track='gradient']");
+      if (this.mark) {
+        this.markItem = document.querySelector(this.mark);
+        if (this.markItem) {
+          this.getTracking();
+        } else {
+        }
+      }
       setTimeout(() => {
         if (track) {
           this.track = new Track({
@@ -18000,6 +18019,8 @@ ${addLineNumbers(fragment2)}`);
       await this.load();
       this.battery = new Battery(this.gl);
       this.battery.setParent(this);
+      this.trackBattery = new Battery(this.gl, "[data-mark='battery']");
+      this.trackBattery.setParent(this);
       console.timeEnd("::load");
       hey_default.LOAD = "full";
     }
@@ -18007,10 +18028,12 @@ ${addLineNumbers(fragment2)}`);
       if (!this.isOn) return;
       this.bg?.render(t);
       this.battery?.render(t);
+      this.trackBattery?.render(t);
     }
     resize(vp) {
       this.bg?.resize(vp);
       this.battery?.resize(vp);
+      this.trackBattery?.resize(vp);
     }
   };
 
@@ -18075,6 +18098,9 @@ ${addLineNumbers(fragment2)}`);
         aspect: this.vp.aspect()
       });
       this.scene.resize(this.vp);
+    }
+    static get px() {
+      console.log("px");
     }
     /** -- Lifecycle */
     static async transitionIn() {
