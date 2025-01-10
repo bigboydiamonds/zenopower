@@ -17787,7 +17787,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default3 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\nattribute vec2 uv2;\nattribute vec4 color;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec2 v_uv2;\n\nvarying vec3 v_view;\n// varying vec4 v_color;\n\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n  v_uv2 = uv2;\n}\n";
 
   // src/gl/battery/fragment.frag
-  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\nuniform sampler2D u_light2;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec2 v_uv2;\n// varying vec4 v_color;\n\n\nvarying vec3 v_view;\n\n\n\nuniform float u_a_illuminate;\n\n\nconst vec3 col_blue = vec3(0.16470588235294117, 0.19607843137254902, 0.25098039215686274);\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    vec3 base_color = mix(col_blue * .1, vec3(0.), step(.5, v_uv2.x));\n    \n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb + base_color;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb + base_color;\n    vec3 mtc = mix(mtc1, mtc2, u_a_illuminate * .8 + .2);\n\n\n\n\n    // * light\n    vec3 light = mix(\n        texture2D(u_light, v_uv).rgb,\n        texture2D(u_light2, v_uv).rgb,\n        u_a_illuminate * .3\n    );\n\n    vec3 color = (mtc * light) * 1.5;\n\n    gl_FragColor.rgb = color;\n    // gl_FragColor.rgb = vec3(step(.5, v_uv2.x), 0., 0.);\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\nuniform sampler2D u_light2;\nuniform sampler2D dirty_mask;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec2 v_uv2;\n// varying vec4 v_color;\n\nvarying vec3 v_view;\n\nuniform float u_a_illuminate;\n\nconst vec3 col_blue = vec3(0.16470588235294117, 0.19607843137254902, 0.25098039215686274);\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    vec3 base_color = mix(col_blue * .2, vec3(0.), step(.5, v_uv2.x));\n    // vec3 dirty = texture2D(dirty_mask, v_uv).rgb;\n    \n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb + base_color;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb + base_color;\n    vec3 mtc = mix(mtc1, mtc2, (u_a_illuminate * .6 + .2));\n\n\n\n\n    // * light\n    vec3 light = mix(\n        texture2D(u_light, v_uv).rgb,\n        texture2D(u_light2, v_uv).rgb,\n        u_a_illuminate * .4\n    );\n\n    vec3 color = (mtc * light) * 1.5;\n\n    gl_FragColor.rgb = color;\n    // gl_FragColor.rgb = dirty;\n    // gl_FragColor.rgb = vec3(step(.5, v_uv2.x), 0., 0.);\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/gl/battery/index.js
   var Battery = class extends Transform {
@@ -17950,6 +17950,7 @@ ${addLineNumbers(fragment2)}`);
           u_mtc2: { value: Gl.scene.assets.matcap2 },
           u_light: { value: Gl.scene.assets.light },
           u_light2: { value: Gl.scene.assets.light2 },
+          dirty_mask: { value: Gl.scene.assets.dirty_mask },
           u_a_illuminate: { value: 0 }
         }
         // depthTest: false,
@@ -17987,7 +17988,8 @@ ${addLineNumbers(fragment2)}`);
     matcap2: URL2 + "metal4.png",
     model: URL2 + "zeno4.glb",
     light: URL2 + "light1.png",
-    light2: URL2 + "light4.png"
+    light2: URL2 + "light4.png",
+    dirty_mask: URL2 + "dirty_mask.jpg"
   };
 
   // src/gl/util/loader.js
