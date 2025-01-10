@@ -17987,7 +17987,7 @@ ${addLineNumbers(fragment2)}`);
     matcap2: URL2 + "metal4.png",
     model: URL2 + "zeno4.glb",
     light: URL2 + "light1.png",
-    light2: URL2 + "light3.png"
+    light2: URL2 + "light4.png"
   };
 
   // src/gl/util/loader.js
