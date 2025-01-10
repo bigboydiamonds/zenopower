@@ -10251,7 +10251,7 @@
         smoothWheel: true,
         easing: easeOutExpo,
         orientation: "vertical",
-        smoothTouch: false,
+        smoothTouch: true,
         touchMultiplier: 2
       });
       this.isActive = true;
