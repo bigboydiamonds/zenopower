@@ -54,7 +54,9 @@ export class Nav {
 
   handleAnchorClick() {
     if (Hey.PAGE === "home") {
-      App.scroll.scrollTo(this.anchorTarget);
+      App.scroll.scrollTo(this.anchorTarget, {
+        offset: -50,
+      });
     } else {
       this.anchor.querySelector("a").click();
       this.shouldScrollToAnchor = true;
@@ -73,6 +75,7 @@ export class Nav {
         () =>
           App.scroll.scrollTo(this.anchorTarget, {
             duration: 2.2,
+            offset: -50,
             // immediate: true,
           }),
         300

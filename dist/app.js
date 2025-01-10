@@ -7418,7 +7418,9 @@
     }
     handleAnchorClick() {
       if (hey_default.PAGE === "home") {
-        App.scroll.scrollTo(this.anchorTarget);
+        App.scroll.scrollTo(this.anchorTarget, {
+          offset: -50
+        });
       } else {
         this.anchor.querySelector("a").click();
         this.shouldScrollToAnchor = true;
@@ -7432,7 +7434,8 @@
       if (this.shouldScrollToAnchor) {
         setTimeout(
           () => App.scroll.scrollTo(this.anchorTarget, {
-            duration: 2.2
+            duration: 2.2,
+            offset: -50
             // immediate: true,
           }),
           300
