@@ -36,6 +36,9 @@ void main() {
     vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb + base_color;
     vec3 mtc = mix(mtc1, mtc2, u_a_illuminate * .8 + .2);
 
+
+
+
     // * light
     vec3 light = mix(
         texture2D(u_light, v_uv).rgb,
