@@ -58,7 +58,7 @@
 - [x] [new-news-loop]
 
   - [x] new news loop
-  - [ ] add back button
+  - [x] add back button
 
 - [ ] [model]
 

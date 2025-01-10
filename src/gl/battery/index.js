@@ -49,8 +49,9 @@ export class Battery extends Transform {
     this.rotation.z = (-Math.PI / 4) * 0.5;
 
     if (this.mark) {
+      const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
       this.position.y =
-        App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY;
+        App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY + offset;
     } else {
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
