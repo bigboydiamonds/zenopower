@@ -9,7 +9,8 @@
   left: 0;
   width: 100vw;
   height: 1px;
-  background: var(--col--zeno-green);
+  background: #101b22;
+
   /* background: red; */
 
   /* opacity: 0.2; */

@@ -17992,7 +17992,6 @@ ${addLineNumbers(fragment2)}`);
           // dirty_mask: { value: Gl.scene.assets.dirty_mask },
           u_a_illuminate: { value: 0 }
         }
-        // depthTest: false,
       });
     }
     set time(t) {
