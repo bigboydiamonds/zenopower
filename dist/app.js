@@ -7384,6 +7384,10 @@
       hey_default.on("PAGE", (page) => this.handleColor(page));
       hey_default.on("LOAD", (state) => this.onLoad(state));
       this.handleColor(hey_default.PAGE);
+      this.checkBoxTrigger = this.wrapper.querySelector("input");
+      this.checkBoxTrigger.onclick = () => {
+        console.log("clicked");
+      };
       queueMicrotask(() => {
         App.scroll.subscribe(this.onScroll);
         this.anchor.onclick = () => this.handleAnchorClick();
