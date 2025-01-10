@@ -15839,7 +15839,8 @@ ${addLineNumbers(fragment2)}`);
     }
     set time(t) {
       this.uniforms.u_time.value = t;
-      this.uniforms.u_a_scroll.value = App.scroll.y;
+      let val = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
+      this.uniforms.u_a_scroll.value = val;
     }
   };
   function calcAttributes(num) {

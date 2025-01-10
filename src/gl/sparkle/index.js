@@ -1,6 +1,7 @@
 import { Plane, Geometry, Mesh, Program as P } from "ogl";
 import vertex from "./vertex.vert";
 import fragment from "./fragment.frag";
+import { Gl } from "../gl";
 
 import Hey from "../../hey";
 
@@ -58,7 +59,9 @@ class Program extends P {
 
   set time(t) {
     this.uniforms.u_time.value = t;
-    this.uniforms.u_a_scroll.value = App.scroll.y;
+
+    let val = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
+    this.uniforms.u_a_scroll.value = val;
   }
 }
 
