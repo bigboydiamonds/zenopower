@@ -4,7 +4,7 @@
   --duration: 0.5s;
 
   input {
-    opacity: 1;
+    /* opacity: 1; */
     inset: 0;
   }
 }
