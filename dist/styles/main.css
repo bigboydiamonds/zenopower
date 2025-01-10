@@ -505,11 +505,17 @@ nav {
     transform: rotate(0deg);
     transition: transform 0.3s;
   }
+  .dropdown-list {
+    z-index: 10000000000;
+  }
 }
 [data-filter=locations].active,
 [data-filter=department].active {
   .drop-icon {
     transform: rotate(180deg);
+  }
+  .dropdown-list {
+    z-index: 10000000000;
   }
 }
 
