@@ -114,8 +114,8 @@ html.lenis body {
   --easing: cubic-bezier(0.215, 0.61, 0.355, 1);
   --duration: 0.5s;
   input {
-    border: 3px solid red;
     opacity: 1;
+    inset: 0;
   }
 }
 .mmenu-drawer {

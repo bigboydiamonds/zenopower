@@ -4,8 +4,8 @@
   --duration: 0.5s;
 
   input {
-    border: 3px solid red;
     opacity: 1;
+    inset: 0;
   }
 }
 
