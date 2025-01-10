@@ -66,8 +66,11 @@ export class Nav {
   handleColor(page) {
     this.input.checked = false;
 
+    // news anchor behaviour
     const footerLink = document.querySelector("[data-ftlink='anchor']");
+    const newsLink = document.querySelector("[data-nslink='anchor']");
     footerLink.onclick = () => this.handleAnchorClick();
+    if (newsLink) newsLink.onclick = () => this.handleAnchorClick();
     this.anchorTarget = document.querySelector("[data-s='news']");
 
     if (this.shouldScrollToAnchor) {

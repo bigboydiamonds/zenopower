@@ -389,6 +389,9 @@ nav {
   .w--current > div {
     color: #65baac !important;
   }
+  .mmenu-drawer {
+    background-color: #0a1117;
+  }
 }
 [data-nav=w].dark {
   transition: color var(--duration) var(--easeOut);
@@ -406,6 +409,9 @@ nav {
   }
   .menu-icon-line {
     background-color: var(--col--yankeeblue);
+  }
+  .mmenu-drawer {
+    background-color: white;
   }
 }
 [data-nav=w].dark {

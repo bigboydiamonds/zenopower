@@ -7,5 +7,5 @@ export const assets = {
   model: URL + "zeno4.glb",
   light: URL + "light1.png",
   light2: URL + "light4.png",
-  dirty_mask: URL + "dirty_mask.jpg",
+  // dirty_mask: URL + "dirty_mask.jpg",
 };

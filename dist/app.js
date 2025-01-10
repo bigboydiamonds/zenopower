@@ -7429,7 +7429,9 @@
     handleColor(page) {
       this.input.checked = false;
       const footerLink = document.querySelector("[data-ftlink='anchor']");
+      const newsLink = document.querySelector("[data-nslink='anchor']");
       footerLink.onclick = () => this.handleAnchorClick();
+      if (newsLink) newsLink.onclick = () => this.handleAnchorClick();
       this.anchorTarget = document.querySelector("[data-s='news']");
       if (this.shouldScrollToAnchor) {
         setTimeout(
@@ -9196,8 +9198,14 @@
       this.items = [...this.el.querySelectorAll("[data-filter='item']")].map(
         (it, i) => {
           const location = it.querySelector("[data-filter-location]").textContent;
+          const dept = it.dataset.dept;
           if (!this.filterData.locations.includes(location)) {
             this.filterData.locations.push(location);
+          }
+          if (!this.filterData.departments.includes(dept)) {
+            if (dept.length > 0) {
+              this.filterData.departments.push(dept);
+            }
           }
           return {
             item: it,
@@ -9212,7 +9220,14 @@
         this.filters[0].children[1].appendChild(el2);
         el2.onclick = () => this.filterItems("locations", loc);
       });
+      this.filterData.departments.forEach((dept) => {
+        const el2 = this.filters[1].children[1].children[0].cloneNode(true);
+        el2.textContent = dept;
+        this.filters[1].children[1].appendChild(el2);
+        el2.onclick = () => this.filterItems("departments", dept);
+      });
       this.filters[0].children[1].children[0].onclick = () => this.filterItems("locations", "all");
+      this.filters[1].children[1].children[0].onclick = () => this.filterItems("departments", "all");
       this.filters.forEach((filter) => {
         filter.onclick = (e) => {
           e.stopPropagation();
@@ -9227,6 +9242,14 @@
             it.item.style.display = "flex";
           } else {
             it.item.style.display = it.location === data ? "flex" : "none";
+          }
+        });
+      } else {
+        this.items.forEach((it) => {
+          if (data === "all") {
+            it.item.style.display = "flex";
+          } else {
+            it.item.style.display = it.item.dataset.dept === data ? "flex" : "none";
           }
         });
       }
@@ -17831,6 +17854,7 @@ ${addLineNumbers(fragment2)}`);
       }
     }
     getTracking() {
+      if (!this.markItem) return;
       const { top } = this.markItem.getBoundingClientRect();
       this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
     }
@@ -17950,7 +17974,7 @@ ${addLineNumbers(fragment2)}`);
           u_mtc2: { value: Gl.scene.assets.matcap2 },
           u_light: { value: Gl.scene.assets.light },
           u_light2: { value: Gl.scene.assets.light2 },
-          dirty_mask: { value: Gl.scene.assets.dirty_mask },
+          // dirty_mask: { value: Gl.scene.assets.dirty_mask },
           u_a_illuminate: { value: 0 }
         }
         // depthTest: false,
@@ -17988,8 +18012,8 @@ ${addLineNumbers(fragment2)}`);
     matcap2: URL2 + "metal4.png",
     model: URL2 + "zeno4.glb",
     light: URL2 + "light1.png",
-    light2: URL2 + "light4.png",
-    dirty_mask: URL2 + "dirty_mask.jpg"
+    light2: URL2 + "light4.png"
+    // dirty_mask: URL + "dirty_mask.jpg",
   };
 
   // src/gl/util/loader.js

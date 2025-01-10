@@ -80,10 +80,9 @@
     color: #65baac !important;
   }
 
-  /* [data-css="corner-nav"] {
-    [data-css="angles-a"] {
-    }
-  } */
+  .mmenu-drawer {
+    background-color: #0a1117;
+  }
 }
 
 /* dark nav (other) */
@@ -109,7 +108,12 @@
   .menu-icon-line {
     background-color: var(--col--yankeeblue);
   }
+
+  .mmenu-drawer {
+    background-color: white;
+  }
 }
+
 [data-nav="w"].dark {
   transition: color var(--duration) var(--easeOut); /* border: 2px solid blue; */
 

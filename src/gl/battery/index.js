@@ -63,6 +63,7 @@ export class Battery extends Transform {
   }
 
   getTracking() {
+    if (!this.markItem) return;
     const { top } = this.markItem.getBoundingClientRect();
     this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
   }
@@ -207,7 +208,7 @@ class Program extends P {
         u_mtc2: { value: Gl.scene.assets.matcap2 },
         u_light: { value: Gl.scene.assets.light },
         u_light2: { value: Gl.scene.assets.light2 },
-        dirty_mask: { value: Gl.scene.assets.dirty_mask },
+        // dirty_mask: { value: Gl.scene.assets.dirty_mask },
         u_a_illuminate: { value: 0 },
       },
       // depthTest: false,
