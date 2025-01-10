@@ -78,6 +78,7 @@
 
   .w--current > div {
     color: #65baac !important;
+    opacity: 1;
   }
 
   .mmenu-drawer {
@@ -112,12 +113,6 @@
   .mmenu-drawer {
     background-color: white;
   }
-}
-
-[data-nav="w"].dark {
-  transition: color var(--duration) var(--easeOut); /* border: 2px solid blue; */
-
-  color: var(--col--yankeeblue);
 
   svg {
     transition: color var(--duration) var(--easeOut);

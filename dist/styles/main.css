@@ -391,6 +391,7 @@ nav {
   }
   .w--current > div {
     color: #65baac !important;
+    opacity: 1;
   }
   .mmenu-drawer {
     background-color: #0a1117;
@@ -416,10 +417,6 @@ nav {
   .mmenu-drawer {
     background-color: white;
   }
-}
-[data-nav=w].dark {
-  transition: color var(--duration) var(--easeOut);
-  color: var(--col--yankeeblue);
   svg {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
