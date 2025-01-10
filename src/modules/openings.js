@@ -91,17 +91,22 @@ export class Openings {
       this.items.forEach((it) => {
         if (data === "all") {
           it.item.style.display = "flex";
+          this.filters[0].children[0].children[0].textContent = "ALL LOCATIONS";
         } else {
           it.item.style.display = it.location === data ? "flex" : "none";
+          this.filters[0].children[0].children[0].textContent = data;
         }
       });
     } else {
       this.items.forEach((it) => {
         if (data === "all") {
           it.item.style.display = "flex";
+          this.filters[1].children[0].children[0].textContent =
+            "ALL DEPARTMENTS";
         } else {
           it.item.style.display =
             it.item.dataset.dept === data ? "flex" : "none";
+          this.filters[1].children[0].children[0].textContent = data;
         }
       });
     }
