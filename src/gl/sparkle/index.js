@@ -7,7 +7,7 @@ import Hey from "../../hey";
 import { App } from "../../app";
 
 export class Sparkle extends Mesh {
-  constructor(gl, num = 30, { attribs } = {}) {
+  constructor(gl, num = 70, { attribs } = {}) {
     if (!attribs) attribs = new Plane(gl).attributes;
 
     super(gl, {

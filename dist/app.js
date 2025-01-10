@@ -15795,7 +15795,7 @@ ${addLineNumbers(fragment2)}`);
 
   // src/gl/sparkle/index.js
   var Sparkle = class extends Mesh {
-    constructor(gl, num = 30, { attribs } = {}) {
+    constructor(gl, num = 70, { attribs } = {}) {
       if (!attribs) attribs = new Plane(gl).attributes;
       super(gl, {
         geometry: new Geometry(gl, {
