@@ -18,7 +18,7 @@ const vec2 light_focus = vec2(0.75, 0.5);
 uniform float u_BG_POWER;
 
 void main() {
-    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv * .6 + u_time, u_time * 1.5)));
+    float ns = smoothstep(0., 1., simplex3d(vec3(v_uv * 1. + u_time, u_time * 1.5)));
     float ho_grad = smoothstep(0.5, 1., v_uv.x + ns);
 
 
