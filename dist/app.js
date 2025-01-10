@@ -7375,7 +7375,7 @@
   var Nav = class {
     wrapper = document.querySelector("[data-nav='w']");
     links = [...document.querySelectorAll("[data-nav='link']")];
-    anchor = document.querySelector("[data-nav='anchor']");
+    anchor = [...document.querySelectorAll("[data-nav='anchor']")];
     anchorTarget = document.querySelector("[data-s='news']");
     shouldScrollToAnchor = false;
     isTop = true;
@@ -7386,7 +7386,9 @@
       this.handleColor(hey_default.PAGE);
       queueMicrotask(() => {
         App.scroll.subscribe(this.onScroll);
-        this.anchor.onclick = () => this.handleAnchorClick();
+        this.anchor.forEach((anchor) => {
+          anchor.onclick = () => this.handleAnchorClick();
+        });
       });
     }
     onScroll = (e) => {
@@ -7417,12 +7419,13 @@
       }
     }
     handleAnchorClick() {
+      console.log("anchor click");
       if (hey_default.PAGE === "home") {
         App.scroll.scrollTo(this.anchorTarget, {
           offset: -50
         });
       } else {
-        this.anchor.querySelector("a").click();
+        this.anchor[0].querySelector("a").click();
         this.shouldScrollToAnchor = true;
       }
     }
@@ -7445,9 +7448,13 @@
         this.shouldScrollToAnchor = false;
       }
       if (page === "news") {
-        this.anchor.classList.add("w--current");
+        this.anchor.forEach((anchor) => {
+          anchor.classList.add("w--current");
+        });
       } else {
-        this.anchor.classList.remove("w--current");
+        this.anchor.forEach((anchor) => {
+          anchor.classList.remove("w--current");
+        });
       }
       this.links.forEach((link) => {
         let pathName = new URL(link.href).pathname;
