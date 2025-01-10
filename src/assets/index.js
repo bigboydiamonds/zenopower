@@ -6,4 +6,5 @@ export const assets = {
   matcap2: URL + "metal4.png",
   model: URL + "zeno3.glb",
   light: URL + "light1.png",
+  light2: URL + "light2.png",
 };

@@ -17787,7 +17787,7 @@ ${addLineNumbers(fragment2)}`);
   var vertex_default3 = "#define MPI 3.1415926538\n#define MTAU 6.28318530718\n\nattribute vec3 position;\nattribute vec3 normal;\nattribute vec2 uv;\n\nuniform mat4 modelViewMatrix;\nuniform mat4 projectionMatrix;\nuniform mat3 normalMatrix;\n\nuniform float u_time;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\n\nvarying vec3 v_view;\n\n\n\n\nvoid main() {\n  vec3 pos = position;\n\n  vec4 transformed = modelViewMatrix * vec4(pos, 1.0);\n  gl_Position = projectionMatrix * transformed;\n\n  v_view = normalize(- transformed.xyz);\n\n  // v_normal = normal;\n  v_normal = normalize(normalMatrix * normal);\n  v_uv = uv;\n}\n";
 
   // src/gl/battery/fragment.frag
-  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\n\nvarying vec3 v_view;\n\nuniform float u_a_illuminate;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;\n    vec3 mtc = mix(mtc1, mtc2, u_a_illuminate * .8 + .2);\n\n    // * light\n    vec3 light = texture2D(u_light, v_uv).rgb;\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
+  var fragment_default3 = "precision highp float;\n\nuniform sampler2D u_mtc;\nuniform sampler2D u_mtc2;\n\nuniform sampler2D u_light;\nuniform sampler2D u_light2;\n\nvarying vec3 v_normal;\nvarying vec2 v_uv;\nvarying vec4 v_color;\n\n\nvarying vec3 v_view;\n\nuniform float u_a_illuminate;\n\n\nvoid main() {\n\n    // * matcap uvs\n    vec3 x = normalize( vec3(v_view.z, 0., -v_view.x));\n    vec3 y = cross(v_view, x);\n    vec2 fakeUv = vec2( dot(x, v_normal), dot(y, v_normal)) * .495 + .5;\n\n    \n    // * matcap\n    vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb;\n    vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb;\n    vec3 mtc = mix(mtc1, mtc2, u_a_illuminate * .8 + .2);\n\n    // * light\n    vec3 light = mix(\n        texture2D(u_light, v_uv).rgb,\n        texture2D(u_light2, v_uv).rgb,\n        u_a_illuminate * .5\n    );\n\n    vec3 color = (mtc * light) * 1.5;\n\n\n\n\n    gl_FragColor.rgb = vec3(fakeUv, 1.);\n    gl_FragColor.rgb = mtc;\n    gl_FragColor.rgb = light;\n    gl_FragColor.rgb = color;\n    gl_FragColor.a = 1.0;\n}\n";
 
   // src/gl/battery/index.js
   var Battery = class extends Transform {
@@ -17949,6 +17949,7 @@ ${addLineNumbers(fragment2)}`);
           u_mtc: { value: Gl.scene.assets.matcap },
           u_mtc2: { value: Gl.scene.assets.matcap2 },
           u_light: { value: Gl.scene.assets.light },
+          u_light2: { value: Gl.scene.assets.light2 },
           u_a_illuminate: { value: 0 }
         }
         // depthTest: false,
@@ -17985,7 +17986,8 @@ ${addLineNumbers(fragment2)}`);
     matcap: URL2 + "metal1.png",
     matcap2: URL2 + "metal4.png",
     model: URL2 + "zeno3.glb",
-    light: URL2 + "light1.png"
+    light: URL2 + "light1.png",
+    light2: URL2 + "light2.png"
   };
 
   // src/gl/util/loader.js

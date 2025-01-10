@@ -202,6 +202,7 @@ class Program extends P {
         u_mtc: { value: Gl.scene.assets.matcap },
         u_mtc2: { value: Gl.scene.assets.matcap2 },
         u_light: { value: Gl.scene.assets.light },
+        u_light2: { value: Gl.scene.assets.light2 },
         u_a_illuminate: { value: 0 },
       },
       // depthTest: false,
