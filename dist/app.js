@@ -9246,6 +9246,7 @@
     }
     filterItems(filter, data) {
       if (filter === "locations") {
+        this.filters[1].children[0].children[0].textContent = "ALL DEPARTMENTS";
         this.items.forEach((it) => {
           if (data === "all") {
             it.item.style.display = "flex";
@@ -9256,6 +9257,7 @@
           }
         });
       } else {
+        this.filters[0].children[0].children[0].textContent = "ALL LOCATIONS";
         this.items.forEach((it) => {
           if (data === "all") {
             it.item.style.display = "flex";

@@ -88,6 +88,7 @@ export class Openings {
     // console.log(filter, data);
 
     if (filter === "locations") {
+      this.filters[1].children[0].children[0].textContent = "ALL DEPARTMENTS";
       this.items.forEach((it) => {
         if (data === "all") {
           it.item.style.display = "flex";
@@ -98,6 +99,7 @@ export class Openings {
         }
       });
     } else {
+      this.filters[0].children[0].children[0].textContent = "ALL LOCATIONS";
       this.items.forEach((it) => {
         if (data === "all") {
           it.item.style.display = "flex";
