@@ -32,7 +32,7 @@ void main() {
     // * matcap
     vec3 mtc1 = texture2D(u_mtc, fakeUv).rgb + base_color;
     vec3 mtc2 = texture2D(u_mtc2, fakeUv).rgb + base_color;
-    vec3 mtc = mix(mtc1, mtc2, (u_a_illuminate * .6 + .2));
+    vec3 mtc = mix(mtc1, mtc2, (u_a_illuminate * .5 + .5));
 
 
 
