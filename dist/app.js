@@ -7419,10 +7419,12 @@
       }
     }
     handleAnchorClick() {
-      console.log("anchor click");
       if (hey_default.PAGE === "home") {
         App.scroll.scrollTo(this.anchorTarget, {
           offset: -50
+        });
+        this.anchor.forEach((anchor) => {
+          anchor.classList.add("w--current");
         });
       } else {
         this.anchor[0].querySelector("a").click();

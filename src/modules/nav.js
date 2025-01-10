@@ -22,7 +22,6 @@ export class Nav {
       this.anchor.forEach((anchor) => {
         anchor.onclick = () => this.handleAnchorClick();
       });
-      // this.anchor.onclick = () => this.handleAnchorClick();
     });
   }
 
@@ -56,10 +55,12 @@ export class Nav {
   }
 
   handleAnchorClick() {
-    console.log("anchor click");
     if (Hey.PAGE === "home") {
       App.scroll.scrollTo(this.anchorTarget, {
         offset: -50,
+      });
+      this.anchor.forEach((anchor) => {
+        anchor.classList.add("w--current");
       });
     } else {
       this.anchor[0].querySelector("a").click();
