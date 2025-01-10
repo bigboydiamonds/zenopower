@@ -36,7 +36,7 @@ void main() {
   posmod.z += sin(time_mult * multi_time + v_random + posmod.z * .5) * multi;
   
   pos += posmod;
-  pos *= 3.;
+  pos *= 4.;
   
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);

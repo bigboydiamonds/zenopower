@@ -72,7 +72,6 @@ function calcAttributes(num) {
   let randomA = new Float32Array(num * 1);
 
   for (let i = 0; i < num; i += 1) {
-    // set id attribute
     let id = i + 1;
     idA.set(
       [
@@ -83,7 +82,7 @@ function calcAttributes(num) {
       ],
       i * 4
     );
-    // set position modification attribute
+
     posmodA.set(
       [
         Math.random() * 5 - 2.5,
@@ -92,7 +91,7 @@ function calcAttributes(num) {
       ],
       i * 3
     );
-    // set random attribute
+
     randomA.set([Math.random() * 4], i);
   }
 
