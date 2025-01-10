@@ -16,7 +16,7 @@ varying vec3 v_normal;
 varying vec2 v_uv;
 
 varying vec3 v_view;
-varying vec4 v_color;
+// varying vec4 v_color;
 
 
 
@@ -33,5 +33,5 @@ void main() {
   // v_normal = normal;
   v_normal = normalize(normalMatrix * normal);
   v_uv = uv;
-  v_color = color;
+  // v_color = color;
 }
