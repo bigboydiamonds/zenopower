@@ -22,6 +22,6 @@ void main() {
     
 
     gl_FragColor.rgb = vec3(color);
-    gl_FragColor.a = alpha * .8;
+    gl_FragColor.a = alpha * .4;
     // gl_FragColor.a = alpha ;
 }

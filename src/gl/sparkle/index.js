@@ -37,8 +37,6 @@ export class Sparkle extends Mesh {
 
   render(t) {
     this.program.time = t;
-
-    // this.position.x = Math.sin(t) * 0.2;
   }
 }
 

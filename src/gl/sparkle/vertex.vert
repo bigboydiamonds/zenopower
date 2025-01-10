@@ -26,7 +26,7 @@ void main() {
   float ns = simplex3d(vec3(pos.x + u_time, pos.y, pos.z));
   pos *= vec3(.1);
 
-  float time_mult = u_time * (a_random * 2. + 1.) * .1;
+  float time_mult = u_time * (a_random * 2. + 1.) * .02;
   vec3 posmod = a_posmod;
   float multi = 1.;
   float multi_time = 2.;
