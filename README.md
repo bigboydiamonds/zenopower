@@ -63,7 +63,7 @@
 - [ ] [model]
 
   - [ ] material
-  - [ ] new movement
+  - [x] new movement
 
 - [ ] [gradient]
 
@@ -73,14 +73,14 @@
 
 - [ ] [breezy]
 
-  - [ ] color for toggle background
+  - [x] color for toggle background
   - [ ] missing fields ???
 
 - [ ] [mailchimp]
 
   - [x] custom submit component
-  - [ ] final testing
-  - [ ] states
+  - [x] final testing
+  - [x] states
 
 - [ ] markup [tickets]
 
