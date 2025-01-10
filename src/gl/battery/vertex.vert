@@ -4,6 +4,7 @@
 attribute vec3 position;
 attribute vec3 normal;
 attribute vec2 uv;
+attribute vec4 color;
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
@@ -15,6 +16,8 @@ varying vec3 v_normal;
 varying vec2 v_uv;
 
 varying vec3 v_view;
+varying vec4 v_color;
+
 
 
 
@@ -30,4 +33,5 @@ void main() {
   // v_normal = normal;
   v_normal = normalize(normalMatrix * normal);
   v_uv = uv;
+  v_color = color;
 }

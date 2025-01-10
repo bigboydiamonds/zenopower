@@ -142,6 +142,8 @@ class BatteryModel extends Mesh {
       frustumCulled: false,
     });
 
+    console.log(Gl.scene.assets.model.scenes[0][0].children[0].geometry);
+
     this.scale.set(0, 0, 0);
     this.position.y = -Gl.vp.viewSize.h;
 

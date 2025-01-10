@@ -13,6 +13,7 @@ varying vec4 v_color;
 
 varying vec3 v_view;
 
+
 uniform float u_a_illuminate;
 
 
@@ -41,9 +42,10 @@ void main() {
 
 
 
-    gl_FragColor.rgb = vec3(fakeUv, 1.);
-    gl_FragColor.rgb = mtc;
-    gl_FragColor.rgb = light;
+    // gl_FragColor.rgb = vec3(fakeUv, 1.);
+    // gl_FragColor.rgb = mtc;
+    // gl_FragColor.rgb = light;
     gl_FragColor.rgb = color;
+    // gl_FragColor.rgb = v_color.rgb;
     gl_FragColor.a = 1.0;
 }
