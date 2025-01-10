@@ -23,16 +23,33 @@ export class Submit {
       };
     }
 
+    // console.log(this.el);
+
     if (sub) {
       sub.onclick = (e) => {
         e.preventDefault();
-        console.log("submit", this.receiver[0].value);
+        // console.log("submit", this.receiver[0].value);
         this.receiver[1].click();
+        this.handleSuccess(sub);
+      };
+
+      this.el.onsubmit = (e) => {
+        e.preventDefault();
+        // console.log("submit", this.receiver[0].value);
+        this.receiver[1].click();
+        this.handleSuccess(sub);
       };
     }
   };
 
-  onChange() {
-    console.log("submit change");
+  handleSuccess(sub) {
+    console.log("success", sub);
+    const parent = sub.parentElement;
+    parent.style.display = "none";
+    parent.nextElementSibling.style.display = "block";
   }
+
+  // onChange() {
+  //   console.log("submit change");
+  // }
 }
