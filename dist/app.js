@@ -17787,11 +17787,14 @@ ${addLineNumbers(fragment2)}`);
       hey_default.on("PAGE", (page) => this.pageChange(page));
       hey_default.on("PAGE_OUT", (page) => this.pageOut(page));
       this.pageChange();
+      App.scroll.subscribe(() => this.handleScroll());
     }
     async create() {
       this.battery = new BatteryModel(this.gl);
       this.resize();
       this.battery.setParent(this);
+    }
+    handleScroll() {
     }
     render(t) {
       this.battery?.render(t);

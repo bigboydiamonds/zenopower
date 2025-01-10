@@ -13,7 +13,16 @@
     transition: opacity 0.3s;
   }
 
-  .disabled svg {
-    opacity: 0.5;
+  button svg {
+    opacity: 0.6;
+  }
+
+  button:hover svg {
+    /* color: var(--col--yankeeblue) !important; */
+    opacity: 1;
+  }
+
+  button.disabled svg {
+    opacity: 0.5 !important;
   }
 }

@@ -69,6 +69,7 @@
 
   - [x] use references (or use gradient in figma)
   - [x] make the lights into rendertargets and render to plane
+  - [ ] use gradient in figma
 
 - [ ] [breezy]
 

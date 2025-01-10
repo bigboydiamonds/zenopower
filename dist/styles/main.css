@@ -458,8 +458,14 @@ nav {
   svg {
     transition: opacity 0.3s;
   }
-  .disabled svg {
-    opacity: 0.5;
+  button svg {
+    opacity: 0.6;
+  }
+  button:hover svg {
+    opacity: 1;
+  }
+  button.disabled svg {
+    opacity: 0.5 !important;
   }
 }
 
