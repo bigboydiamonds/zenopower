@@ -17,7 +17,7 @@ export class Scroll extends Lenis {
     super({
       duration: 1,
       smoothWheel: true,
-      easing: easeOutExpo,
+      easing: lenisDefault,
       orientation: "vertical",
       smoothTouch: false,
       syncTouch: true,

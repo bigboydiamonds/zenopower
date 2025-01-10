@@ -10244,12 +10244,13 @@
   }
 
   // src/modules/scroll.js
+  var lenisDefault = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
   var Scroll = class extends Lenis {
     constructor() {
       super({
         duration: 1,
         smoothWheel: true,
-        easing: easeOutExpo,
+        easing: lenisDefault,
         orientation: "vertical",
         smoothTouch: false,
         syncTouch: true,
