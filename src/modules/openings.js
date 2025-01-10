@@ -8,16 +8,21 @@ export class Openings {
 
     this.el = el;
 
+    // manage url creation
+    const urls = document.querySelectorAll("[data-url]");
+    urls.forEach((item, i) => {
+      item.href = item.href + item.dataset.url;
+    });
+    // manage url creation
+
     this.filters = [
       ...this.el.querySelectorAll(
         '[data-filter="locations"] , [data-filter="department"]'
       ),
     ];
 
-    // console.log(this.filters);
-
     this.filterData = {
-      locations: ["Washington, DC"],
+      locations: [],
       departments: [],
     };
 
@@ -42,7 +47,6 @@ export class Openings {
       // console.log(loc);
       const el = this.filters[0].children[1].children[0].cloneNode(true);
       el.textContent = loc;
-      // el.setAttribute("data-filter-btn", loc);
       this.filters[0].children[1].appendChild(el);
       el.onclick = () => this.filterItems("locations", loc);
     });

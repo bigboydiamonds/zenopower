@@ -484,6 +484,19 @@ nav {
     visibility: visible;
   }
 }
+[data-filter=locations],
+[data-filter=department] {
+  .drop-icon {
+    transform: rotate(0deg);
+    transition: transform 0.3s;
+  }
+}
+[data-filter=locations].active,
+[data-filter=department].active {
+  .drop-icon {
+    transform: rotate(180deg);
+  }
+}
 
 /* src/styles/main.css */
 * {

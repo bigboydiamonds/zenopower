@@ -7426,6 +7426,8 @@
     }
     handleColor(page) {
       this.input.checked = false;
+      const footerLink = document.querySelector("[data-ftlink='anchor']");
+      footerLink.onclick = () => this.handleAnchorClick();
       this.anchorTarget = document.querySelector("[data-s='news']");
       if (this.shouldScrollToAnchor) {
         setTimeout(
@@ -9175,13 +9177,17 @@
   var Openings = class {
     constructor(el) {
       this.el = el;
+      const urls = document.querySelectorAll("[data-url]");
+      urls.forEach((item, i) => {
+        item.href = item.href + item.dataset.url;
+      });
       this.filters = [
         ...this.el.querySelectorAll(
           '[data-filter="locations"] , [data-filter="department"]'
         )
       ];
       this.filterData = {
-        locations: ["Washington, DC"],
+        locations: [],
         departments: []
       };
       this.items = [...this.el.querySelectorAll("[data-filter='item']")].map(
