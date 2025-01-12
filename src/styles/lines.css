@@ -2,6 +2,7 @@
   position: relative;
 }
 
+/* horizontal lines */
 .line-sep:before {
   content: "";
   position: absolute;
@@ -10,10 +11,30 @@
   width: 100vw;
   height: 1px;
   background: #101b22;
+  opacity: 1;
+  transition: background 0.2s ease-in-out;
+}
 
-  /* background: red; */
+/* vertical lines */
+.nav-lines .line {
+  transition: background 0.2s ease-in-out;
+  background: #101b22;
+}
 
-  /* opacity: 0.2; */
+/* ON DARK SECTIONS */
+
+/* horizontal lines */
+.darksection .line-v-dash {
+  background: #fff;
+}
+
+.darksection .line-sep:before {
+  background: #fff;
+}
+
+/* vertical lines */
+.darksection .nav-lines .line {
+  background: #fff;
 }
 
 .s {

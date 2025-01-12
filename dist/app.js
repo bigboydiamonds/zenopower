@@ -9323,6 +9323,40 @@
     // }
   };
 
+  // src/modules/dark.js
+  var Dark = class {
+    wrapper = document.body;
+    constructor() {
+      hey_default.on("PAGE", () => this.handlePage());
+      console.log("wrapper", this.wrapper);
+      this.handlePage();
+    }
+    handlePage() {
+      if (this.observer) {
+        this.observer.stop();
+        this.observer = null;
+        this.wrapper.classList.remove("darksection");
+      }
+      const section = document.querySelector(`[data-color="dark"]`);
+      if (section) {
+        this.observer = new Observe(section, {
+          config: {
+            threshold: 0,
+            autoStart: true
+          },
+          cb: {
+            in: () => {
+              this.wrapper.classList.add("darksection");
+            },
+            out: () => {
+              this.wrapper.classList.remove("darksection");
+            }
+          }
+        });
+      }
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -9352,6 +9386,7 @@
   ];
   var Dom = class {
     wrapper = document.querySelector("[data-taxi]");
+    dark = new Dark();
     nav = new Nav();
     constructor() {
       this.create();

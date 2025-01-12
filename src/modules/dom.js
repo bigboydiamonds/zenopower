@@ -9,6 +9,7 @@ import { Dropdowns } from "./dropdowns";
 import { Partners } from "./partners";
 import { Openings } from "./openings";
 import { Submit } from "./submit";
+import { Dark } from "./dark";
 
 const lib = [
   {
@@ -39,6 +40,7 @@ const lib = [
 
 export class Dom {
   wrapper = document.querySelector("[data-taxi]");
+  dark = new Dark();
   nav = new Nav();
   constructor() {
     this.create();

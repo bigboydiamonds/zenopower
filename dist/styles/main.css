@@ -316,6 +316,21 @@ html.lenis body {
   width: 100vw;
   height: 1px;
   background: #101b22;
+  opacity: 1;
+  transition: background 0.2s ease-in-out;
+}
+.nav-lines .line {
+  transition: background 0.2s ease-in-out;
+  background: #101b22;
+}
+.darksection .line-v-dash {
+  background: #fff;
+}
+.darksection .line-sep:before {
+  background: #fff;
+}
+.darksection .nav-lines .line {
+  background: #fff;
 }
 .s {
   .line-sep:before {
@@ -553,7 +568,7 @@ body {
 @media only screen and (max-width: 767px) {
   :root {
     --gx: 1rem;
-    --sgx: 0.5rem;
+    --sgx: 1rem;
     --text--h1: 2.3rem;
     --text--h2: 2.3rem;
   }
