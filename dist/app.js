@@ -17897,7 +17897,7 @@ ${addLineNumbers(fragment2)}`);
       if (this.mark) {
         const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
         let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
-        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY + offset + 0.6 - onScroll * 0.6;
+        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY + offset + 0.6 - onScroll * 0.8;
       } else {
         this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
       }

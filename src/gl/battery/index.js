@@ -58,7 +58,7 @@ export class Battery extends Transform {
         this.a.baseY +
         offset +
         0.6 -
-        onScroll * 0.6;
+        onScroll * 0.8;
     } else {
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
