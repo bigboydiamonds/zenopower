@@ -58,7 +58,7 @@ export class Battery extends Transform {
         this.a.baseY +
         offset +
         0.6 -
-        onScroll * 0.8;
+        onScroll * 0.6;
     } else {
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
@@ -71,8 +71,10 @@ export class Battery extends Transform {
 
   getTracking() {
     if (!this.markItem) return;
-    const { top } = this.markItem.getBoundingClientRect();
-    this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
+    queueMicrotask(() => {
+      const { top } = this.markItem.getBoundingClientRect();
+      this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
+    });
   }
 
   resize() {
@@ -80,7 +82,7 @@ export class Battery extends Transform {
       if (this.mark && this.markItem) this.getTracking();
 
       if (!App.isMobile) {
-        const hsize = Gl.vp.viewSize.h / 2;
+        const hsize = Gl.vp.viewSize.w / 3;
         this.position.x = Gl.vp.viewSize.w / 5;
         this.scale.set(hsize, hsize, hsize);
         this.a.baseY = 0;
