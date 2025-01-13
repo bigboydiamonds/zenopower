@@ -493,14 +493,22 @@ html.lenis body {
 }
 
 /* src/styles/location.css */
+[data-svg-loc] {
+  visibility: hidden;
+}
 [data-svg-loc-def="Seattle, WA"] {
-  [data-svg-loc=washington] {
-    display: none;
+  [data-svg-loc=seattle] {
+    visibility: visible;
   }
 }
 [data-svg-loc-def="Washington, DC"] {
-  [data-svg-loc=seattle] {
-    display: none;
+  [data-svg-loc=washington] {
+    visibility: visible;
+  }
+}
+[data-svg-loc-def="Richland, WA"] {
+  [data-svg-loc=richland] {
+    visibility: visible;
   }
 }
 
