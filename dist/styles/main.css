@@ -337,6 +337,11 @@ html.lenis body {
     margin-left: calc(var(--sgx) * -1);
   }
 }
+.nav-ho-line {
+  .line-sep:before {
+    margin-left: calc(var(--sgx) * -1);
+  }
+}
 nav {
   .line-sep:before {
     margin-left: calc(var(--sgx) * -1);

@@ -9102,7 +9102,7 @@
 
   // src/modules/slider.js
   var Slider = class {
-    options = { loop: false };
+    options = { loop: true };
     btns = [...document.querySelector("[data-embla='btns']").children];
     constructor(el) {
       this.el = el;
@@ -9111,7 +9111,6 @@
       this.btns.forEach((btn, i) => {
         btn.onclick = () => {
           i === 0 ? this.api.scrollPrev() : this.api.scrollNext();
-          this.checkEnabled();
         };
       });
     }

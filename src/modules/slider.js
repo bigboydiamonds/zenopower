@@ -1,7 +1,7 @@
 import EmblaCarousel from "embla-carousel";
 
 export class Slider {
-  options = { loop: false };
+  options = { loop: true };
   btns = [...document.querySelector("[data-embla='btns']").children];
   constructor(el) {
     this.el = el;
@@ -12,7 +12,7 @@ export class Slider {
     this.btns.forEach((btn, i) => {
       btn.onclick = () => {
         i === 0 ? this.api.scrollPrev() : this.api.scrollNext();
-        this.checkEnabled();
+        // this.checkEnabled();
       };
     });
   }
