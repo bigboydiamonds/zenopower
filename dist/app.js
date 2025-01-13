@@ -17931,7 +17931,7 @@ ${addLineNumbers(fragment2)}`);
             hsize * mobileScale,
             hsize * mobileScale
           );
-          this.a.baseY = -Gl.vp.viewSize.h / 6;
+          this.a.baseY = -Gl.vp.viewSize.h / 4;
         }
         queueMicrotask(() => {
           this.battery?.resize();
