@@ -87,3 +87,9 @@
 - [x] [BUGS]
 
   - [x] wrap mobile safari
+
+  ***
+
+  - [ ] when clickkoing homw hicghlight news for a second an d then disappear
+  - [ ] (DESKTOP) check careers color border
+  - [ ] (MOBILE) check home color border

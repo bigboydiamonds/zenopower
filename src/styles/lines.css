@@ -37,6 +37,18 @@
   background: #fff;
 }
 
+.s {
+  .line-sep:before {
+    margin-left: calc(var(--sgx) * -1);
+  }
+}
+
+nav {
+  .line-sep:before {
+    margin-left: calc(var(--sgx) * -1);
+  }
+}
+
 @media only screen and (max-width: 767px) {
   /* mobile */
 
