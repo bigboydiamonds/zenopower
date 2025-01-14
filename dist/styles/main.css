@@ -366,6 +366,9 @@ nav {
   --color: #65baac;
   position: relative;
 }
+.dark [data-css=angles-nav] {
+  --color: #10728c;
+}
 [data-css=angles-nav]::before,
 [data-css=angles-nav]::after {
   content: "";
