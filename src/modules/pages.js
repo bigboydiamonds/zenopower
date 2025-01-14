@@ -30,6 +30,8 @@ export class Pages extends Core {
     ]);
 
     App.scroll.top();
+
+    // console.log("finished OUT");
   }
 
   async transitionIn(page) {
@@ -41,6 +43,8 @@ export class Pages extends Core {
       App.dom.transitionIn(page),
       Gl.transitionIn(page),
     ]);
+
+    // console.log("finished");
   }
 }
 
