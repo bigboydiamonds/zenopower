@@ -73,7 +73,7 @@
   }
 
   [data-css="angles-nav"] {
-    --color: #65baac !important;
+    /* --color: #65baac !important; */
   }
 
   .w--current > div {

@@ -419,7 +419,6 @@ nav {
     opacity: 1;
   }
   [data-css=angles-nav] {
-    --color: #65baac !important;
   }
   .w--current > div {
     color: #65baac !important;
