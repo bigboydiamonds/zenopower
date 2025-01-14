@@ -56,10 +56,10 @@
   --color: red !important;
 } */
 
-.dark [data-css="angles-nav"] {
+/* .dark [data-css="angles-nav"] {
   --color: #10728c !important;
   opacity: 1 !important;
-}
+} */
 
 /* light nav (home) */
 [data-nav="w"] {
@@ -72,9 +72,9 @@
     opacity: 1;
   }
 
-  [data-css="angles-nav"] {
-    /* --color: #65baac !important; */
-  }
+  /* [data-css="angles-nav"] { */
+  /* --color: #65baac !important; */
+  /* } */
 
   .w--current > div {
     color: #65baac !important;
