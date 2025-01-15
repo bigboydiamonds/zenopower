@@ -31,6 +31,7 @@ const loader = {
 };
 
 const ctx = await esbuild.context({
+  target: "es2019",
   bundle: true,
   entryPoints: CONFIG.ENTRY,
   outdir: production ? CONFIG.BUILD_DIR : CONFIG.OUT_DIR,
