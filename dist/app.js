@@ -17969,7 +17969,7 @@ ${addLineNumbers(fragment2)}`);
           const hsize = Gl.vp.viewSize.h / 2.2;
           this.position.x = Gl.vp.viewSize.w / 5;
           this.scale.set(hsize, hsize, hsize);
-          this.a.baseY = Gl.vp.viewSize;
+          this.a.baseY = 0;
         } else {
           const hsize = Gl.vp.viewSize.w / 2.5;
           const mobileScale = 1.5;
