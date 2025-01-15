@@ -90,11 +90,15 @@ export class Nav {
           this.anchor.forEach((anchor) => {
             anchor.classList.add("w--current");
           });
+
+          this.links[0].classList.remove("w--current");
         },
         out: () => {
           this.anchor.forEach((anchor) => {
             anchor.classList.remove("w--current");
           });
+
+          this.links[0].classList.add("w--current");
         },
       },
     });
@@ -106,9 +110,13 @@ export class Nav {
 
     if (page === "home") {
       this.links[0].href = this.links[0].href + "#top";
+      this.links[2].href = this.links[2].href + "#top";
+
       this.logolink.href = this.logolink.href + "#top";
     } else {
       this.links[0].href = this.links[0].href.replace("#top", "");
+      this.links[2].href = this.links[2].href.replace("#top", "");
+
       this.logolink.href = this.logolink.href.replace("#top", "");
     }
 

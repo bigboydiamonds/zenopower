@@ -7448,11 +7448,13 @@
             this.anchor.forEach((anchor) => {
               anchor.classList.add("w--current");
             });
+            this.links[0].classList.remove("w--current");
           },
           out: () => {
             this.anchor.forEach((anchor) => {
               anchor.classList.remove("w--current");
             });
+            this.links[0].classList.add("w--current");
           }
         }
       });
@@ -7462,9 +7464,11 @@
       this.createNewsHomeObserver();
       if (page === "home") {
         this.links[0].href = this.links[0].href + "#top";
+        this.links[2].href = this.links[2].href + "#top";
         this.logolink.href = this.logolink.href + "#top";
       } else {
         this.links[0].href = this.links[0].href.replace("#top", "");
+        this.links[2].href = this.links[2].href.replace("#top", "");
         this.logolink.href = this.logolink.href.replace("#top", "");
       }
       const footerLink = document.querySelector("[data-ftlink='anchor']");
