@@ -98,3 +98,29 @@ export class Scroll extends Lenis {
     this.callbacks = [];
   }
 }
+
+// function handleEditorView() {
+//   const html = document.documentElement;
+//   const config = { attributes: true, childList: false, subtree: false };
+
+//   const callback = (mutationList, observer) => {
+//     for (const mutation of mutationList) {
+//       if (mutation.type === "attributes") {
+//         const btn = document.querySelector(".w-editor-bem-EditSiteButton");
+//         const bar = document.querySelector(".w-editor-bem-EditorMainMenu");
+
+//         console.log("mutation", mutation, btn, bar);
+//         const addTrig = (target) =>
+//           target.addEventListener("click", () => this.destroy());
+
+//         if (btn) addTrig(btn);
+//         if (bar) addTrig(bar);
+//       }
+//     }
+//   };
+
+//   const observer = new MutationObserver(callback);
+//   observer.observe(html, config);
+// }
+
+// handleEditorView();
