@@ -17951,7 +17951,7 @@ ${addLineNumbers(fragment2)}`);
       setTimeout(() => {
         if (this.mark && this.markItem) this.getTracking();
         if (!App.isMobile) {
-          const hsize = Gl.vp.viewSize.w / 3;
+          const hsize = Gl.vp.viewSize.h / 2;
           this.position.x = Gl.vp.viewSize.w / 5;
           this.scale.set(hsize, hsize, hsize);
           this.a.baseY = 0;
