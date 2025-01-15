@@ -17956,7 +17956,7 @@ ${addLineNumbers(fragment2)}`);
           this.scale.set(hsize, hsize, hsize);
           this.a.baseY = 0;
         } else {
-          const hsize = Gl.vp.viewSize.w / 2;
+          const hsize = Gl.vp.viewSize.w / 2.5;
           const mobileScale = 1.5;
           this.position.x = 0;
           this.scale.set(
