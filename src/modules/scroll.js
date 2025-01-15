@@ -36,7 +36,7 @@ export class Scroll extends Lenis {
       if (editor) {
         this.stop();
       }
-    }, 1000);
+    }, 10000);
 
     this.init();
 
