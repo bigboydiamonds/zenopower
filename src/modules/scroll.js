@@ -29,12 +29,16 @@ export class Scroll extends Lenis {
 
     // this.time = 0;
 
-    const editor = document.querySelector(".w-editor");
-    console.log(editor);
+    setTimeout(() => {
+      const editor = document.querySelector(".w-editor");
+      console.log(editor);
 
-    if (!editor) {
-      this.init();
-    }
+      if (editor) {
+        this.stop();
+      }
+    }, 1000);
+
+    this.init();
 
     window.sscroll = this;
     queueMicrotask(() => this.scrollTo(0, { offset: 0, immediate: true }));
