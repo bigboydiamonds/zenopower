@@ -7449,12 +7449,14 @@
               anchor.classList.add("w--current");
             });
             this.links[0].classList.remove("w--current");
+            this.links[2].classList.remove("w--current");
           },
           out: () => {
             this.anchor.forEach((anchor) => {
               anchor.classList.remove("w--current");
             });
             this.links[0].classList.add("w--current");
+            this.links[2].classList.add("w--current");
           }
         }
       });
