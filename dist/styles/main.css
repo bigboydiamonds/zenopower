@@ -581,24 +581,22 @@ body {
     display: none;
   }
 }
-[data-s=partners] {
-  .partner-grid-it {
-    .abs {
-      opacity: 0;
-      transition: opacity var(--duration) var(--ease-out);
-    }
-    .svg {
-      opacity: 1;
-      transition: opacity var(--duration) var(--ease-out);
-    }
+.partner-grid-it {
+  .abs {
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease-out);
   }
-  .partner-grid-it:hover {
-    .abs {
-      opacity: 1;
-    }
-    .svg {
-      opacity: 0;
-    }
+  .svg {
+    opacity: 1;
+    transition: opacity var(--duration) var(--ease-out);
+  }
+}
+.partner-grid-it:hover {
+  .abs {
+    opacity: 1;
+  }
+  .svg {
+    opacity: 0;
   }
 }
 [data-s=news] {
