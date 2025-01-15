@@ -7444,13 +7444,11 @@
         },
         cb: {
           in: () => {
-            console.log("in");
             this.anchor.forEach((anchor) => {
               anchor.classList.add("w--current");
             });
           },
           out: () => {
-            console.log("out");
             this.anchor.forEach((anchor) => {
               anchor.classList.remove("w--current");
             });
