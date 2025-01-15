@@ -95,45 +95,45 @@
 
   color: var(--col--yankeeblue);
 
-  svg {
+  & svg {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 
-  .nav-lk-w {
+  & .nav-lk-w {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 
-  .w--current > div {
+  & .w--current > div {
     color: #10728c !important;
   }
 
-  .menu-icon-line {
+  & .menu-icon-line {
     background-color: var(--col--yankeeblue);
   }
 
-  .mmenu-drawer {
+  & .mmenu-drawer {
     background-color: white;
   }
 
-  svg {
+  & svg {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 
-  .nav-lk-w {
+  & .nav-lk-w {
     transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue);
   }
 
-  .w--current.nav-lk-w {
+  & .w--current.nav-lk-w {
     /* transition: color var(--duration) var(--easeOut);
     color: var(--col--yankeeblue); */
     color: #10728c;
   }
 
-  .menu-icon-line {
+  & .menu-icon-line {
     background-color: var(--col--yankeeblue);
   }
 }
