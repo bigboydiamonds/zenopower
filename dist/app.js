@@ -18151,6 +18151,9 @@ ${addLineNumbers(fragment2)}`);
       this.trackBattery.setParent(this);
       console.timeEnd("::load");
       hey_default.LOAD = "full";
+      if (hey_default.MOBILE) {
+        this.trackBattery.visible = false;
+      }
       hey_default.on("MOBILE", (mobile) => {
         if (mobile) {
           this.trackBattery.visible = false;

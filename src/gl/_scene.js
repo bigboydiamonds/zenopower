@@ -39,6 +39,10 @@ export class Scene extends Transform {
     console.timeEnd("::load");
     Hey.LOAD = "full";
 
+    if (Hey.MOBILE) {
+      this.trackBattery.visible = false;
+    }
+
     Hey.on("MOBILE", (mobile) => {
       if (mobile) {
         this.trackBattery.visible = false;
