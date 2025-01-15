@@ -88,9 +88,6 @@ export class Screen extends Mesh {
       dark: page === "home" ? 1 : 0,
       duration: ANIMATION.page.duration,
       ease: ANIMATION.page.ease,
-      onComplete: () => {
-        console.log(this.a.dark, page);
-      },
     });
 
     // handle homepage track

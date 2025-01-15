@@ -17835,10 +17835,7 @@ ${addLineNumbers(fragment2)}`);
       gsap_default.to(this.a, {
         dark: page === "home" ? 1 : 0,
         duration: ANIMATION.page.duration,
-        ease: ANIMATION.page.ease,
-        onComplete: () => {
-          console.log(this.a.dark, page);
-        }
+        ease: ANIMATION.page.ease
       });
       const track = document.querySelector("[data-track='gradient']");
       if (track) {
