@@ -58,7 +58,8 @@ export class Battery extends Transform {
         this.a.baseY +
         offset +
         Gl.vp.viewSize.h / 6 -
-        onScroll * 0.2;
+        onScroll * 0.2 +
+        Gl.vp.viewSize.w * 0.002;
     } else {
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
@@ -85,7 +86,16 @@ export class Battery extends Transform {
         const hsize = Gl.vp.viewSize.h / 2.2;
         this.position.x = Gl.vp.viewSize.w / 5;
         this.scale.set(hsize, hsize, hsize);
-        this.a.baseY = 0;
+
+        console.log(window.innerWidth);
+
+        if (window.innerWidth < 1390) {
+          this.a.baseY = 0.2;
+        } else if (window.innerWidth < 1000) {
+          this.a.baseY = 0.3;
+        } else {
+          this.a.baseY = 0;
+        }
       } else {
         const hsize = Gl.vp.viewSize.w / 2.5;
         const mobileScale = 1.5;

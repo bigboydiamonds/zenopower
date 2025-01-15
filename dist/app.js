@@ -17947,7 +17947,7 @@ ${addLineNumbers(fragment2)}`);
       if (this.mark) {
         const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
         let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
-        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY + offset + Gl.vp.viewSize.h / 6 - onScroll * 0.2;
+        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY + this.a.baseY + offset + Gl.vp.viewSize.h / 6 - onScroll * 0.2 + Gl.vp.viewSize.w * 2e-3;
       } else {
         this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
       }
@@ -17969,7 +17969,14 @@ ${addLineNumbers(fragment2)}`);
           const hsize = Gl.vp.viewSize.h / 2.2;
           this.position.x = Gl.vp.viewSize.w / 5;
           this.scale.set(hsize, hsize, hsize);
-          this.a.baseY = 0;
+          console.log(window.innerWidth);
+          if (window.innerWidth < 1390) {
+            this.a.baseY = 0.2;
+          } else if (window.innerWidth < 1e3) {
+            this.a.baseY = 0.3;
+          } else {
+            this.a.baseY = 0;
+          }
         } else {
           const hsize = Gl.vp.viewSize.w / 2.5;
           const mobileScale = 1.5;
