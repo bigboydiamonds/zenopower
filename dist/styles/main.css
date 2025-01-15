@@ -472,19 +472,17 @@ nav .line-sep:before {
 }
 
 /* src/styles/news.css */
-.news-slider-w {
-  svg {
-    transition: opacity 0.3s;
-  }
-  button svg {
-    opacity: 0.6;
-  }
-  button:hover svg {
-    opacity: 1;
-  }
-  button.disabled svg {
-    opacity: 0.5 !important;
-  }
+.news-slider-w svg {
+  transition: opacity 0.3s;
+}
+.news-slider-w button svg {
+  opacity: 0.6;
+}
+.news-slider-w button:hover svg {
+  opacity: 1;
+}
+.news-slider-w button.disabled svg {
+  opacity: 0.5 !important;
 }
 
 /* src/styles/location.css */
