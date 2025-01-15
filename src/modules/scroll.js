@@ -29,15 +29,6 @@ export class Scroll extends Lenis {
 
     // this.time = 0;
 
-    setTimeout(() => {
-      const editor = document.querySelector(".w-editor");
-      console.log(editor);
-
-      if (editor) {
-        this.stop();
-      }
-    }, 10000);
-
     this.init();
 
     window.sscroll = this;
