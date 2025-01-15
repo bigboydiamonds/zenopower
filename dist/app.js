@@ -7377,6 +7377,7 @@
     links = [...document.querySelectorAll("[data-nav='link']")];
     anchor = [...document.querySelectorAll("[data-nav='anchor']")];
     anchorTarget = document.querySelector("[data-s='news']");
+    logolink = document.querySelector("[data-nav='logo']");
     shouldScrollToAnchor = false;
     isTop = true;
     constructor() {
@@ -7459,6 +7460,13 @@
     handleColor(page) {
       this.input.checked = false;
       this.createNewsHomeObserver();
+      if (page === "home") {
+        this.links[0].href = this.links[0].href + "#top";
+        this.logolink.href = this.logolink.href + "#top";
+      } else {
+        this.links[0].href = this.links[0].href.replace("#top", "");
+        this.logolink.href = this.logolink.href.replace("#top", "");
+      }
       const footerLink = document.querySelector("[data-ftlink='anchor']");
       const newsLink = document.querySelector("[data-nslink='anchor']");
       footerLink.onclick = () => this.handleAnchorClick();
