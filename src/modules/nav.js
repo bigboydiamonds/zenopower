@@ -63,9 +63,6 @@ export class Nav {
       });
       this.anchor.forEach((anchor) => {
         anchor.classList.add("w--current");
-        // setTimeout(() => {
-        //   anchor.classList.remove("w--current");
-        // }, 1000);
       });
     } else {
       this.anchor[0].querySelector("a").click();
