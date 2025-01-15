@@ -515,11 +515,11 @@ nav .line-sep:before {
 [data-filter=department] .dropdown-list {
   z-index: 10000000000;
 }
-[data-filter=locations].active,
+[data-filter=locations].active .drop-icon,
 [data-filter=department].active .drop-icon {
   transform: rotate(180deg);
 }
-[data-filter=locations].active,
+[data-filter=locations].active .dropdown-list,
 [data-filter=department].active .dropdown-list {
   z-index: 10000000000;
 }
