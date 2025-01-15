@@ -9243,9 +9243,18 @@
         filter.onclick = (e) => {
           e.stopPropagation();
           filter.classList.toggle("active");
+          this.handleClickOut();
         };
       });
     }
+    handleClickOut = () => {
+      document.body.onclick = () => {
+        this.filters.forEach((filter) => {
+          filter.classList.remove("active");
+          document.body.onclick = null;
+        });
+      };
+    };
     filterItems(filter, data) {
       if (filter === "locations") {
         this.filters[1].children[0].children[0].textContent = "ALL DEPARTMENTS";

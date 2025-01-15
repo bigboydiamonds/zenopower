@@ -80,9 +80,20 @@ export class Openings {
         e.stopPropagation();
         // console.log("click", filter);
         filter.classList.toggle("active");
+
+        this.handleClickOut();
       };
     });
   }
+
+  handleClickOut = () => {
+    document.body.onclick = () => {
+      this.filters.forEach((filter) => {
+        filter.classList.remove("active");
+        document.body.onclick = null;
+      });
+    };
+  };
 
   filterItems(filter, data) {
     // console.log(filter, data);
