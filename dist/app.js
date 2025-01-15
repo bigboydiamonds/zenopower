@@ -10376,7 +10376,7 @@
         orientation: "vertical",
         smoothTouch: false,
         syncTouch: true,
-        touchMultiplier: 1.2
+        touchMultiplier: 1
       });
       this.isActive = true;
       this.callbacks = [];
