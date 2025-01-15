@@ -6,7 +6,7 @@ export class Dark {
   constructor() {
     Hey.on("PAGE", () => this.handlePage());
 
-    console.log("wrapper", this.wrapper);
+    // console.log("wrapper", this.wrapper);
     this.handlePage();
   }
 

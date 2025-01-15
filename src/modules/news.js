@@ -1,8 +1,12 @@
+import { Observe } from "../util/observe";
+
 export class News {
   current = 0;
 
   constructor(el) {
     this.el = el;
+
+    // this.observe.start();
 
     this.btns = this.el.querySelectorAll('[data-news="btn"]');
     this.articles = this.el.querySelectorAll('[data-news="article"]');

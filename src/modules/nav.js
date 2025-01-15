@@ -1,4 +1,5 @@
 import gsap, { ANIMATION } from "../gsap";
+import { Observe } from "../util/observe";
 import Hey from "../hey";
 import { App } from "../app";
 
@@ -61,9 +62,9 @@ export class Nav {
       });
       this.anchor.forEach((anchor) => {
         anchor.classList.add("w--current");
-        setTimeout(() => {
-          anchor.classList.remove("w--current");
-        }, 1000);
+        // setTimeout(() => {
+        //   anchor.classList.remove("w--current");
+        // }, 1000);
       });
     } else {
       this.anchor[0].querySelector("a").click();
@@ -71,8 +72,38 @@ export class Nav {
     }
   }
 
+  createNewsHomeObserver() {
+    if (this.observe) {
+      this.observe.stop();
+      this.observe = null;
+    }
+
+    const el = document.querySelector("[data-s='news']");
+    if (!el) return;
+    this.observe = new Observe(el, {
+      config: {
+        autoStart: true,
+      },
+      cb: {
+        in: () => {
+          console.log("in");
+          this.anchor.forEach((anchor) => {
+            anchor.classList.add("w--current");
+          });
+        },
+        out: () => {
+          console.log("out");
+          this.anchor.forEach((anchor) => {
+            anchor.classList.remove("w--current");
+          });
+        },
+      },
+    });
+  }
+
   handleColor(page) {
     this.input.checked = false;
+    this.createNewsHomeObserver();
 
     // news anchor behaviour
     const footerLink = document.querySelector("[data-ftlink='anchor']");
