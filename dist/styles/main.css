@@ -409,70 +409,64 @@ nav {
   border-right: 0;
   border-top: 0;
 }
-[data-nav=w] {
-  [data-css=corner-nav] {
-    opacity: 0;
-    transition: opacity var(--duration) var(--easeOut);
-  }
-  .w--current [data-css=corner-nav] {
-    opacity: 1;
-  }
-  .w--current > div {
-    color: #65baac !important;
-    opacity: 1;
-  }
-  .mmenu-drawer {
-    background-color: #0a1117;
-  }
+[data-nav=w] [data-css=corner-nav] {
+  opacity: 0;
+  transition: opacity var(--duration) var(--easeOut);
+}
+[data-nav=w] .w--current [data-css=corner-nav] {
+  opacity: 1;
+}
+[data-nav=w] .w--current > div {
+  color: #65baac !important;
+  opacity: 1;
+}
+[data-nav=w] .mmenu-drawer {
+  background-color: #0a1117;
 }
 [data-nav=w].dark {
   transition: color var(--duration) var(--easeOut);
   color: var(--col--yankeeblue);
-  & svg {
-    transition: color var(--duration) var(--easeOut);
-    color: var(--col--yankeeblue);
-  }
-  & .nav-lk-w {
-    transition: color var(--duration) var(--easeOut);
-    color: var(--col--yankeeblue);
-  }
-  & .w--current > div {
-    color: #10728c !important;
-  }
-  & .menu-icon-line {
-    background-color: var(--col--yankeeblue);
-  }
-  & .mmenu-drawer {
-    background-color: white;
-  }
-  & svg {
-    transition: color var(--duration) var(--easeOut);
-    color: var(--col--yankeeblue);
-  }
-  & .nav-lk-w {
-    transition: color var(--duration) var(--easeOut);
-    color: var(--col--yankeeblue);
-  }
-  & .w--current.nav-lk-w {
-    color: #10728c;
-  }
-  & .menu-icon-line {
-    background-color: var(--col--yankeeblue);
-  }
+}
+[data-nav=w].dark svg {
+  transition: color var(--duration) var(--easeOut);
+  color: var(--col--yankeeblue);
+}
+[data-nav=w].dark .nav-lk-w {
+  transition: color var(--duration) var(--easeOut);
+  color: var(--col--yankeeblue);
+}
+[data-nav=w].dark .w--current > div {
+  color: #10728c !important;
+}
+[data-nav=w].dark .menu-icon-line {
+  background-color: var(--col--yankeeblue);
+}
+[data-nav=w].dark .mmenu-drawer {
+  background-color: white;
+}
+[data-nav=w].dark svg {
+  transition: color var(--duration) var(--easeOut);
+  color: var(--col--yankeeblue);
+}
+[data-nav=w].dark .nav-lk-w {
+  transition: color var(--duration) var(--easeOut);
+  color: var(--col--yankeeblue);
+}
+[data-nav=w].dark .w--current.nav-lk-w {
+  color: #10728c;
+}
+[data-nav=w].dark .menu-icon-line {
+  background-color: var(--col--yankeeblue);
 }
 .nav-bg {
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }
-.dark {
-  .nav-bg {
-    background-color: #fff;
-  }
+.dark .nav-bg {
+  background-color: #fff;
 }
-.scrolled {
-  .nav-bg {
-    opacity: 1;
-  }
+.scrolled .nav-bg {
+  opacity: 1;
 }
 
 /* src/styles/embla.css */
