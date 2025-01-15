@@ -18108,7 +18108,7 @@ ${addLineNumbers(fragment2)}`);
   }
 
   // src/assets/index.js
-  var URL2 = "https://zenopower.vercel.app/";
+  var URL2 = "https://cdn.jsdelivr.net/gh/Wonderstruckxyz/zenopower@main/build/";
   var assets = {
     //   img: null,
     matcap: URL2 + "metal1.png",

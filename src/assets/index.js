@@ -1,4 +1,4 @@
-const URL = "https://zenopower.vercel.app/";
+const URL = "https://cdn.jsdelivr.net/gh/Wonderstruckxyz/zenopower@main/build/";
 
 export const assets = {
   //   img: null,
