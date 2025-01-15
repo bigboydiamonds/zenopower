@@ -17837,7 +17837,7 @@ ${addLineNumbers(fragment2)}`);
     }
     /* lifecycle */
     pageChange(page) {
-      if (page === "news") {
+      if (page === "news" || page === "career") {
         this.a.dark = 0;
       }
       gsap_default.to(this.a, {

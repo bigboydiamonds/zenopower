@@ -81,9 +81,10 @@ export class Screen extends Mesh {
 
   /* lifecycle */
   pageChange(page) {
-    if (page === "news") {
+    if (page === "news" || page === "career") {
       this.a.dark = 0;
     }
+
     gsap.to(this.a, {
       dark: page === "home" ? 1 : 0,
       duration: ANIMATION.page.duration,
