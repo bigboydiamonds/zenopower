@@ -38,6 +38,14 @@ export class Scene extends Transform {
 
     console.timeEnd("::load");
     Hey.LOAD = "full";
+
+    Hey.on("MOBILE", (mobile) => {
+      if (mobile) {
+        this.trackBattery.visible = false;
+      } else {
+        this.trackBattery.visible = true;
+      }
+    });
   }
 
   render(t) {

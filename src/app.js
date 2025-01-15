@@ -5,6 +5,7 @@ import { Pages } from "./modules/pages";
 import { Gl } from "./gl/gl";
 import { isTablet } from "./util/queries";
 import gsap from "./gsap";
+import Hey from "./hey";
 import "./util/gui";
 
 export class App {
@@ -29,6 +30,7 @@ export class App {
 
   static resize({ contentRect }) {
     this.isMobile = isTablet();
+    Hey.MOBILE = this.isMobile;
 
     this.viewport?.resize();
     this.dom?.resize();

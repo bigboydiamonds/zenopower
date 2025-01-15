@@ -18151,6 +18151,13 @@ ${addLineNumbers(fragment2)}`);
       this.trackBattery.setParent(this);
       console.timeEnd("::load");
       hey_default.LOAD = "full";
+      hey_default.on("MOBILE", (mobile) => {
+        if (mobile) {
+          this.trackBattery.visible = false;
+        } else {
+          this.trackBattery.visible = true;
+        }
+      });
     }
     render(t) {
       if (!this.isOn) return;
@@ -18327,6 +18334,7 @@ ${addLineNumbers(fragment2)}`);
     }
     static resize({ contentRect }) {
       this.isMobile = isTablet();
+      hey_default.MOBILE = this.isMobile;
       this.viewport?.resize();
       this.dom?.resize();
       Resizer?.resize();
