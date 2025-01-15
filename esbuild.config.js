@@ -31,9 +31,6 @@ const loader = {
 };
 
 const ctx = await esbuild.context({
-  // target: "es2019",
-  target: ["chrome58", "firefox57", "safari11", "edge16"], // Add this line for CSS compatibility
-
   bundle: true,
   entryPoints: CONFIG.ENTRY,
   outdir: production ? CONFIG.BUILD_DIR : CONFIG.OUT_DIR,
