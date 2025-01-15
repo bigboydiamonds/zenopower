@@ -87,7 +87,7 @@ export class Battery extends Transform {
         this.position.x = Gl.vp.viewSize.w / 5;
         this.scale.set(hsize, hsize, hsize);
 
-        console.log(window.innerWidth);
+        // console.log(window.innerWidth);
 
         if (window.innerWidth < 1390) {
           this.a.baseY = 0.2;
