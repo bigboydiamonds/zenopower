@@ -17829,10 +17829,16 @@ ${addLineNumbers(fragment2)}`);
     }
     /* lifecycle */
     pageChange(page) {
+      if (page === "news") {
+        this.a.dark = 0;
+      }
       gsap_default.to(this.a, {
         dark: page === "home" ? 1 : 0,
         duration: ANIMATION.page.duration,
-        ease: ANIMATION.page.ease
+        ease: ANIMATION.page.ease,
+        onComplete: () => {
+          console.log(this.a.dark, page);
+        }
       });
       const track = document.querySelector("[data-track='gradient']");
       if (track) {

@@ -81,10 +81,16 @@ export class Screen extends Mesh {
 
   /* lifecycle */
   pageChange(page) {
+    if (page === "news") {
+      this.a.dark = 0;
+    }
     gsap.to(this.a, {
       dark: page === "home" ? 1 : 0,
       duration: ANIMATION.page.duration,
       ease: ANIMATION.page.ease,
+      onComplete: () => {
+        console.log(this.a.dark, page);
+      },
     });
 
     // handle homepage track
