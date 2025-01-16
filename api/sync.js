@@ -131,19 +131,40 @@ async function main() {
     console.log("New jobs:", JSON.stringify(newJobs, null, 2));
     console.log("Jobs to remove:", JSON.stringify(jobsToRemove, null, 2));
 
+    let addedJobs = [];
+    let removedJobs = [];
+
     // *  update openings
     if (newJobs.length > 0) {
       const addedJobs = await addJobsToWebflow(newJobs);
       console.log("Added jobs:", JSON.stringify(addedJobs, null, 2));
+      addedJobs = addedJobs.items;
     }
 
     if (jobsToRemove.length > 0) {
       const removedJobs = await removeJobsFromWebflow(jobsToRemove);
       console.log("Removed jobs:", JSON.stringify(removedJobs, null, 2));
     }
+
+    return {
+      status: 200,
+      message: "Sync successful",
+      body: {
+        newJobs,
+        jobsToRemove,
+        addedJobs,
+        removedJobs,
+      },
+    };
   } catch (error) {
     console.error("Error scraping jobs:", error);
   }
 }
 
-main();
+export function GET(request) {
+  const resp = main();
+
+  return new Response(JSON.stringify(resp), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
