@@ -16,7 +16,7 @@ export class Scene extends Transform {
 
   async load() {
     this.assets = await loadAssets(this.gl);
-    console.log(":::", this.assets);
+    // console.log(":::", this.assets);
   }
 
   async create() {

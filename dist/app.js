@@ -18168,7 +18168,6 @@ ${addLineNumbers(fragment2)}`);
     }
     async load() {
       this.assets = await loadAssets(this.gl);
-      console.log(":::", this.assets);
     }
     async create() {
       this.bg = new Screen(this.gl);
@@ -18308,7 +18307,6 @@ ${addLineNumbers(fragment2)}`);
     }
     initAnchorLinks() {
       this.anchorlinks = [...document.querySelectorAll("[data-anchorlink]")];
-      console.log(this.anchorlinks);
       this.anchorlinks.forEach((anchorlink) => {
         anchorlink.addEventListener("click", (e) => {
           this.anchorClicked = anchorlink.dataset.anchorlink;
