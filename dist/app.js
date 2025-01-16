@@ -10379,6 +10379,15 @@
 
   // src/modules/scroll.js
   var lenisDefault = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+  function handleEditor(onEditorView = null) {
+    if (Webflow.env("editor") !== void 0) {
+      if (onEditorView !== null) onEditorView();
+      console.log("Webflow Editor View");
+      return true;
+    } else {
+      return false;
+    }
+  }
   var Scroll = class extends Lenis {
     constructor() {
       super({
@@ -10392,13 +10401,10 @@
       });
       this.isActive = true;
       this.callbacks = [];
-      const editor = document.querySelector(".w-editor");
-      console.log(editor);
-      if (!editor) {
-        this.init();
-      }
+      this.init();
       window.sscroll = this;
       queueMicrotask(() => this.scrollTo(0, { offset: 0, immediate: true }));
+      handleEditor(() => console.log("editor"));
     }
     init() {
       this.y = window.scrollY;
@@ -17973,7 +17979,6 @@ ${addLineNumbers(fragment2)}`);
           const hsize = Gl.vp.viewSize.h / 2.2;
           this.position.x = Gl.vp.viewSize.w / 5;
           this.scale.set(hsize, hsize, hsize);
-          console.log(window.innerWidth);
           if (window.innerWidth < 1390) {
             this.a.baseY = 0.2;
           } else if (window.innerWidth < 1e3) {
@@ -18279,6 +18284,7 @@ ${addLineNumbers(fragment2)}`);
   // src/modules/pages.js
   var Pages = class extends Core {
     current = document.querySelector("[data-page]").dataset.page;
+    anchorClicked = false;
     constructor() {
       super({
         links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -18290,6 +18296,7 @@ ${addLineNumbers(fragment2)}`);
         }
       });
       hey_default.PAGE = this.current;
+      this.initAnchorLinks();
     }
     async transitionOut(page) {
       hey_default.PAGE_OUT = page.dataset.page;
@@ -18299,6 +18306,15 @@ ${addLineNumbers(fragment2)}`);
       ]);
       App.scroll.top();
     }
+    initAnchorLinks() {
+      this.anchorlinks = [...document.querySelectorAll("[data-anchorlink]")];
+      console.log(this.anchorlinks);
+      this.anchorlinks.forEach((anchorlink) => {
+        anchorlink.addEventListener("click", (e) => {
+          this.anchorClicked = anchorlink.dataset.anchorlink;
+        });
+      });
+    }
     async transitionIn(page) {
       this.current = page.dataset.page;
       hey_default.PAGE = this.current;
@@ -18306,6 +18322,12 @@ ${addLineNumbers(fragment2)}`);
         App.dom.transitionIn(page),
         Gl.transitionIn(page)
       ]);
+      if (this.anchorClicked) {
+        const id = document.getElementById(this.anchorClicked);
+        App.scroll.to(id);
+        this.anchorClicked = false;
+      }
+      this.initAnchorLinks();
     }
   };
   var Tra = class {

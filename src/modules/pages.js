@@ -5,6 +5,8 @@ import Hey from "../hey";
 
 export class Pages extends Core {
   current = document.querySelector("[data-page]").dataset.page;
+  anchorClicked = false;
+
   constructor() {
     super({
       links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -19,6 +21,8 @@ export class Pages extends Core {
     // console.log(":p:", this.current);
 
     Hey.PAGE = this.current;
+
+    this.initAnchorLinks();
   }
 
   async transitionOut(page) {
@@ -34,6 +38,18 @@ export class Pages extends Core {
     // console.log("finished OUT");
   }
 
+  initAnchorLinks() {
+    this.anchorlinks = [...document.querySelectorAll("[data-anchorlink]")];
+    console.log(this.anchorlinks);
+
+    this.anchorlinks.forEach((anchorlink) => {
+      anchorlink.addEventListener("click", (e) => {
+        this.anchorClicked = anchorlink.dataset.anchorlink;
+        // console.log("anchorclicked", anchorlink.dataset.anchorlink);
+      });
+    });
+  }
+
   async transitionIn(page) {
     this.current = page.dataset.page;
     Hey.PAGE = this.current;
@@ -44,7 +60,13 @@ export class Pages extends Core {
       Gl.transitionIn(page),
     ]);
 
-    // console.log("finished");
+    if (this.anchorClicked) {
+      const id = document.getElementById(this.anchorClicked);
+      App.scroll.to(id);
+      this.anchorClicked = false;
+    }
+
+    this.initAnchorLinks();
   }
 }
 
