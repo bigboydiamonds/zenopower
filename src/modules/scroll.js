@@ -45,8 +45,7 @@ export class Scroll extends Lenis {
     window.sscroll = this;
     queueMicrotask(() => this.scrollTo(0, { offset: 0, immediate: true }));
 
-    // handleEditor(() => this.destroy());
-    handleEditor(() => console.log("editor"));
+    handleEditor(() => this.destroy());
   }
 
   init() {
