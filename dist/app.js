@@ -9342,6 +9342,8 @@
       }
       const fld = document.querySelector('[data-newsletter="field"]');
       const sub = document.querySelector('[data-newsletter="subscribe"]');
+      const error = document.querySelector('[data-error="msg"]');
+      console.log(error);
       if (fld) {
         fld.oninput = () => {
           this.receiver[0].value = fld.value;
@@ -9350,19 +9352,38 @@
       if (sub) {
         sub.onclick = (e) => {
           e.preventDefault();
-          this.receiver[1].click();
-          this.handleSuccess(sub);
+          if (this.checkValidEmail()) {
+            this.receiver[1].click();
+            this.handleSuccess(sub);
+          } else {
+            error.style.display = "block";
+            setTimeout(() => {
+              error.style.display = "none";
+            }, 3e3);
+          }
         };
         this.el.onsubmit = (e) => {
           e.preventDefault();
-          this.receiver[1].click();
-          this.handleSuccess(sub);
+          if (this.checkValidEmail()) {
+            this.receiver[1].click();
+            this.handleSuccess(sub);
+          } else {
+            error.style.display = "block";
+            setTimeout(() => {
+              error.style.display = "none";
+            }, 3e3);
+          }
         };
       }
     };
+    checkValidEmail = () => {
+      const email = this.receiver[0].value;
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    };
     handleSuccess(sub) {
       console.log("success", sub);
-      const parent = sub.parentElement;
+      const parent = sub.parentElement.parentElement;
       parent.style.display = "none";
       parent.nextElementSibling.style.display = "block";
     }
