@@ -10401,7 +10401,8 @@
   // src/modules/scroll.js
   var lenisDefault = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
   function handleEditor(onEditorView = null) {
-    if (Webflow.env("editor") !== void 0) {
+    const webflowLs = localStorage.getItem("WebflowEditor");
+    if (Webflow.env("editor") !== void 0 || webflowLs !== null) {
       if (onEditorView !== null) onEditorView();
       console.log("Webflow Editor View");
       return true;
