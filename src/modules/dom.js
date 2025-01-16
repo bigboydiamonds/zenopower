@@ -1,7 +1,7 @@
 import Hey from "../hey";
 import gsap, { ANIMATION } from "../gsap";
 
-import { Text } from "./animation/text";
+// import { Text } from "./animation/text";
 import { Nav } from "./nav";
 import { Slider } from "./slider";
 import { Dropdowns } from "./dropdowns";

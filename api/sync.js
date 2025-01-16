@@ -1,7 +1,11 @@
 import * as cheerio from "cheerio";
 import { WebflowClient } from "webflow-api";
+import dotenv from "dotenv";
 
-const client = new WebflowClient({ accessToken: Bun.env.WEBFLOW_API_KEY });
+// Load environment variables from .env file
+dotenv.config();
+
+const client = new WebflowClient({ accessToken: process.env.WEBFLOW_API_KEY });
 
 async function scrapeJobs() {
   const response = await fetch("https://zeno-power.breezy.hr/");

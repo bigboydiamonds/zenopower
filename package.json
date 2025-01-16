@@ -20,8 +20,9 @@
   "dependencies": {
     "@unseenco/taxi": "^1.7.0",
     "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7",
     "embla-carousel": "^8.5.1",
-    "gsap": "npm:@gsap/shockingly@^3.12.7",
+    "gsap": "^3.12.7",
     "lenis": "^1.1.18",
     "lil-gui": "^0.20.0",
     "ogl": "^1.0.9",
