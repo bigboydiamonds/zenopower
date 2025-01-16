@@ -12,6 +12,7 @@ export class Battery extends Transform {
   a = {
     baseY: 0,
     markY: 0,
+    scale: [1, 1],
   };
 
   constructor(gl, mark = null) {
@@ -28,6 +29,7 @@ export class Battery extends Transform {
 
     setTimeout(() => {
       if (this.mark) this.getTracking();
+      this.resize();
     }, 100);
 
     App.scroll.subscribe(() => this.handleScroll());
@@ -52,14 +54,17 @@ export class Battery extends Transform {
       const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
       let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
 
+      // this.position.y =
+      //   App.scroll.y * Gl.vp.viewRatio +
+      //   this.a.markY +
+      //   this.a.baseY +
+      //   offset +
+      //   // Gl.vp.viewSize.h / 6 -
+      //   onScroll * 0.2 +
+      //   // Gl.vp.viewSize.w * 0.002;
+
       this.position.y =
-        App.scroll.y * Gl.vp.viewRatio +
-        this.a.markY +
-        this.a.baseY +
-        offset +
-        Gl.vp.viewSize.h / 6 -
-        onScroll * 0.2 +
-        Gl.vp.viewSize.w * 0.002;
+        App.scroll.y * Gl.vp.viewRatio + this.a.markY - onScroll * 0.2 + 0.3;
     } else {
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
     }
@@ -74,6 +79,7 @@ export class Battery extends Transform {
     if (!this.markItem) return;
     queueMicrotask(() => {
       const { top } = this.markItem.getBoundingClientRect();
+
       this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
     });
   }
@@ -83,7 +89,7 @@ export class Battery extends Transform {
       if (this.mark && this.markItem) this.getTracking();
 
       if (!App.isMobile) {
-        const hsize = Gl.vp.viewSize.h / 2.2;
+        const hsize = Gl.vp.viewSize.w / 3.5;
         this.position.x = Gl.vp.viewSize.w / 5;
         this.scale.set(hsize, hsize, hsize);
 
