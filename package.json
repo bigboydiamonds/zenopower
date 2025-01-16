@@ -19,10 +19,12 @@
   },
   "dependencies": {
     "@unseenco/taxi": "^1.7.0",
+    "cheerio": "^1.0.0",
     "embla-carousel": "^8.5.1",
-    "gsap": "npm:@gsap/shockingly@^3.12.5",
+    "gsap": "npm:@gsap/shockingly@^3.12.7",
     "lenis": "^1.1.18",
     "lil-gui": "^0.20.0",
-    "ogl": "^1.0.9"
+    "ogl": "^1.0.9",
+    "webflow-api": "^3.1.0"
   }
 }
