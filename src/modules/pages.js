@@ -40,7 +40,6 @@ export class Pages extends Core {
 
   initAnchorLinks() {
     this.anchorlinks = [...document.querySelectorAll("[data-anchorlink]")];
-    console.log(this.anchorlinks);
 
     this.anchorlinks.forEach((anchorlink) => {
       anchorlink.addEventListener("click", (e) => {
