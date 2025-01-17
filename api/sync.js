@@ -104,6 +104,7 @@ function formatJobForDelete(job) {
 
 async function removeJobsFromWebflow(jobs) {
   const itemsToDelete = jobs.map(formatJobForDelete);
+  console.log("Items to delete:", itemsToDelete);
 
   try {
     const items = itemsToDelete.map((item) => {
@@ -112,6 +113,8 @@ async function removeJobsFromWebflow(jobs) {
         item.itemId
       );
     });
+
+    console.log("Items:", items);
 
     const result = await Promise.all(items);
     console.log("Result:", JSON.stringify(result, null, 2));
