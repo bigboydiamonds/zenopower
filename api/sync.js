@@ -117,11 +117,11 @@ async function removeJobsFromWebflow(jobs) {
     console.log("Items:", items);
 
     const result = await Promise.all(items);
-    console.log("Result:", JSON.stringify(result, null, 2));
+    console.log("Result:", result);
     return result;
   } catch (error) {
     console.error("Error removing jobs:", error);
-    throw error;
+    return error;
   }
 }
 
@@ -135,8 +135,8 @@ async function main() {
 
     // get new and to remove jobs
     const { newJobs, jobsToRemove } = matchJobsToOpenings(jobs, openings);
-    console.log("New jobs:", JSON.stringify(newJobs, null, 2));
-    console.log("Jobs to remove:", JSON.stringify(jobsToRemove, null, 2));
+    console.log("New jobs:", newJobs);
+    console.log("Jobs to remove:", jobsToRemove);
 
     let addedJobs = [];
     let removedJobs = [];
@@ -144,13 +144,13 @@ async function main() {
     // *  update openings
     if (newJobs.length > 0) {
       const addedJobs = await addJobsToWebflow(newJobs);
-      console.log("Added jobs:", JSON.stringify(addedJobs, null, 2));
+      console.log("Added jobs:", addedJobs);
       addedJobs = addedJobs.items;
     }
 
     if (jobsToRemove.length > 0) {
       const removedJobs = await removeJobsFromWebflow(jobsToRemove);
-      console.log("Removed jobs:", JSON.stringify(removedJobs, null, 2));
+      console.log("Removed jobs:", removedJobs);
     }
 
     return {
@@ -170,6 +170,8 @@ async function main() {
 
 export function GET(request) {
   const resp = main();
+
+  console.log("Response:", resp);
 
   return new Response(JSON.stringify(resp), {
     headers: { "Content-Type": "application/json" },
