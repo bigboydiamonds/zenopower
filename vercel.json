@@ -1,4 +1,5 @@
 {
+  "devCommand": "pnpm dev",
   "crons": [
     {
       "path": "/api/sync",

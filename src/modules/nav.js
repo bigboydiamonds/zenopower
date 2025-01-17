@@ -58,6 +58,9 @@ export class Nav {
 
   handleAnchorClick() {
     if (Hey.PAGE === "home") {
+      // * close menu
+      this.input.checked = false;
+
       App.scroll.scrollTo(this.anchorTarget, {
         offset: -50,
       });

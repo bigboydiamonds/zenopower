@@ -105,22 +105,20 @@ function formatJobForDelete(job) {
 async function removeJobsFromWebflow(jobs) {
   const itemsToDelete = jobs.map(formatJobForDelete);
 
-  const items = itemsToDelete.map((item) => {
-    return client.collections.items.deleteItemLive(
-      "6759f13cf5a3cb939909a780",
-      item.itemId
-    );
-  });
-
   try {
+    const items = itemsToDelete.map((item) => {
+      return client.collections.items.deleteItemLive(
+        "6759f13cf5a3cb939909a780",
+        item.itemId
+      );
+    });
+
     const result = await Promise.all(items);
     console.log("Result:", JSON.stringify(result, null, 2));
     return result;
   } catch (error) {
     console.error("Error removing jobs:", error);
-    return {
-      message: error,
-    };
+    throw error;
   }
 }
 

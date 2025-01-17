@@ -4527,6 +4527,7 @@
     }
     handleAnchorClick() {
       if (hey_default.PAGE === "home") {
+        this.input.checked = false;
         App.scroll.scrollTo(this.anchorTarget, {
           offset: -50
         });
@@ -6453,7 +6454,6 @@
       const fld = document.querySelector('[data-newsletter="field"]');
       const sub = document.querySelector('[data-newsletter="subscribe"]');
       const error = document.querySelector('[data-error="msg"]');
-      console.log(error);
       if (fld) {
         fld.oninput = () => {
           this.receiver[0].value = fld.value;
@@ -6492,7 +6492,6 @@
       return regex.test(email);
     };
     handleSuccess(sub) {
-      console.log("success", sub);
       const parent = sub.parentElement.parentElement;
       parent.style.display = "none";
       parent.nextElementSibling.style.display = "block";
