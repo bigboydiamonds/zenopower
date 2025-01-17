@@ -112,10 +112,16 @@ async function removeJobsFromWebflow(jobs) {
     );
   });
 
-  const result = await Promise.all(items);
-  console.log("Result:", JSON.stringify(result, null, 2));
-
-  return result;
+  try {
+    const result = await Promise.all(items);
+    console.log("Result:", JSON.stringify(result, null, 2));
+    return result;
+  } catch (error) {
+    console.error("Error removing jobs:", error);
+    return {
+      message: error,
+    };
+  }
 }
 
 // Execute and log results
