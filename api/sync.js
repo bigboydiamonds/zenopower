@@ -168,8 +168,8 @@ async function main() {
   }
 }
 
-export function GET(request) {
-  const resp = main();
+export async function GET(request) {
+  const resp = await main();
 
   console.log("Response:", resp);
 
