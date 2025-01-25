@@ -33,7 +33,7 @@ export class Scroll extends Lenis {
       easing: lenisDefault,
       orientation: "vertical",
       smoothTouch: false,
-      syncTouch: true,
+      syncTouch: false,
       touchMultiplier: 1,
     });
 
