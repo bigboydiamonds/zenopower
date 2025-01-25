@@ -28,6 +28,7 @@ function handleEditor(onEditorView = null) {
 export class Scroll extends Lenis {
   constructor() {
     super({
+      wrapper: document.querySelector("main"),
       duration: 1,
       smoothWheel: true,
       easing: lenisDefault,
