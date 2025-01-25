@@ -138,19 +138,20 @@ async function main() {
     console.log("New jobs:", newJobs);
     console.log("Jobs to remove:", jobsToRemove);
 
-    let addedJobs = [];
-    let removedJobs = [];
+    let addedJobsOutput = [];
+    let removedJobsOutput = [];
 
     // *  update openings
     if (newJobs.length > 0) {
       const addedJobs = await addJobsToWebflow(newJobs);
       console.log("Added jobs:", addedJobs);
-      addedJobs = addedJobs.items;
+      addedJobsOutput = addedJobs.items;
     }
 
     if (jobsToRemove.length > 0) {
       const removedJobs = await removeJobsFromWebflow(jobsToRemove);
       console.log("Removed jobs:", removedJobs);
+      removedJobsOutput = removedJobs.items;
     }
 
     return {
@@ -159,8 +160,8 @@ async function main() {
       body: {
         newJobs,
         jobsToRemove,
-        addedJobs,
-        removedJobs,
+        addedJobsOutput,
+        removedJobsOutput,
       },
     };
   } catch (error) {
