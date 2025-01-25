@@ -7582,12 +7582,13 @@
   var Scroll = class extends Lenis {
     constructor() {
       super({
+        wrapper: document.querySelector(".w"),
         duration: 1,
         smoothWheel: true,
         easing: lenisDefault,
         orientation: "vertical",
         smoothTouch: false,
-        syncTouch: true,
+        syncTouch: false,
         touchMultiplier: 1
       });
       this.isActive = true;
