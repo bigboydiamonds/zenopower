@@ -11,13 +11,6 @@
 @import "location.css";
 @import "openings.css";
 
-/* * {
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-} */
-
 html {
   font-size: clamp(16px, calc(((24 / 1680) * 100) * 1vw), 24px);
 }

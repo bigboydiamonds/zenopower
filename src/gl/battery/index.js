@@ -54,19 +54,11 @@ export class Battery extends Transform {
       const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
       let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
 
-      // this.position.y =
-      //   App.scroll.y * Gl.vp.viewRatio +
-      //   this.a.markY +
-      //   this.a.baseY +
-      //   offset +
-      //   // Gl.vp.viewSize.h / 6 -
-      //   onScroll * 0.2 +
-      //   // Gl.vp.viewSize.w * 0.002;
-
       this.position.y =
         App.scroll.y * Gl.vp.viewRatio + this.a.markY - onScroll * 0.2 + 0.3;
     } else {
-      this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY;
+      const Yadjust = App.isMobile ? 0 : -0.15;
+      this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY + Yadjust;
     }
 
     if (Gl.scene.bg.track) {
@@ -94,9 +86,9 @@ export class Battery extends Transform {
         this.scale.set(hsize, hsize, hsize);
 
         if (window.innerWidth < 1390) {
-          this.a.baseY = 0.2;
+          this.a.baseY = 0;
         } else if (window.innerWidth < 1000) {
-          this.a.baseY = 0.3;
+          this.a.baseY = 0;
         } else {
           this.a.baseY = 0;
         }
@@ -117,7 +109,7 @@ export class Battery extends Transform {
         this.battery?.resize();
         this.track?.resize();
       });
-    });
+    }, 10);
   }
 
   pageChange(page) {
