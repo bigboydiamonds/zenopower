@@ -6534,6 +6534,20 @@
     }
   };
 
+  // src/modules/anchor.js
+  var Anchor = class {
+    constructor(el) {
+      this.el = el;
+      this.target = el.getAttribute("data-anchor");
+      this.el.onclick = () => {
+        App.scroll.to(document.getElementById(this.target));
+      };
+    }
+    destroy() {
+      console.log("destroy");
+    }
+  };
+
   // src/modules/dom.js
   var lib = [
     {
@@ -6559,6 +6573,10 @@
     {
       selector: '[data-submit="w"]',
       class: Submit
+    },
+    {
+      selector: "[data-anchor]",
+      class: Anchor
     }
   ];
   var Dom = class {
@@ -15177,24 +15195,20 @@ ${addLineNumbers(fragment2)}`);
         if (this.mark) this.getTracking();
         this.resize();
       }, 100);
-      App.scroll.subscribe(() => this.handleScroll());
     }
     async create() {
       this.battery = new BatteryModel(this.gl);
       this.resize();
       this.battery.setParent(this);
     }
-    handleScroll() {
-    }
+    // handleScroll() {}
     render(t) {
       this.battery?.render(t);
       this.rotation.x = Gl.mouse.ey * 0.3;
       this.rotation.y = Gl.mouse.ex * 0.3;
       this.rotation.z = -Math.PI / 4 * 0.5;
       if (this.mark) {
-        const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
-        let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
-        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY - onScroll * 0.2 + 0.3;
+        this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY;
       } else {
         const Yadjust = App.isMobile ? 0 : -0.15;
         this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY + Yadjust;
@@ -15206,7 +15220,8 @@ ${addLineNumbers(fragment2)}`);
     getTracking() {
       if (!this.markItem) return;
       queueMicrotask(() => {
-        const { top } = this.markItem.getBoundingClientRect();
+        let { top, height } = this.markItem.getBoundingClientRect();
+        top += height / 2 - window.innerHeight / 2;
         this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
       });
     }
@@ -15217,13 +15232,6 @@ ${addLineNumbers(fragment2)}`);
           const hsize = Gl.vp.viewSize.w / 3.5;
           this.position.x = Gl.vp.viewSize.w / 5;
           this.scale.set(hsize, hsize, hsize);
-          if (window.innerWidth < 1390) {
-            this.a.baseY = 0;
-          } else if (window.innerWidth < 1e3) {
-            this.a.baseY = 0;
-          } else {
-            this.a.baseY = 0;
-          }
         } else {
           const hsize = Gl.vp.viewSize.w / 2.5;
           const mobileScale = 1.5;
@@ -15247,7 +15255,6 @@ ${addLineNumbers(fragment2)}`);
         this.markItem = document.querySelector(this.mark);
         if (this.markItem) {
           this.getTracking();
-        } else {
         }
       }
       setTimeout(() => {
@@ -15280,7 +15287,6 @@ ${addLineNumbers(fragment2)}`);
         frustumCulled: false
       });
       this.scale.set(0, 0, 0);
-      this.position.y = -Gl.vp.viewSize.h;
       hey_default.on("LOAD", (state) => this.pageChange(hey_default.PAGE));
       hey_default.on("PAGE", (page) => this.pageChange(page));
       hey_default.on("PAGE_OUT", (page) => this.animateOut(page));

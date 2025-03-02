@@ -32,7 +32,7 @@ export class Battery extends Transform {
       this.resize();
     }, 100);
 
-    App.scroll.subscribe(() => this.handleScroll());
+    // App.scroll.subscribe(() => this.handleScroll());
   }
 
   async create() {
@@ -41,7 +41,7 @@ export class Battery extends Transform {
     this.battery.setParent(this);
   }
 
-  handleScroll() {}
+  // handleScroll() {}
 
   render(t) {
     this.battery?.render(t);
@@ -51,11 +51,7 @@ export class Battery extends Transform {
     this.rotation.z = (-Math.PI / 4) * 0.5;
 
     if (this.mark) {
-      const offset = App.isMobile ? Gl.vp.viewSize.h / 3 : 0;
-      let onScroll = Gl.scene.bg.track ? Gl.scene.bg.track.value : 0;
-
-      this.position.y =
-        App.scroll.y * Gl.vp.viewRatio + this.a.markY - onScroll * 0.2 + 0.3;
+      this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.markY;
     } else {
       const Yadjust = App.isMobile ? 0 : -0.15;
       this.position.y = App.scroll.y * Gl.vp.viewRatio + this.a.baseY + Yadjust;
@@ -70,7 +66,8 @@ export class Battery extends Transform {
   getTracking() {
     if (!this.markItem) return;
     queueMicrotask(() => {
-      const { top } = this.markItem.getBoundingClientRect();
+      let { top, height } = this.markItem.getBoundingClientRect();
+      top += height / 2 - window.innerHeight / 2;
 
       this.a.markY = (-top - App.scroll.y) * Gl.vp.viewRatio;
     });
@@ -84,14 +81,6 @@ export class Battery extends Transform {
         const hsize = Gl.vp.viewSize.w / 3.5;
         this.position.x = Gl.vp.viewSize.w / 5;
         this.scale.set(hsize, hsize, hsize);
-
-        if (window.innerWidth < 1390) {
-          this.a.baseY = 0;
-        } else if (window.innerWidth < 1000) {
-          this.a.baseY = 0;
-        } else {
-          this.a.baseY = 0;
-        }
       } else {
         const hsize = Gl.vp.viewSize.w / 2.5;
         const mobileScale = 1.5;
@@ -119,9 +108,6 @@ export class Battery extends Transform {
 
       if (this.markItem) {
         this.getTracking();
-        // this.visible = true;
-      } else {
-        // this.visible = false;s
       }
     }
 
@@ -159,7 +145,7 @@ class BatteryModel extends Mesh {
     });
 
     this.scale.set(0, 0, 0);
-    this.position.y = -Gl.vp.viewSize.h;
+    // this.position.y = -Gl.vp.viewSize.h;
 
     Hey.on("LOAD", (state) => this.pageChange(Hey.PAGE));
     Hey.on("PAGE", (page) => this.pageChange(page));

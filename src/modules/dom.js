@@ -10,6 +10,7 @@ import { Partners } from "./partners";
 import { Openings } from "./openings";
 import { Submit } from "./submit";
 import { Dark } from "./dark";
+import { Anchor } from "./anchor";
 
 const lib = [
   {
@@ -35,6 +36,10 @@ const lib = [
   {
     selector: '[data-submit="w"]',
     class: Submit,
+  },
+  {
+    selector: "[data-anchor]",
+    class: Anchor,
   },
 ];
 
