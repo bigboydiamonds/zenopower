@@ -30,7 +30,7 @@ export class Scroll extends Lenis {
     super({
       wrapper: document.querySelector(".w"),
       duration: 1,
-      smoothWheel: true,
+      smoothWheel: false,
       easing: lenisDefault,
       orientation: "vertical",
       smoothTouch: false,
