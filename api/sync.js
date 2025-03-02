@@ -178,7 +178,7 @@ export async function GET(request) {
     headers: { "Content-Type": "application/json" },
   });
 
-  response.setHeader("Cache-Control", "public, s-maxage=600");
+  response.headers.set("Cache-Control", "public, s-maxage=600");
 
   return response;
 }
