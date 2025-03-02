@@ -5,6 +5,7 @@ import Hey from "../hey";
 
 async function queryCareers() {
   const resp = await fetch("https://zenopower.vercel.app/api/sync");
+  console.log(resp, "resp");
 }
 
 export class Pages extends Core {

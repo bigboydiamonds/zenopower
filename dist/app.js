@@ -15528,6 +15528,7 @@ ${addLineNumbers(fragment2)}`);
   // src/modules/pages.js
   async function queryCareers() {
     const resp = await fetch("https://zenopower.vercel.app/api/sync");
+    console.log(resp, "resp");
   }
   var Pages = class extends Core {
     current = document.querySelector("[data-page]").dataset.page;

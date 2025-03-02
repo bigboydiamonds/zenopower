@@ -178,23 +178,8 @@ export async function GET(request) {
     headers: { "Content-Type": "application/json" },
   });
 
-  /*
-  origins
-  https://zenopower-2184445709.webflow.io
-  https://www.zenopower.com/
-  */
-
   response.headers.set("Cache-Control", "public, s-maxage=600");
-
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    "https://zenopower-2184445709.webflow.io"
-  );
-  response.headers.append(
-    "Access-Control-Allow-Origin",
-    "https://www.zenopower.com"
-  );
-
+  response.headers.set("Access-Control-Allow-Origin", "*");
   response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
   response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
