@@ -3,7 +3,12 @@ import { App } from "../app";
 import { Gl } from "../gl/gl";
 import Hey from "../hey";
 
+let hit = false;
 async function queryCareers() {
+  if (hit) return;
+  if (Hey.PAGE !== "career") return;
+  hit = true;
+
   const resp = await fetch("https://zenopower.vercel.app/api/sync");
   console.log(resp, "resp");
 }
@@ -59,6 +64,8 @@ export class Pages extends Core {
   async transitionIn(page) {
     this.current = page.dataset.page;
     Hey.PAGE = this.current;
+
+    queryCareers();
     // console.log(":p:", this.current);
 
     await Promise.allSettled([

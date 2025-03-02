@@ -15526,7 +15526,11 @@ ${addLineNumbers(fragment2)}`);
   }
 
   // src/modules/pages.js
+  var hit = false;
   async function queryCareers() {
+    if (hit) return;
+    if (hey_default.PAGE !== "career") return;
+    hit = true;
     const resp = await fetch("https://zenopower.vercel.app/api/sync");
     console.log(resp, "resp");
   }
@@ -15566,6 +15570,7 @@ ${addLineNumbers(fragment2)}`);
     async transitionIn(page) {
       this.current = page.dataset.page;
       hey_default.PAGE = this.current;
+      queryCareers();
       await Promise.allSettled([
         App.dom.transitionIn(page),
         Gl.transitionIn(page)
