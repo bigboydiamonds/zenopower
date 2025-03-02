@@ -10,7 +10,7 @@ async function queryCareers() {
   hit = true;
 
   const resp = await fetch("https://zenopower.vercel.app/api/sync");
-  console.log(resp, "resp");
+  // console.log(resp, "resp");
 }
 
 export class Pages extends Core {

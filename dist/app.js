@@ -15532,7 +15532,6 @@ ${addLineNumbers(fragment2)}`);
     if (hey_default.PAGE !== "career") return;
     hit = true;
     const resp = await fetch("https://zenopower.vercel.app/api/sync");
-    console.log(resp, "resp");
   }
   var Pages = class extends Core {
     current = document.querySelector("[data-page]").dataset.page;
