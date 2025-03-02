@@ -15526,6 +15526,9 @@ ${addLineNumbers(fragment2)}`);
   }
 
   // src/modules/pages.js
+  async function queryCareers() {
+    const resp = await fetch("https://zenopower.vercel.app/api/sync");
+  }
   var Pages = class extends Core {
     current = document.querySelector("[data-page]").dataset.page;
     anchorClicked = false;
@@ -15541,6 +15544,7 @@ ${addLineNumbers(fragment2)}`);
       });
       hey_default.PAGE = this.current;
       this.initAnchorLinks();
+      queryCareers();
     }
     async transitionOut(page) {
       hey_default.PAGE_OUT = page.dataset.page;

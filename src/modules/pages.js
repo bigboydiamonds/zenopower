@@ -3,6 +3,10 @@ import { App } from "../app";
 import { Gl } from "../gl/gl";
 import Hey from "../hey";
 
+async function queryCareers() {
+  const resp = await fetch("https://zenopower.vercel.app/api/sync");
+}
+
 export class Pages extends Core {
   current = document.querySelector("[data-page]").dataset.page;
   anchorClicked = false;
@@ -23,6 +27,8 @@ export class Pages extends Core {
     Hey.PAGE = this.current;
 
     this.initAnchorLinks();
+
+    queryCareers();
   }
 
   async transitionOut(page) {
