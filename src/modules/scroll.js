@@ -16,6 +16,8 @@ function handleEditor(onEditorView = null) {
   // console.log(Webflow.env("editor"));
   const webflowLs = localStorage.getItem("WebflowEditor");
 
+  if (!Webflow) return;
+
   if (Webflow.env("editor") !== undefined || webflowLs !== null) {
     if (onEditorView !== null) onEditorView();
     console.log("Webflow Editor View");

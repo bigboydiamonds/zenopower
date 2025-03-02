@@ -7589,6 +7589,7 @@
   var lenisDefault = (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
   function handleEditor(onEditorView = null) {
     const webflowLs = localStorage.getItem("WebflowEditor");
+    if (!Webflow) return;
     if (Webflow.env("editor") !== void 0 || webflowLs !== null) {
       if (onEditorView !== null) onEditorView();
       console.log("Webflow Editor View");
