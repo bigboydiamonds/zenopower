@@ -174,7 +174,11 @@ export async function GET(request) {
 
   console.log("Response:", resp);
 
-  return new Response(JSON.stringify(resp), {
+  const response = new Response(JSON.stringify(resp), {
     headers: { "Content-Type": "application/json" },
   });
+
+  response.setHeader("Cache-Control", "public, s-maxage=600");
+
+  return response;
 }
