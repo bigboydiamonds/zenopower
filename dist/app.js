@@ -15053,9 +15053,9 @@ ${addLineNumbers(fragment2)}`);
 
   // src/gl/screen/index.js
   var GRADIENT = {
-    dark1: 857371,
+    dark1: 16711680,
     dark2: 7447472,
-    light1: 16251644,
+    light1: 32768,
     light2: 12901605
   };
   function getSize() {

@@ -13,9 +13,9 @@ import { Track } from "../../util/track";
 import { visible } from "../../util/gui";
 
 const GRADIENT = {
-  dark1: 0x0d151b,
+  dark1: 0xFF0000,
   dark2: 0x71a3b0,
-  light1: 0xf7fafc,
+  light1: 0x008000,
   light2: 0xc4dce5,
 };
 
