@@ -51,7 +51,7 @@ async function scrapeJobs() {
 }
 
 async function getOpenings() {
-  const openings = await client.collections.items.listItemsLive(
+  const openings = await client.collections.items.listItems(
     "6759f13cf5a3cb939909a780"
   );
 
