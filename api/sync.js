@@ -134,6 +134,8 @@ async function main() {
     ]);
 
     // get new and to remove jobs
+    console.log("Openings: ", openings)
+    console.log("All jobs: ", jobs)
     const { newJobs, jobsToRemove } = matchJobsToOpenings(jobs, openings);
     console.log("New jobs:", newJobs);
     console.log("Jobs to remove:", jobsToRemove);
