@@ -394,25 +394,3 @@ export async function GET(request) {
 
   return response;
 }
-
-/**
- * API route handler for Next.js
- * @param {Request} request - Incoming request
- * @returns {Response} API response
- */
-export async function GET(request) {
-  const resp = await main();
-
-  console.log("Response:", resp);
-
-  const response = new Response(JSON.stringify(resp), {
-    headers: { "Content-Type": "application/json" },
-  });
-
-  response.headers.set("Cache-Control", "public, s-maxage=600");
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-
-  return response;
-}
