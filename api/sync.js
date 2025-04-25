@@ -93,31 +93,49 @@ function matchJobsToOpenings(jobs, liveOpenings, allOpenings) {
   const liveItems = liveOpenings?.items || [];
   const allItems = allOpenings?.items || [];
 
+  // Log what we're working with for debugging
+  console.log(`Matching ${jobs.length} Breezy jobs with ${allItems.length} Webflow items (${liveItems.length} live)`);
+  
   // For each job from Breezy, determine if it's new or needs to be updated
   const newJobs = [];
   const jobsToUpdate = [];
+  const existingSlugs = new Set(allItems.map(item => item.fieldData?.slug).filter(Boolean));
+
+  // Debug: Print all existing slugs
+  console.log("Existing slugs in Webflow:", [...existingSlugs]);
 
   jobs.forEach(job => {
-    // Check if this job exists in any form (live, draft, archived)
-    const existingItem = allItems.find(item => item.fieldData.slug === job.slug);
+    if (!job.slug) {
+      console.log(`Warning: Job "${job.title}" has no slug, skipping`);
+      return;
+    }
+
+    // Check if this job exists in any form (live, draft, archived) by slug
+    const existingItem = allItems.find(item => 
+      item.fieldData?.slug === job.slug || 
+      item.fieldData?.name === job.title // Fallback to matching by name
+    );
     
-    if (existingItem) {
+    if (existingItem || existingSlugs.has(job.slug)) {
       // Job exists in some form, needs update
+      console.log(`Job "${job.title}" (${job.slug}) exists, will update`);
       jobsToUpdate.push({
         job,
-        existingItem
+        existingItem: existingItem || allItems.find(item => item.fieldData?.name === job.title) // Fallback to finding by name
       });
     } else {
       // Truly new job, doesn't exist at all
+      console.log(`Job "${job.title}" (${job.slug}) is new, will create`);
       newJobs.push(job);
     }
   });
 
   // Find jobs in live Webflow that aren't in Breezy anymore (to be removed)
   const jobsToRemove = liveItems.filter(
-    (opening) => !jobs.some((job) => job.slug === opening.fieldData.slug)
+    (opening) => !jobs.some((job) => job.slug === opening.fieldData?.slug)
   );
 
+  console.log(`Results: ${newJobs.length} new jobs, ${jobsToUpdate.length} updates, ${jobsToRemove.length} removals`);
   return { newJobs, jobsToUpdate, jobsToRemove };
 }
 
