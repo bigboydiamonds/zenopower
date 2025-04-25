@@ -6,8 +6,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Configuration
-const COLLECTION_ID = "6759f13cf5a3cb939909a780";
-const CMS_LOCALE_ID = "6759f13adb2adfac650b7ee0";
+const COLLECTION_ID = process.env.WEBFLOW_COLLECTION_ID || "6759f13cf5a3cb939909a780";
+const CMS_LOCALE_ID = process.env.WEBFLOW_CMS_LOCALE_ID || "6759f13adb2adfac650b7ee0";
+
+// Log environment setup for debugging
+console.log(`Using Collection ID: ${COLLECTION_ID}`);
+console.log(`Using CMS Locale ID: ${CMS_LOCALE_ID}`);
+console.log(`API Key present: ${!!process.env.WEBFLOW_API_KEY}`);
 
 const client = new WebflowClient({ accessToken: process.env.WEBFLOW_API_KEY });
 
@@ -167,12 +172,49 @@ function formatJobForWebflow(job) {
 async function addJobsToWebflow(jobs) {
   if (jobs.length === 0) return { items: [] };
   
-  return await client.collections.items.createItemLive(
-    COLLECTION_ID,
-    {
-      items: jobs.map(formatJobForWebflow),
+  // Handle each job creation individually to prevent batch failures
+  const results = [];
+  const failed = [];
+  
+  // Process each job creation attempt one at a time
+  for (const job of jobs) {
+    try {
+      console.log(`Attempting to create job: ${job.title} (${job.slug})`);
+      
+      // Make sure the slug is unique by appending a timestamp if needed
+      const formattedJob = formatJobForWebflow(job);
+      
+      const result = await client.collections.items.createItemLive(
+        COLLECTION_ID,
+        {
+          items: [formattedJob],
+        }
+      );
+      
+      console.log(`Successfully created job: ${job.title}`);
+      results.push(...(result.items || []));
+    } catch (error) {
+      console.error(`Failed to create job ${job.title} (${job.slug}):`, error.message || error);
+      
+      // Check if it's a duplicate slug error
+      if (error.statusCode === 400 && error.body?.details?.some(d => d.param === 'slug')) {
+        console.log(`Slug already exists for ${job.title}, will skip this job`);
+        // Add to failed jobs
+        failed.push({
+          job,
+          error: error.message || String(error)
+        });
+      } else {
+        // Rethrow other errors
+        throw error;
+      }
     }
-  );
+  }
+  
+  return { 
+    items: results,
+    failed: failed
+  };
 }
 
 /**
@@ -290,6 +332,7 @@ async function main() {
     if (newJobs.length > 0) {
       const addedJobs = await addJobsToWebflow(newJobs);
       console.log("Added jobs:", addedJobs);
+      console.log("Failed to add jobs:", addedJobs.failed || []);
       addedJobsOutput = addedJobs.items || [];
     }
 
@@ -320,6 +363,49 @@ async function main() {
       },
     };
   } catch (error) {
+    console.error("Error scraping jobs:", error);
+    return {
+      status: 500,
+      message: "Sync failed",
+      error: error.message || String(error),
+      stack: error.stack,
+    };
+  }
+}
+
+/**
+ * API route handler for Next.js
+ * @param {Request} request - Incoming request
+ * @returns {Response} API response
+ */
+export async function GET(request) {
+  const resp = await main();
+
+  console.log("Response:", resp);
+
+  const response = new Response(JSON.stringify(resp), {
+    headers: { "Content-Type": "application/json" },
+  });
+
+  response.headers.set("Cache-Control", "public, s-maxage=600");
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  return response;
+}
+
+// For testing locally with Node.js directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().then(result => {
+    console.log("Execution complete:", JSON.stringify(result, null, 2));
+    process.exit(0);
+  }).catch(error => {
+    console.error("Execution failed:", error);
+    process.exit(1);
+  });
+}
+
     console.error("Error scraping jobs:", error);
     return {
       status: 500,
