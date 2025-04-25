@@ -5,6 +5,10 @@ import dotenv from "dotenv";
 // Load environment variables from .env file
 dotenv.config();
 
+// Configuration
+const COLLECTION_ID = "6759f13cf5a3cb939909a780";
+const CMS_LOCALE_ID = "6759f13adb2adfac650b7ee0";
+
 const client = new WebflowClient({ accessToken: process.env.WEBFLOW_API_KEY });
 
 async function scrapeJobs() {
@@ -50,32 +54,82 @@ async function scrapeJobs() {
   return jobs;
 }
 
-async function getOpenings() {
-  const openings = await client.collections.items.listItemsLive(
-    "6759f13cf5a3cb939909a780"
-  );
-
-  return openings;
+/**
+ * Fetch all published/live jobs from Webflow
+ * @returns {Promise<Object>} The response containing live items
+ */
+async function getLiveOpenings() {
+  return await client.collections.items.listItemsLive(COLLECTION_ID);
 }
 
-function matchJobsToOpenings(jobs, openings) {
-  // Find jobs from Breezy that aren't in Webflow
-  const newJobs = jobs.filter(
-    (job) => !openings.some((opening) => opening.fieldData.slug === job.slug)
-  );
+/**
+ * Fetch ALL jobs from Webflow including drafts and archived
+ * Fetches ALL jobs, even the ones not published/live
+ * @returns {Promise<Array>} All items in the collection
+ */
+async function getAllOpenings() {
+  try {
+    // For webflow-api v3+, we need to use listItems which gets all items (draft, archived, etc.)
+    const allItems = await client.collections.items.listItems({
+      collectionId: COLLECTION_ID
+    });
+    return allItems;
+  } catch (error) {
+    console.error("Error fetching all openings:", error);
+    // If the above fails (older API version or other issues), fallback to listItemsLive
+    console.log("Falling back to listItemsLive");
+    return await getLiveOpenings();
+  }
+}
 
-  // Find jobs in Webflow that aren't in Breezy anymore
-  const jobsToRemove = openings.filter(
+/**
+ * Match jobs from Breezy to Webflow items, handle existing slugs
+ * @param {Array} jobs - Jobs scraped from Breezy
+ * @param {Array} liveOpenings - Live openings from Webflow
+ * @param {Array} allOpenings - All openings from Webflow (including archived/draft)
+ * @returns {Object} Object containing new jobs, jobs to update, and jobs to remove
+ */
+function matchJobsToOpenings(jobs, liveOpenings, allOpenings) {
+  const liveItems = liveOpenings?.items || [];
+  const allItems = allOpenings?.items || [];
+
+  // For each job from Breezy, determine if it's new or needs to be updated
+  const newJobs = [];
+  const jobsToUpdate = [];
+
+  jobs.forEach(job => {
+    // Check if this job exists in any form (live, draft, archived)
+    const existingItem = allItems.find(item => item.fieldData.slug === job.slug);
+    
+    if (existingItem) {
+      // Job exists in some form, needs update
+      jobsToUpdate.push({
+        job,
+        existingItem
+      });
+    } else {
+      // Truly new job, doesn't exist at all
+      newJobs.push(job);
+    }
+  });
+
+  // Find jobs in live Webflow that aren't in Breezy anymore (to be removed)
+  const jobsToRemove = liveItems.filter(
     (opening) => !jobs.some((job) => job.slug === opening.fieldData.slug)
   );
 
-  return { newJobs, jobsToRemove };
+  return { newJobs, jobsToUpdate, jobsToRemove };
 }
 
+/**
+ * Format job for Webflow creation
+ * @param {Object} job - Job from Breezy
+ * @returns {Object} Formatted job for Webflow creation
+ */
 function formatJobForWebflow(job) {
   return {
     id: job.slug,
-    cmsLocaleId: "6759f13adb2adfac650b7ee0",
+    cmsLocaleId: CMS_LOCALE_ID,
     fieldData: {
       name: job.title,
       slug: job.slug,
@@ -87,29 +141,48 @@ function formatJobForWebflow(job) {
   };
 }
 
+/**
+ * Add new jobs to Webflow
+ * @param {Array} jobs - New jobs to add
+ * @returns {Promise<Object>} Result of the creation operation
+ */
 async function addJobsToWebflow(jobs) {
+  if (jobs.length === 0) return { items: [] };
+  
   return await client.collections.items.createItemLive(
-    "6759f13cf5a3cb939909a780",
+    COLLECTION_ID,
     {
       items: jobs.map(formatJobForWebflow),
     }
   );
 }
 
+/**
+ * Format job for deletion
+ * @param {Object} job - Job to delete
+ * @returns {Object} Formatted job for deletion
+ */
 function formatJobForDelete(job) {
   return {
     itemId: job.id,
   };
 }
 
+/**
+ * Remove jobs from Webflow
+ * @param {Array} jobs - Jobs to remove
+ * @returns {Promise<Array>} Results of the deletion operations
+ */
 async function removeJobsFromWebflow(jobs) {
   const itemsToDelete = jobs.map(formatJobForDelete);
   console.log("Items to delete:", itemsToDelete);
 
+  if (itemsToDelete.length === 0) return { items: [] };
+
   try {
     const items = itemsToDelete.map((item) => {
       return client.collections.items.deleteItemLive(
-        "6759f13cf5a3cb939909a780",
+        COLLECTION_ID,
         item.itemId
       );
     });
@@ -125,33 +198,95 @@ async function removeJobsFromWebflow(jobs) {
   }
 }
 
-// Execute and log results
+/**
+ * Update existing jobs in Webflow
+ * @param {Array} jobsToUpdate - Jobs that need updating
+ * @returns {Promise<Array>} Results of the update operations
+ */
+async function updateJobsInWebflow(jobsToUpdate) {
+  if (jobsToUpdate.length === 0) return { items: [] };
+
+  try {
+    const updatePromises = jobsToUpdate.map(({ job, existingItem }) => {
+      // Format job data for update
+      const jobData = formatJobForWebflow(job);
+      
+      // Use the appropriate endpoint based on API capabilities
+      // First try updateItemLive, fall back to patchItem if that fails
+      return client.collections.items.updateItemLive(
+        COLLECTION_ID,
+        existingItem.id,
+        {
+          cmsLocaleId: CMS_LOCALE_ID,
+          fieldData: jobData.fieldData
+        }
+      ).catch(error => {
+        console.log(`Error with updateItemLive for ${existingItem.id}, trying patchItem:`, error);
+        // Try patch as a fallback (some API versions use this instead)
+        return client.collections.items.patchItem({
+          collectionId: COLLECTION_ID,
+          itemId: existingItem.id,
+          fieldData: jobData.fieldData
+        });
+      });
+    });
+
+    const results = await Promise.all(updatePromises);
+    console.log("Update results:", results);
+    return { items: results };
+  } catch (error) {
+    console.error("Error updating jobs:", error);
+    return { items: [] };
+  }
+}
+
+/**
+ * Execute and log results
+ * @returns {Promise<Object>} Result of the sync operation
+ */
 async function main() {
   try {
-    const [jobs, { items: openings }] = await Promise.all([
+    // Fetch both jobs from Breezy and all openings from Webflow (including archived/draft)
+    const [jobs, liveOpenings, allOpenings] = await Promise.all([
       scrapeJobs(),
-      getOpenings(),
+      getLiveOpenings(),
+      getAllOpenings()
     ]);
 
-    // get new and to remove jobs
-    const { newJobs, jobsToRemove } = matchJobsToOpenings(jobs, openings);
+    // Get jobs to add, update, and remove
+    const { newJobs, jobsToUpdate, jobsToRemove } = matchJobsToOpenings(
+      jobs, 
+      liveOpenings, 
+      allOpenings
+    );
+    
     console.log("New jobs:", newJobs);
+    console.log("Jobs to update:", jobsToUpdate.map(j => j.job.title));
     console.log("Jobs to remove:", jobsToRemove);
 
     let addedJobsOutput = [];
+    let updatedJobsOutput = [];
     let removedJobsOutput = [];
 
-    // *  update openings
+    // Add new jobs
     if (newJobs.length > 0) {
       const addedJobs = await addJobsToWebflow(newJobs);
       console.log("Added jobs:", addedJobs);
-      addedJobsOutput = addedJobs.items;
+      addedJobsOutput = addedJobs.items || [];
     }
 
+    // Update existing jobs
+    if (jobsToUpdate.length > 0) {
+      const updatedJobs = await updateJobsInWebflow(jobsToUpdate);
+      console.log("Updated jobs:", updatedJobs);
+      updatedJobsOutput = updatedJobs.items || [];
+    }
+
+    // Remove jobs that no longer exist
     if (jobsToRemove.length > 0) {
       const removedJobs = await removeJobsFromWebflow(jobsToRemove);
       console.log("Removed jobs:", removedJobs);
-      removedJobsOutput = removedJobs.items;
+      removedJobsOutput = removedJobs.items || [];
     }
 
     return {
@@ -159,16 +294,29 @@ async function main() {
       message: "Sync successful",
       body: {
         newJobs,
+        jobsToUpdate: jobsToUpdate.map(j => j.job),
         jobsToRemove,
         addedJobsOutput,
+        updatedJobsOutput,
         removedJobsOutput,
       },
     };
   } catch (error) {
     console.error("Error scraping jobs:", error);
+    return {
+      status: 500,
+      message: "Sync failed",
+      error: error.message || String(error),
+      stack: error.stack,
+    };
   }
 }
 
+/**
+ * API route handler for Next.js
+ * @param {Request} request - Incoming request
+ * @returns {Response} API response
+ */
 export async function GET(request) {
   const resp = await main();
 
@@ -184,4 +332,15 @@ export async function GET(request) {
   response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
   return response;
+}
+
+// For testing locally with Node.js directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().then(result => {
+    console.log("Execution complete:", JSON.stringify(result, null, 2));
+    process.exit(0);
+  }).catch(error => {
+    console.error("Execution failed:", error);
+    process.exit(1);
+  });
 }
