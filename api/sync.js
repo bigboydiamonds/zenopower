@@ -55,6 +55,7 @@ async function getOpenings() {
     "6759f13cf5a3cb939909a780"
   );
 
+  console.log('CMS fetched openings:' , openings)
   return openings;
 }
 
