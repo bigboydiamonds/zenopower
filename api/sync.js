@@ -395,27 +395,6 @@ export async function GET(request) {
   return response;
 }
 
-// For testing locally with Node.js directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().then(result => {
-    console.log("Execution complete:", JSON.stringify(result, null, 2));
-    process.exit(0);
-  }).catch(error => {
-    console.error("Execution failed:", error);
-    process.exit(1);
-  });
-}
-
-    console.error("Error scraping jobs:", error);
-    return {
-      status: 500,
-      message: "Sync failed",
-      error: error.message || String(error),
-      stack: error.stack,
-    };
-  }
-}
-
 /**
  * API route handler for Next.js
  * @param {Request} request - Incoming request
@@ -436,15 +415,4 @@ export async function GET(request) {
   response.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
   return response;
-}
-
-// For testing locally with Node.js directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().then(result => {
-    console.log("Execution complete:", JSON.stringify(result, null, 2));
-    process.exit(0);
-  }).catch(error => {
-    console.error("Execution failed:", error);
-    process.exit(1);
-  });
 }
